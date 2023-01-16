@@ -1,0 +1,71 @@
+version:  '3.8'
+
+networks:
+  santa-back: {}
+
+services:
+
+  db:
+    image: mysql:8.0.31
+    networks:
+      - santa-back
+    volumes:
+      - type: volume
+        source: db-data
+        target: /var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: santa
+      MYSQL_DATABASE: santa
+      MYSQL_USER: santa
+      MYSQL_PASSWORD: password
+    ports:
+      - target: 3306
+        published: 3306
+
+  redis:
+    image: bitnami/redis:5.0
+    environment:
+      REDIS_PASSWORD: password
+    networks:
+      - santa-back
+    ports:
+      - target: 6379
+        published: 6379
+
+  nginx:
+    image: nginx:alpine
+    networks:
+      - santa-back
+    volumes:
+      - type: bind
+        source: ./public/
+        target: /usr/src/app
+      - type: bind
+        source: ./docker/nginx/default.conf
+        target: /etc/nginx/conf.d/default.conf
+        read_only: true
+    ports:
+      - '${NGINX_PORT}:80'
+    depends_on:
+      - php
+
+  php:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+      args:
+        USER_ID: ${USER_ID}
+        GROUP_ID: ${GROUP_ID}
+        USERNAME: ${USERNAME}
+    networks:
+      - santa-back
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  db-data: {}
