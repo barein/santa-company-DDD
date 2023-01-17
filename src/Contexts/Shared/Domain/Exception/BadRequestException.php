@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Contexts\Shared\Domain\Exception;
 
-
 use App\Contexts\Shared\Domain\HttpCode;
 
 class BadRequestException extends AbstractBaseException

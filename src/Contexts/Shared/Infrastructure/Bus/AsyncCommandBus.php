@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Contexts\Shared\Infrastructure\Bus;
 
 use App\Contexts\Shared\Domain\Bus\AsyncCommandBusInterface;
