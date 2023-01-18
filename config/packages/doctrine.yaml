@@ -6,7 +6,7 @@ doctrine:
         # either here or in the DATABASE_URL env var (see .env file)
         server_version: '8'
         types:
-            ulid: App\Contexts\Shared\Infrastructure\Doctrine\DBAL\Type\UlidType
+            ulid: App\Shared\Infrastructure\Doctrine\DBAL\Type\UlidType
 
     orm:
         auto_generate_proxy_classes: true
@@ -16,8 +16,8 @@ doctrine:
         mappings:
             ChildWatching:
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Contexts/ChildWatching/Shared/Domain'
-                prefix: 'App\Contexts\ChildWatching\Shared\Domain'
+                dir: '%kernel.project_dir%/src/ChildWatching/Shared/Domain'
+                prefix: 'App\ChildWatching\Shared\Domain'
                 alias: ChildWatching
 
 when@test:
