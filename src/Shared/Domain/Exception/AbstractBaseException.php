@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\Exception;
 
-use App\Shared\Domain\HttpCode;
+use App\Shared\Domain\HttpStatusCode;
 
 abstract class AbstractBaseException extends \Exception
 {
-    protected HttpCode $httpStatusCode;
+    protected HttpStatusCode $httpStatusCode;
 
     protected string $codeError;
 
@@ -17,7 +17,7 @@ abstract class AbstractBaseException extends \Exception
      */
     protected array $metadatas = [];
 
-    public function __construct(HttpCode $httpStatusCode, string $message, string $code)
+    public function __construct(HttpStatusCode $httpStatusCode, string $message, string $code)
     {
         parent::__construct($message);
         $this->httpStatusCode = $httpStatusCode;
@@ -41,7 +41,7 @@ abstract class AbstractBaseException extends \Exception
         return (string) json_encode($data);
     }
 
-    public function getHttpStatusCode(): HttpCode
+    public function getHttpStatusCode(): HttpStatusCode
     {
         return $this->httpStatusCode;
     }

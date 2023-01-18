@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\Exception;
 
-use App\Shared\Domain\HttpCode;
+use App\Shared\Domain\HttpStatusCode;
 
 class LogicException extends AbstractBaseException
 {
@@ -12,6 +12,6 @@ class LogicException extends AbstractBaseException
 
     public function __construct(string $message, string $code = self::DEFAULT_ERROR_CODE)
     {
-        parent::__construct(HttpCode::HTTP_INTERNAL_SERVER_ERROR(), $message, $code);
+        parent::__construct(HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR, $message, $code);
     }
 }

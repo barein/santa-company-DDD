@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain;
 
-enum HttpCode: string
+enum HttpStatusCode: string
 {
     case HTTP_BAD_REQUEST = '400';
     case UNPROCESSABLE_ENTITY = '422';
