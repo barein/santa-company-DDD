@@ -33,6 +33,6 @@ enum HttpStatusCode: string
 
     public function toInt(): int
     {
-        return (int) $this->value();
+        return (int) $this->value;
     }
 }

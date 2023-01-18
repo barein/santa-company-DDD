@@ -32,6 +32,7 @@ final class DtoValueResolver implements ValueResolverInterface
         }
 
         try {
+            /** @var object $dto */
             $dto = $this->serializer->deserialize(
                 $request->getContent(),
                 (string) $argument->getType(),
