@@ -9,7 +9,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-abstract class AbstractHandler
+abstract class AbstractReturningReadModelHandler
 {
     public function __construct(
         private ContainerInterface $container,

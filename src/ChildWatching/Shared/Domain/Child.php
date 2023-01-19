@@ -33,4 +33,9 @@ class Child
     {
         return $this->ulid;
     }
+
+    public function madeAction(\DateTimeImmutable $dateTime, string $description, ActionType $type): Action
+    {
+        return new Action($this->getUlid(), $dateTime, $description, $type);
+    }
 }

@@ -6,8 +6,10 @@ namespace App\ChildWatching\Shared\Infrastructure;
 
 use App\ChildWatching\Shared\Domain\Child;
 use App\ChildWatching\Shared\Domain\ChildRepositoryInterface;
+use App\Shared\Domain\Exception\NotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Ulid;
 
 /**
  * @extends ServiceEntityRepository<Child>
@@ -24,46 +26,17 @@ class DoctrineChildRepository extends ServiceEntityRepository implements ChildRe
         parent::__construct($registry, Child::class);
     }
 
-    public function save(Child $entity, bool $flush = false): void
+    public function getChild(Ulid $childUlid): Child
     {
-        $this->getEntityManager()->persist($entity);
+        $child = $this->findOneBy(['ulid' => $childUlid]);
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
+        if ($child === null) {
+            throw new NotFoundException(sprintf(
+                'Child %s could not be found',
+                $childUlid,
+            ));
         }
+
+        return $child;
     }
-
-    public function remove(Child $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-//    /**
-//     * @return Child[] Returns an array of Child objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Child
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

@@ -2,21 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\ChildWatching\ReportChildAction\UserInterface\Http\Dto;
+namespace App\ChildWatching\ReportChildAction\UserInterface\Http;
 
 use App\ChildWatching\Shared\Domain\ActionType;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Ulid;
 
-class ChildActionDto
+class ReportChildActionDto
 {
-    #[NotNull]
-    #[Ulid]
-    public string $childUlid;
-
     #[NotNull]
     #[DateTime(format: 'Y-m-d')]
     public string $dateTime;

@@ -14,6 +14,12 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:
+            #Useful only to have make:entity working
+#            App:
+#                is_bundle: false
+#                dir: '%kernel.project_dir%/src/Entity'
+#                prefix: 'App\Entity'
+#                alias: App
             ChildWatching:
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/ChildWatching/Shared/Domain'
