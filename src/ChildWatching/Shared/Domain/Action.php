@@ -26,13 +26,13 @@ class Action
     #[ORM\Column]
     private \DateTimeImmutable $dateTime;
 
-    #[ORM\Column(length: 255)]
-    private string $description;
+    #[ORM\Embedded(class: ActionDescription::class, columnPrefix: false)]
+    private ActionDescription $description;
 
     #[ORM\Column(length: 255, enumType: ActionType::class)]
     private ActionType $type;
 
-    public function __construct(Ulid $childUlid, \DateTimeImmutable $dateTime, string $description, ActionType $type)
+    public function __construct(Ulid $childUlid, \DateTimeImmutable $dateTime, ActionDescription $description, ActionType $type)
     {
         $this->ulid = new Ulid();
         $this->childUlid = $childUlid;
@@ -61,7 +61,7 @@ class Action
         return $this->dateTime;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ActionDescription
     {
         return $this->description;
     }

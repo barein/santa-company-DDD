@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ChildWatching\ReportChildAction\Application;
 
+use App\ChildWatching\Shared\Domain\ActionDescription;
 use App\ChildWatching\Shared\Domain\ActionType;
 use App\Shared\Domain\Exception\LogicException;
 use Symfony\Component\Uid\Ulid;
@@ -51,9 +52,9 @@ readonly class ReportChildAction
         return $dateTime;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ActionDescription
     {
-        return $this->description;
+        return ActionDescription::fromString($this->description);
     }
 
     public function getType(): ActionType
