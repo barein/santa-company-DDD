@@ -16,6 +16,9 @@ class ActionDescription
     #[Column(name: 'description', length: self::MAX_LENGTH)]
     private string $value;
 
+    /**
+     * @throws InvalidArgumentException
+     */
     private function __construct(string $description)
     {
         if ($this->isDescriptionLengthValid($description) === false) {
@@ -25,6 +28,9 @@ class ActionDescription
         $this->value = $description;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public static function fromString(string $description): self
     {
         return new self($description);

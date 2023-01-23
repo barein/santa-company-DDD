@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\ChildWatching\ReportChildAction\UserInterface\Http;
 
 use App\ChildWatching\Shared\Domain\ActionType;
+use App\Shared\Infrastructure\ValidationConstraint\ActionDescriptionConstraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\DateTime;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 class ReportChildActionDto
@@ -16,7 +16,8 @@ class ReportChildActionDto
     #[DateTime(format: 'Y-m-d')]
     public string $dateTime;
 
-    #[NotBlank]
+    #[NotNull]
+    #[ActionDescriptionConstraint]
     public string $description;
 
     #[NotNull]

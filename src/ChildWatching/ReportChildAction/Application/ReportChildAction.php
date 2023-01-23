@@ -6,11 +6,12 @@ namespace App\ChildWatching\ReportChildAction\Application;
 
 use App\ChildWatching\Shared\Domain\ActionDescription;
 use App\ChildWatching\Shared\Domain\ActionType;
+use App\Shared\Domain\Exception\InvalidArgumentException;
 use App\Shared\Domain\Exception\LogicException;
+use App\Shared\Infrastructure\ValidationConstraint\ActionDescriptionConstraint;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\DateTime;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Ulid as UlidConstraint;
 
@@ -24,7 +25,8 @@ readonly class ReportChildAction
         #[DateTime(format: 'Y-m-d')]
         public string $dateTime,
 
-        #[NotBlank]
+        #[NotNull]
+        #[ActionDescriptionConstraint]
         public string $description,
 
         #[NotNull]
@@ -52,6 +54,9 @@ readonly class ReportChildAction
         return $dateTime;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function getDescription(): ActionDescription
     {
         return ActionDescription::fromString($this->description);
