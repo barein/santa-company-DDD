@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: DoctrineChildRepository::class)]
-#[ORM\Table(name: 'child_letter_processing')]
+#[ORM\Table(name: 'child_of_letter_processing')]
 class Child
 {
     #[ORM\Id]
