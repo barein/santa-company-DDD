@@ -1,5 +1,9 @@
+includes:
+    - vendor/phpstan/phpstan-doctrine/extension.neon
+
 parameters:
   level: max
   paths:
     - src
     - migrations
+  checkGenericClassInNonGenericObjectType: false

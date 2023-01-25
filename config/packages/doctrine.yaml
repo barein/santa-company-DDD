@@ -25,6 +25,11 @@ doctrine:
                 dir: '%kernel.project_dir%/src/ChildWatching/Shared/Domain'
                 prefix: 'App\ChildWatching\Shared\Domain'
                 alias: ChildWatching
+            LetterProcessing:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/LetterProcessing/Shared/Domain'
+                prefix: 'App\LetterProcessing\Shared\Domain'
+                alias: LetterProcessing
 
 when@test:
     doctrine:

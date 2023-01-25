@@ -16,7 +16,7 @@ use Symfony\Component\Uid\Ulid;
 
 class ReportChildActionController extends AbstractController
 {
-    #[Route(path: '/childs/{ulid}/actions', requirements: ['ulid' => Requirement::ULID], methods: ['POST'])]
+    #[Route(path: '/children/{ulid}/actions', requirements: ['ulid' => Requirement::ULID], methods: ['POST'])]
     public function __invoke(
         Ulid $childUlid,
         ReportChildActionDto $reportChildActionDto,

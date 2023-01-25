@@ -21,10 +21,7 @@ class ActionDescription
      */
     private function __construct(string $description)
     {
-        if ($this->isDescriptionLengthValid($description) === false) {
-            throw new InvalidArgumentException('Action description length should be between 1 and 255 characters');
-        }
-
+        $this->validateDescriptionLength($description);
         $this->value = $description;
     }
 
@@ -36,11 +33,16 @@ class ActionDescription
         return new self($description);
     }
 
-    private function isDescriptionLengthValid(string $description): bool
+    /**
+     * @throws InvalidArgumentException
+     */
+    private function validateDescriptionLength(string $description): void
     {
         $description = trim($description);
 
-        return \strlen($description) >= 1 && \strlen($description) <= self::MAX_LENGTH;
+        if (\strlen($description) < 1 || \strlen($description) > self::MAX_LENGTH) {
+            throw new InvalidArgumentException('Action description length should be between 1 and 255 characters');
+        }
     }
 
     public function getValue(): string
