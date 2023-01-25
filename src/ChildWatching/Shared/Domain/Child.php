@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: DoctrineChildRepository::class)]
+#[ORM\Table(name: 'child_child_watching')]
 class Child
 {
     #[ORM\Id]

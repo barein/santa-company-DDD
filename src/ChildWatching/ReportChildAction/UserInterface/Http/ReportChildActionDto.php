@@ -8,7 +8,6 @@ use App\ChildWatching\Shared\Domain\ActionType;
 use App\Shared\Infrastructure\ValidationConstraint\ActionDescriptionConstraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\DateTime;
-use Symfony\Component\Validator\Constraints\NotNull;
 
 class ReportChildActionDto
 {
