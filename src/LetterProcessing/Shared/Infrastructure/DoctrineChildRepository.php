@@ -23,4 +23,9 @@ class DoctrineChildRepository extends ServiceEntityRepository implements ChildRe
     {
         parent::__construct($registry, Child::class);
     }
+
+    public function add(Child $child): void
+    {
+        $this->getEntityManager()->persist($child);
+    }
 }

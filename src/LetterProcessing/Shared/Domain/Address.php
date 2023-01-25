@@ -22,8 +22,8 @@ class Address
     #[ORM\Column]
     private int $zipCode;
 
-    #[ORM\Column(length: 3)]
-    private string $isoCountryCode;
+    #[ORM\Embedded(class: IsoCountryCode::class, columnPrefix: false)]
+    private IsoCountryCode $isoCountryCode;
 
     /**
      * @throws InvalidArgumentException
@@ -34,9 +34,7 @@ class Address
         $this->street = $street;
         $this->city = $city;
         $this->zipCode = $zipCode;
-
-        $this->validateIsoCountryCode($isoCountryCode);
-        $this->isoCountryCode = $isoCountryCode;
+        $this->isoCountryCode = IsoCountryCode::fromCode($isoCountryCode);
     }
 
     /**
@@ -67,18 +65,8 @@ class Address
         return $this->zipCode;
     }
 
-    public function getIsoCountryCode(): string
+    public function getIsoCountryCode(): IsoCountryCode
     {
         return $this->isoCountryCode;
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    private function validateIsoCountryCode(string $isoCountryCode): void
-    {
-        if (false === (bool) preg_match('#[A-Z]{3}#', $isoCountryCode)) {
-            throw new InvalidArgumentException('ISO country code should contain 3 capital letters');
-        }
     }
 }

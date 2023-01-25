@@ -34,7 +34,7 @@ class Child
     /**
      * @var Collection<Letter>
      */
-    #[ORM\OneToMany(mappedBy: 'child', targetEntity: Letter::class)]
+    #[ORM\OneToMany(mappedBy: 'child', targetEntity: Letter::class, cascade: ['all'], orphanRemoval: true)]
     private Collection $letters;
 
     public function __construct(string $firstName, string $lastName, Address $address)

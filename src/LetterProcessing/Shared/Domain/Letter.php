@@ -34,7 +34,7 @@ class Letter
     /**
      * @var Collection<GiftRequest>
      */
-    #[ORM\OneToMany(mappedBy: 'letter', targetEntity: GiftRequest::class)]
+    #[ORM\OneToMany(mappedBy: 'letter', targetEntity: GiftRequest::class, cascade: ['all'], orphanRemoval: true)]
     private Collection $giftRequests;
 
     public function __construct(Child $child, Address $senderAddress)

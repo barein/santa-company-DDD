@@ -6,4 +6,5 @@ namespace App\LetterProcessing\Shared\Domain;
 
 interface ChildRepositoryInterface
 {
+    public function add(Child $child): void;
 }
