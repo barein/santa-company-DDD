@@ -6,8 +6,10 @@ namespace App\LetterProcessing\Shared\Infrastructure;
 
 use App\LetterProcessing\Shared\Domain\Child;
 use App\LetterProcessing\Shared\Domain\ChildRepositoryInterface;
+use App\Shared\Domain\Exception\NotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Ulid;
 
 /**
  * @extends ServiceEntityRepository<Child>
@@ -27,5 +29,19 @@ class DoctrineChildRepository extends ServiceEntityRepository implements ChildRe
     public function add(Child $child): void
     {
         $this->getEntityManager()->persist($child);
+    }
+
+    public function getByUlid(Ulid $childUlid): Child
+    {
+        $child = $this->findOneBy(['ulid' => $childUlid]);
+
+        if ($child === null) {
+            throw new NotFoundException(sprintf(
+                'Child %s could not be found',
+                $childUlid,
+            ));
+        }
+
+        return $child;
     }
 }
