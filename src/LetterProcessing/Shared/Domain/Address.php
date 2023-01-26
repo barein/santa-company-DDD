@@ -69,4 +69,14 @@ class Address
     {
         return $this->isoCountryCode;
     }
+
+    public function equal(self $address): bool
+    {
+        return $this->getNumber() === $address->getNumber() &&
+            $this->getStreet() === $address->getStreet() &&
+            $this->getCity() === $address->getCity() &&
+            $this->getZipCode() === $address->getZipCode() &&
+            $this->getIsoCountryCode()->getValue() === $address->getIsoCountryCode()->getValue()
+        ;
+    }
 }

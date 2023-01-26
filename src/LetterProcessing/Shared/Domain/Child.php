@@ -99,5 +99,16 @@ class Child
         }
 
         $this->letters->add($newLetter);
+
+        if (!$this->address->equal($newLetter->getSenderAddress())) {
+            $this->updateAdress($newLetter->getSenderAddress());
+        }
+    }
+
+    private function updateAdress(Address $address): self
+    {
+        $this->address = $address;
+
+        return $this;
     }
 }
