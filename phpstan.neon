@@ -7,3 +7,6 @@ parameters:
     - src
     - migrations
   checkGenericClassInNonGenericObjectType: false
+  ignoreErrors:
+    - '#Parameter .+ of method Doctrine\\Common\\Collections\\ReadableCollection.+ expects Closure.+, Closur.+.#'
+
