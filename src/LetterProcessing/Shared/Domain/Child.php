@@ -78,4 +78,26 @@ class Child
     {
         return $this->letters;
     }
+
+    public function sentLetter(\DateTimeImmutable $receivedOn, Address $from): void
+    {
+        $newLetter = new Letter($this, $from, $receivedOn);
+
+        if ($this->letters->contains($newLetter)) {
+            return;
+        }
+
+        $lettersReceivedSameYear = $this->letters->filter(
+            fn (Letter $letter) => $letter->getReceivingDate()->format('Y') === $newLetter->getReceivingDate()->format('Y')
+        );
+
+        if ($lettersReceivedSameYear->isEmpty() === false) {
+            throw new LetterAlreadySentThisYearException(sprintf(
+                'Child %s has already sent a letter this same year',
+                $this->ulid,
+            ));
+        }
+
+        $this->letters->add($newLetter);
+    }
 }

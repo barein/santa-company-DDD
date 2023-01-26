@@ -26,7 +26,7 @@ class DoctrineChildRepository extends ServiceEntityRepository implements ChildRe
         parent::__construct($registry, Child::class);
     }
 
-    public function getChild(Ulid $childUlid): Child
+    public function getByUlid(Ulid $childUlid): Child
     {
         $child = $this->findOneBy(['ulid' => $childUlid]);
 

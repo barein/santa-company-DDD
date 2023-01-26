@@ -12,6 +12,8 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Index(columns: ['child_ulid'], name: 'child_ulid_index')]
 class Action
 {
+    public const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

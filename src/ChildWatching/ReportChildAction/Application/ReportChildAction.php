@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ChildWatching\ReportChildAction\Application;
 
+use App\ChildWatching\Shared\Domain\Action;
 use App\ChildWatching\Shared\Domain\ActionDescription;
 use App\ChildWatching\Shared\Domain\ActionType;
 use App\ChildWatching\Shared\Infrastructure\ValidationConstraint\ActionDescriptionConstraint;
@@ -20,7 +21,7 @@ readonly class ReportChildAction
         #[UlidConstraint]
         public string $childUlid,
 
-        #[DateTime(format: 'Y-m-d')]
+        #[DateTime(format: Action::DATE_TIME_FORMAT)]
         public string $dateTime,
 
         #[ActionDescriptionConstraint]
@@ -38,11 +39,12 @@ readonly class ReportChildAction
 
     public function getDateTime(): \DateTimeImmutable
     {
-        $dateTime = \DateTimeImmutable::createFromFormat('Y-m-d', $this->dateTime);
+        $dateTime = \DateTimeImmutable::createFromFormat(Action::DATE_TIME_FORMAT, $this->dateTime);
 
         if ($dateTime === false) {
             throw new LogicException(sprintf(
-                "DateTime format should be 'Y-m-d', '%s' given",
+                'DateTime format should be %s, %s given',
+                Action::DATE_TIME_FORMAT,
                 $this->dateTime,
             ));
         }

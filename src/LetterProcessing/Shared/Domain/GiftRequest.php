@@ -8,7 +8,7 @@ use App\LetterProcessing\Shared\Infrastructure\DoctrineGiftRequestRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;
 
-#[ORM\Entity(repositoryClass: DoctrineGiftRequestRepository::class)]
+#[ORM\Entity]
 class GiftRequest
 {
     #[ORM\Id]

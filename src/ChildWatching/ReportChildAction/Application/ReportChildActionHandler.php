@@ -19,7 +19,7 @@ class ReportChildActionHandler
 
     public function __invoke(ReportChildAction $command): void
     {
-        $child = $this->childRepository->getChild($command->getChildUlid());
+        $child = $this->childRepository->getByUlid($command->getChildUlid());
 
         $action = $child->madeAction(
             $command->getDateTime(),

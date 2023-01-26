@@ -10,9 +10,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;
 
-#[ORM\Entity(repositoryClass: DoctrineLetterRepository::class)]
+#[ORM\Entity]
 class Letter
 {
+    public const RECEIVING_DATE_FORMAT = 'Y-m-d';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -28,7 +30,7 @@ class Letter
     #[ORM\Embedded(class: Address::class, columnPrefix: 'sender_address_')]
     private Address $senderAddress;
 
-    #[ORM\Column(type: 'date')]
+    #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $receivingDate;
 
     /**
@@ -37,13 +39,13 @@ class Letter
     #[ORM\OneToMany(mappedBy: 'letter', targetEntity: GiftRequest::class, cascade: ['all'], orphanRemoval: true)]
     private Collection $giftRequests;
 
-    public function __construct(Child $child, Address $senderAddress)
+    public function __construct(Child $child, Address $senderAddress, \DateTimeImmutable $receivingDate)
     {
         $this->ulid = new Ulid();
         $this->child = $child;
         $this->senderAddress = $senderAddress;
-        $this->receivingDate = new \DateTimeImmutable();
         $this->giftRequests = new ArrayCollection();
+        $this->receivingDate = $receivingDate;
     }
 
     public function getId(): ?int
