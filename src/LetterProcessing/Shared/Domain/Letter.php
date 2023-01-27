@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\LetterProcessing\Shared\Domain;
 
+use App\Shared\Domain\Exception\LogicException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -78,5 +79,31 @@ class Letter
     public function getGiftRequests(): Collection
     {
         return $this->giftRequests;
+    }
+
+    public function mentionGiftRequest(string $giftName): void
+    {
+        $newGiftRequest = new GiftRequest($this, $giftName);
+
+        if ($this->giftRequests->contains($newGiftRequest)) {
+            return;
+        }
+
+        if ($this->giftRequests->count() >= 4) {
+            throw new MaximumNumberOfGiftRequestPerLetterReachedException(sprintf(
+                'Letter %s already contains maximum number of GiftRequest',
+                $this->ulid,
+            ));
+        }
+
+        $giftRequestsWithSameName = $this->giftRequests->filter(
+            fn (GiftRequest $giftRequest) => $giftRequest->getGiftName() === $newGiftRequest->getGiftName()
+        );
+
+        if (!$giftRequestsWithSameName->isEmpty()) {
+            throw new LogicException('This letter already request a Gift with this exact name');
+        }
+
+        $this->giftRequests->add($newGiftRequest);
     }
 }

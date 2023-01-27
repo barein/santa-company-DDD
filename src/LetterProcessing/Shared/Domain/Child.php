@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\LetterProcessing\Shared\Domain;
 
 use App\LetterProcessing\Shared\Infrastructure\DoctrineChildRepository;
+use App\Shared\Domain\Exception\LogicException;
+use App\Shared\Domain\Exception\NotFoundException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -110,5 +112,34 @@ class Child
         $this->address = $address;
 
         return $this;
+    }
+
+    /**
+     * @throws MaximumNumberOfGiftRequestPerLetterReachedException
+     * @throws NotFoundException
+     * @throws LogicException
+     */
+    public function requestedAGift(Ulid $letterUlid, string $giftName): void
+    {
+        $letter = $this->getLetterByUlid($letterUlid);
+        $letter->mentionGiftRequest($giftName);
+    }
+
+    /**
+     * @throws NotFoundException
+     */
+    private function getLetterByUlid(Ulid $letterUlid): Letter
+    {
+        /** @var ?Letter $letter */
+        $letter = $this->letters->findFirst(fn (Letter $letter) => $letter->getUlid()->equals($letterUlid));
+
+        if ($letter === null) {
+            throw new NotFoundException(sprintf(
+                'Letter %s could not be found',
+                $letterUlid,
+            ));
+        }
+
+        return $letter;
     }
 }
