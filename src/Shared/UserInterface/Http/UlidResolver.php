@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Shared\UserInterface\Http;
 
 use App\Shared\Domain\Exception\AttributeParamValidationException;
+use App\Shared\Domain\Exception\InvalidArgumentException;
 use App\Shared\Domain\Exception\QueryParamValidationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
@@ -24,6 +25,20 @@ final class UlidResolver implements ValueResolverInterface
             return [];
         }
 
-        yield UlidRequestExtractor::getUlidFromRequest($request, 'ulid');
+        $ulid = $request->query->get('ulid') ?? $request->attributes->get('ulid');
+
+        try {
+            if (!\is_string($ulid)) {
+                throw new InvalidArgumentException('ulid should be a string');
+            }
+
+            yield Ulid::fromString($ulid);
+        } catch (\Throwable $exception) {
+            if ($request->query->get('ulid') !== null) {
+                throw new QueryParamValidationException($exception->getMessage());
+            }
+
+            throw new AttributeParamValidationException($exception->getMessage());
+        }
     }
 }
