@@ -14,26 +14,15 @@ abstract class Aggregate
      */
     private array $domainEvents = [];
 
-    protected EventStoreInterface $eventStore;
-
-    public function setEventStore(EventStoreInterface $eventStore): void
-    {
-        $this->eventStore = $eventStore;
-    }
-
     protected function storeEvent(DomainEvent $domainEvent): void
     {
-        if (isset($this->eventStore)) {
-            $this->eventStore->append($domainEvent);
-        }
-
         $this->domainEvents[] = $domainEvent;
     }
 
     /**
      * @return array<DomainEvent>
      */
-    public function getEvents(): array
+    public function getDomainEvents(): array
     {
         return $this->domainEvents;
     }
