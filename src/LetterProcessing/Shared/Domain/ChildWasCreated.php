@@ -24,6 +24,11 @@ class ChildWasCreated implements DomainEvent
         return 'child_was_created';
     }
 
+    public function getContext(): string
+    {
+        return 'letter_processing';
+    }
+
     public function getOccurredOn(): string
     {
         return $this->occurredOn->format(self::OCCURRED_ON_FORMAT);

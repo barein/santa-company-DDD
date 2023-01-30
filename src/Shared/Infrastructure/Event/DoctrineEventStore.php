@@ -35,6 +35,7 @@ class DoctrineEventStore extends ServiceEntityRepository implements EventStoreIn
 
         $storedEvent = new StoredEvent(
             name: $domainEvent->getName(),
+            context: $domainEvent->getContext(),
             occurredOn: $eventOccurredOn,
             version: $domainEvent->getVersion(),
             body : $this->serializer->serialize($domainEvent, 'json'),
