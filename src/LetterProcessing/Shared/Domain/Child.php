@@ -48,7 +48,7 @@ class Child extends Aggregate
         $this->lastName = $lastName;
         $this->address = $address;
 
-        $this->storeEvent(new ChildWasCreated((string) $this->ulid));
+        $this->raiseEvent(new ChildWasCreated((string) $this->ulid));
     }
 
     public function getId(): ?int

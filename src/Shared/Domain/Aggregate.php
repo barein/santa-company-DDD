@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Shared\Domain;
 
 use App\Shared\Domain\Event\DomainEvent;
-use App\Shared\Domain\Event\EventStoreInterface;
 
 abstract class Aggregate
 {
@@ -14,7 +13,7 @@ abstract class Aggregate
      */
     private array $domainEvents = [];
 
-    protected function storeEvent(DomainEvent $domainEvent): void
+    protected function raiseEvent(DomainEvent $domainEvent): void
     {
         $this->domainEvents[] = $domainEvent;
     }

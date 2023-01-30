@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: DoctrineEventStore::class)]
-class StoredEvent implements DomainEvent
+class StoredEvent
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

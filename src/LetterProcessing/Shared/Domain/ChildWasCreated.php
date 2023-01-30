@@ -14,7 +14,7 @@ class ChildWasCreated implements DomainEvent
 
     public function __construct(
         #[UlidConstraint]
-        public string $childUlid,
+        public readonly string $childUlid,
     ) {
         $this->occurredOn = new \DateTimeImmutable();
     }
@@ -24,10 +24,9 @@ class ChildWasCreated implements DomainEvent
         return 'child_was_created';
     }
 
-    // A scalar value should be public for serialization
-    public function getOccurredOn(): \DateTimeImmutable
+    public function getOccurredOn(): string
     {
-        return $this->occurredOn;
+        return $this->occurredOn->format(self::OCCURRED_ON_FORMAT);
     }
 
     public function getVersion(): int
