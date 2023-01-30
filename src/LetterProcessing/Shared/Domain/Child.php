@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\LetterProcessing\Shared\Domain;
 
 use App\LetterProcessing\Shared\Infrastructure\DoctrineChildRepository;
+use App\Shared\Domain\Aggregate;
 use App\Shared\Domain\Exception\LogicException;
 use App\Shared\Domain\Exception\NotFoundException;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,7 +15,7 @@ use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: DoctrineChildRepository::class)]
 #[ORM\Table(name: 'child_of_letter_processing')]
-class Child
+class Child extends Aggregate
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -46,6 +47,8 @@ class Child
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->address = $address;
+
+        $this->raiseEvent(new ChildWasCreated((string) $this->ulid));
     }
 
     public function getId(): ?int
