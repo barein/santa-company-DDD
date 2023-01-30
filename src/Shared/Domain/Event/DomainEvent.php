@@ -10,6 +10,8 @@ interface DomainEvent
 
     public function getName(): string;
 
+    public function getContext(): string;
+
     public function getOccurredOn(): string;
 
     public function getVersion(): int;

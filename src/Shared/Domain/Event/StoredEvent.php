@@ -20,6 +20,9 @@ class StoredEvent
     private Ulid $ulid;
 
     #[ORM\Column(length: 100)]
+    private string $context;
+
+    #[ORM\Column(length: 100)]
     private string $name;
 
     #[ORM\Column(type: 'datetime_immutable')]
@@ -33,12 +36,14 @@ class StoredEvent
 
     public function __construct(
         string $name,
+        string $context,
         \DateTimeImmutable $occurredOn,
         int $version,
         string $body
     ) {
         $this->ulid = new Ulid();
         $this->name = $name;
+        $this->context = $context;
         $this->occurredOn = $occurredOn;
         $this->version = $version;
         $this->body = $body;
@@ -52,6 +57,11 @@ class StoredEvent
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getContext(): string
+    {
+        return $this->context;
     }
 
     public function getOccurredOn(): \DateTimeImmutable
