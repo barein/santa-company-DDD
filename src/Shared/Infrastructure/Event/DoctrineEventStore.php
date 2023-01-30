@@ -11,6 +11,7 @@ use App\Shared\Domain\Exception\InvalidArgumentException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Uid\Ulid;
 
 class DoctrineEventStore extends ServiceEntityRepository implements EventStoreInterface
 {
@@ -34,6 +35,7 @@ class DoctrineEventStore extends ServiceEntityRepository implements EventStoreIn
         }
 
         $storedEvent = new StoredEvent(
+            ulid: new Ulid($domainEvent->getUlid()),
             name: $domainEvent->getName(),
             context: $domainEvent->getContext(),
             occurredOn: $eventOccurredOn,

@@ -35,13 +35,14 @@ class StoredEvent
     private string $body;
 
     public function __construct(
+        Ulid $ulid,
         string $name,
         string $context,
         \DateTimeImmutable $occurredOn,
         int $version,
         string $body
     ) {
-        $this->ulid = new Ulid();
+        $this->ulid = $ulid;
         $this->name = $name;
         $this->context = $context;
         $this->occurredOn = $occurredOn;
