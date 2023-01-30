@@ -1,17 +1,24 @@
 framework:
     messenger:
-        # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
-        # failure_transport: failed
+        failure_transport: failed_queue
 
         transports:
-            # https://symfony.com/doc/current/messenger.html#transport-configuration
-            # async: '%env(MESSENGER_TRANSPORT_DSN)%'
-            # failed: 'doctrine://default?queue_name=failed'
-            # sync: 'sync://'
+             global_queue:
+                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                 options:
+                    table_name: 'global_queue'
+             letter_processing_queue:
+                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                 options:
+                    table_name: 'letter_processing_queue'
+             failed_queue:
+                 dsn: '%env(MESSENGER_FAILED_TRANSPORT_DSN)%'
+                 options:
+                    table_name: 'failed_queue'
+             sync: 'sync://'
 
         routing:
-            # Route your messages to the transports
-            # 'App\Message\YourMessage': async
+          App\LetterProcessing\Shared\Domain\ChildWasCreated: global_queue
 
         default_bus: default.bus
         buses:
@@ -27,10 +34,12 @@ framework:
             event.bus:
                 default_middleware: allow_no_handlers
 
-# when@test:
-#    framework:
-#        messenger:
-#            transports:
-#                # replace with your transport name here (e.g., my_transport: 'in-memory://')
-#                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
-#                async: 'in-memory://'
+when@test:
+    framework:
+        messenger:
+            transports:
+                # replace with your transport name here (e.g., my_transport: 'in-memory://')
+                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
+                global_queue: 'in-memory://'
+                letter_processing_queue: 'in-memory://'
+                failed_queue: 'in-memory://'

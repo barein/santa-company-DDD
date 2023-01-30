@@ -8,7 +8,7 @@ use App\Shared\Domain\Event\DomainEvent;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints\Ulid as UlidConstraint;
 
-class ChildWasCreated extends AbstractLetterProcessingEvent implements DomainEvent
+class ChildWasRemoved extends AbstractLetterProcessingEvent implements DomainEvent
 {
     public function __construct(
         #[UlidConstraint]
@@ -19,7 +19,7 @@ class ChildWasCreated extends AbstractLetterProcessingEvent implements DomainEve
 
     public function getName(): string
     {
-        return 'child_was_created';
+        return 'child_was_removed';
     }
 
     public function getVersion(): int
