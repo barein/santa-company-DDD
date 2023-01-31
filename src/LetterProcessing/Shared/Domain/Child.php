@@ -15,6 +15,7 @@ use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: DoctrineChildRepository::class)]
 #[ORM\Table(name: 'child_of_letter_processing')]
+#[ORM\HasLifecycleCallbacks]
 class Child extends Aggregate
 {
     #[ORM\Id]
@@ -144,5 +145,14 @@ class Child extends Aggregate
         }
 
         return $letter;
+    }
+
+    /**
+     * Todo: check that this life cycle callback is triggered before Doctrine EventSubscriber preRemove
+     */
+    #[ORM\PreRemove]
+    public function onRemove(): void
+    {
+        $this->raiseEvent(new ChildWasRemoved((string) $this->ulid));
     }
 }

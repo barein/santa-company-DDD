@@ -6,5 +6,5 @@ namespace App\Shared\Domain\Bus;
 
 interface EventBusInterface
 {
-    public function dispatch(object ...$event): void;
+    public function dispatch(object $event): void;
 }

@@ -11,6 +11,7 @@ use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreRemoveEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class AggregateDomainEventPersister implements EventSubscriberInterface
 {
@@ -30,35 +31,27 @@ class AggregateDomainEventPersister implements EventSubscriberInterface
 
     public function prePersist(PrePersistEventArgs $args): void
     {
-        $entity = $args->getObject();
-
-        if ($entity instanceof Aggregate) {
-            $this->persistAggregateDomainEvents($entity);
-        }
+        $this->persistAggregateDomainEvents($args);
     }
 
     public function preUpdate(PreUpdateEventArgs $args): void
     {
-        $entity = $args->getObject();
-
-        if ($entity instanceof Aggregate) {
-            $this->persistAggregateDomainEvents($entity);
-        }
+        $this->persistAggregateDomainEvents($args);
     }
 
     public function preRemove(PreRemoveEventArgs $args): void
     {
+        $this->persistAggregateDomainEvents($args);
+    }
+
+    private function persistAggregateDomainEvents(LifecycleEventArgs $args): void
+    {
         $entity = $args->getObject();
 
         if ($entity instanceof Aggregate) {
-            $this->persistAggregateDomainEvents($entity);
-        }
-    }
-
-    private function persistAggregateDomainEvents(Aggregate $entity): void
-    {
-        foreach ($entity->getDomainEvents() as $domainEvent) {
-            $this->eventStore->append($domainEvent);
+            foreach ($entity->getDomainEvents() as $domainEvent) {
+                $this->eventStore->append($domainEvent);
+            }
         }
     }
 }
