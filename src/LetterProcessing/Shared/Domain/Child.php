@@ -147,6 +147,9 @@ class Child extends Aggregate
         return $letter;
     }
 
+    /**
+     * Todo: check that this life cycle callback is triggered before Doctrine EventSubscriber preRemove
+     */
     #[ORM\PreRemove]
     public function onRemove(): void
     {

@@ -6,6 +6,7 @@ namespace App\Shared\Infrastructure\Bus;
 
 use App\Shared\Domain\Bus\EventBusInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
 class EventBus implements EventBusInterface
 {
@@ -14,10 +15,13 @@ class EventBus implements EventBusInterface
     ) {
     }
 
-    public function dispatch(object ...$events): void
+    public function dispatch(object $event, bool $afterCurrentBus = true): void
     {
-        foreach ($events as $event) {
-            $this->eventBus->dispatch($event);
+        $stamps = [];
+        if ($afterCurrentBus) {
+            $stamps[] = new DispatchAfterCurrentBusStamp();
         }
+
+        $this->eventBus->dispatch($event, $stamps);
     }
 }

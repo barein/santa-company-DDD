@@ -34,6 +34,9 @@ class StoredEvent
     #[ORM\Column(type: 'text')]
     private string $body;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $dispatched = false;
+
     public function __construct(
         Ulid $ulid,
         string $name,
@@ -78,5 +81,10 @@ class StoredEvent
     public function getBody(): string
     {
         return $this->body;
+    }
+
+    public function markAsDispatched(): void
+    {
+        $this->dispatched = true;
     }
 }

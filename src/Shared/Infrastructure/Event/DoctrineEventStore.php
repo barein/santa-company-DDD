@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace App\Shared\Infrastructure\Event;
 
+use App\Shared\Domain\Event\DispatchedEventsTrackerInterface;
 use App\Shared\Domain\Event\DomainEvent;
 use App\Shared\Domain\Event\EventStoreInterface;
 use App\Shared\Domain\Event\StoredEvent;
 use App\Shared\Domain\Exception\InvalidArgumentException;
+use App\Shared\Domain\Exception\NotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Uid\Ulid;
 
-class DoctrineEventStore extends ServiceEntityRepository implements EventStoreInterface
+class DoctrineEventStore extends ServiceEntityRepository implements EventStoreInterface, DispatchedEventsTrackerInterface
 {
     public function __construct(
         ManagerRegistry $registry,
@@ -44,5 +46,25 @@ class DoctrineEventStore extends ServiceEntityRepository implements EventStoreIn
         );
 
         $this->getEntityManager()->persist($storedEvent);
+    }
+
+    public function markAsDispatched(DomainEvent $domainEvent): void
+    {
+        $storedEvent = $this->findOneBy(['ulid' => $domainEvent->getUlid()]);
+
+        if (!$storedEvent instanceof StoredEvent) {
+            throw new NotFoundException(sprintf(
+                'StoredEvent %s could not be found',
+                $domainEvent->getUlid(),
+            ));
+        }
+
+        $storedEvent->markAsDispatched();
+    }
+
+    public function store(): void
+    {
+        $this->getEntityManager()->flush();
+        $this->getEntityManager()->clear();
     }
 }

@@ -26,6 +26,7 @@ framework:
 
             command.bus:
                 middleware:
+                    - App\Shared\Infrastructure\Event\DomainEventDispatcher
                     - doctrine_transaction
                     - validation
 
