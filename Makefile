@@ -51,7 +51,7 @@ cc:
 	$(EXEC) $(CONSOLE) cache:clear
 
 consume:
-	$(EXEC) $(CONSOLE) messenger:consume async_queue_email async_queue async_queue_archive -vv
+	$(EXEC) $(CONSOLE) messenger:consume global_queue -vv
 
 ######## DATABASE ########
 

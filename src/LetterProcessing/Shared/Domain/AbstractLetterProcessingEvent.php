@@ -9,17 +9,22 @@ use Symfony\Component\Uid\Ulid;
 
 class AbstractLetterProcessingEvent
 {
-    private \DateTimeImmutable $occurredOn;
-
     private Ulid $ulid;
+
+    private \DateTimeImmutable $occurredOn;
 
     public function __construct()
     {
-        $this->occurredOn = new \DateTimeImmutable();
         $this->ulid = new Ulid();
+        $this->occurredOn = new \DateTimeImmutable();
     }
 
-    public function getContext(): string
+    public function getUlid(): string
+    {
+        return (string) $this->ulid;
+    }
+
+    public static function getContext(): string
     {
         return 'letter_processing';
     }
@@ -27,10 +32,5 @@ class AbstractLetterProcessingEvent
     public function getOccurredOn(): string
     {
         return $this->occurredOn->format(DomainEvent::OCCURRED_ON_FORMAT);
-    }
-
-    public function getUlid(): string
-    {
-        return (string) $this->ulid;
     }
 }

@@ -5,6 +5,7 @@ framework:
         transports:
              global_queue:
                  dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                 serializer: App\Shared\Infrastructure\Messenger\DomainEventJsonSerializer
                  options:
                     table_name: 'global_queue'
              letter_processing_queue:
@@ -17,23 +18,27 @@ framework:
                     table_name: 'failed_queue'
              sync: 'sync://'
 
-        routing:
-          App\LetterProcessing\Shared\Domain\ChildWasCreated: global_queue
-
         default_bus: default.bus
         buses:
-            default.bus:
+          default.bus:
 
-            command.bus:
-                middleware:
-                    - App\Shared\Infrastructure\Event\DomainEventDispatcher
-                    - doctrine_transaction
-                    - validation
+          command.bus:
+            middleware:
+              - App\Shared\Infrastructure\Event\DomainEventDispatcher
+              - doctrine_transaction
+              - validation
 
-            query.bus:
+          query.bus:
 
-            event.bus:
-                default_middleware: allow_no_handlers
+          event.bus:
+            default_middleware: allow_no_handlers
+            middleware:
+              - App\Shared\Infrastructure\Event\DomainEventDispatcher
+              - doctrine_transaction
+              - validation
+
+        routing:
+          App\LetterProcessing\Shared\Domain\ChildWasCreated: global_queue
 
 when@test:
     framework:
