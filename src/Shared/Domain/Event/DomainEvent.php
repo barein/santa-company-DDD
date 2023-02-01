@@ -10,11 +10,11 @@ interface DomainEvent
 
     public function getUlid(): string;
 
-    public function getName(): string;
+    public static function getName(): string;
 
-    public function getContext(): string;
+    public static function getContext(): string;
+
+    public static function getVersion(): int;
 
     public function getOccurredOn(): string;
-
-    public function getVersion(): int;
 }

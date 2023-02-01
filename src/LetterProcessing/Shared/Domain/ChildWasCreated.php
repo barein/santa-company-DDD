@@ -17,18 +17,18 @@ class ChildWasCreated extends AbstractLetterProcessingEvent implements DomainEve
         parent::__construct();
     }
 
-    public function getName(): string
+    public function getChildUlid(): Ulid
+    {
+        return new Ulid($this->childUlid);
+    }
+
+    public static function getName(): string
     {
         return 'child_was_created';
     }
 
-    public function getVersion(): int
+    public static function getVersion(): int
     {
         return 1;
-    }
-
-    public function getChildUlid(): Ulid
-    {
-        return new Ulid($this->childUlid);
     }
 }
