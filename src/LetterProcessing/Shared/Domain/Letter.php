@@ -81,12 +81,12 @@ class Letter
         return $this->giftRequests;
     }
 
-    public function mentionGiftRequest(string $giftName): void
+    public function mentionGiftRequest(string $giftName): ?GiftRequest
     {
         $newGiftRequest = new GiftRequest($this, $giftName);
 
         if ($this->giftRequests->contains($newGiftRequest)) {
-            return;
+            return null;
         }
 
         if ($this->giftRequests->count() >= 4) {
@@ -105,5 +105,7 @@ class Letter
         }
 
         $this->giftRequests->add($newGiftRequest);
+
+        return $newGiftRequest;
     }
 }

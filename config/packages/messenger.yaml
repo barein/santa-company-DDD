@@ -39,6 +39,7 @@ framework:
 
         routing:
           App\LetterProcessing\Shared\Domain\ChildWasCreated: global_queue
+          App\LetterProcessing\Shared\Domain\ChildRequestedAGift: letter_processing_queue
 
 when@test:
     framework:

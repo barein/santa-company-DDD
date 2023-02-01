@@ -34,7 +34,7 @@ abstract class AbstractReturningReadModelHandler
         $queryOrCommand = str_contains(static::class, 'Query') ? 'Query' : 'Command';
 
         for ($i = $apiVersion->getVersion(); $i >= ApiVersion::VERSION_MIN; --$i) {
-            $className = preg_replace("/($queryOrCommand\D+)/", sprintf('ReadModel\V%s\ReadModelHydrator', $i), static::class);
+            $className = preg_replace("#($queryOrCommand\D+)#", sprintf('ReadModel\V%s\ReadModelHydrator', $i), static::class);
 
             if ($className !== null && class_exists($className) && $this->container->has($className)) {
                 /** @var ReadModelHydratorInterface $readModelHydrator */

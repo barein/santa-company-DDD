@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\LetterProcessing\Shared\Domain;
 
 use App\LetterProcessing\Shared\Infrastructure\DoctrineChildRepository;
-use App\Shared\Domain\Aggregate;
+use App\Shared\Domain\Event\AggregateRoot;
 use App\Shared\Domain\Exception\LogicException;
 use App\Shared\Domain\Exception\NotFoundException;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,7 +16,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Entity(repositoryClass: DoctrineChildRepository::class)]
 #[ORM\Table(name: 'child_of_letter_processing')]
 #[ORM\HasLifecycleCallbacks]
-class Child extends Aggregate
+class Child extends AggregateRoot
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -126,7 +126,11 @@ class Child extends Aggregate
     public function requestedAGift(Ulid $letterUlid, string $giftName): void
     {
         $letter = $this->getLetterByUlid($letterUlid);
-        $letter->mentionGiftRequest($giftName);
+        $giftRequest = $letter->mentionGiftRequest($giftName);
+
+        if ($giftRequest !== null) {
+            $this->raiseEvent(new ChildRequestedAGift((string) $this->ulid, (string) $letterUlid, (string) $giftRequest->getUlid()));
+        }
     }
 
     /**
@@ -135,7 +139,7 @@ class Child extends Aggregate
     private function getLetterByUlid(Ulid $letterUlid): Letter
     {
         /** @var ?Letter $letter */
-        $letter = $this->letters->findFirst(fn (Letter $letter) => $letter->getUlid()->equals($letterUlid));
+        $letter = $this->letters->findFirst(fn (int $index, Letter $letter) => $letter->getUlid()->equals($letterUlid));
 
         if ($letter === null) {
             throw new NotFoundException(sprintf(
@@ -148,7 +152,7 @@ class Child extends Aggregate
     }
 
     /**
-     * Todo: check that this life cycle callback is triggered before Doctrine EventSubscriber preRemove
+     * Todo: check that this life cycle callback is triggered before Doctrine EventSubscriber preRemove event
      */
     #[ORM\PreRemove]
     public function onRemove(): void

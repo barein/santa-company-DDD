@@ -2,19 +2,25 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Domain;
+namespace App\Shared\Domain\Event;
 
-use App\Shared\Domain\Event\DomainEvent;
-
-abstract class Aggregate
+abstract class AggregateRoot
 {
     /**
      * @var array<DomainEvent>
      */
     private array $domainEvents = [];
 
+    private EventStoreInterface $eventStore;
+
     protected function raiseEvent(DomainEvent $domainEvent): void
     {
+        if (isset($this->eventStore)) {
+            $this->eventStore->append($domainEvent);
+
+            return;
+        }
+
         $this->domainEvents[] = $domainEvent;
     }
 
@@ -24,5 +30,10 @@ abstract class Aggregate
     public function getDomainEvents(): array
     {
         return $this->domainEvents;
+    }
+
+    public function setEventStore(EventStoreInterface $eventStore): void
+    {
+        $this->eventStore = $eventStore;
     }
 }
