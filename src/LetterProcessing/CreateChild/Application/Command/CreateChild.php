@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\CreateChild\Application;
+namespace App\LetterProcessing\CreateChild\Application\Command;
 
 use App\LetterProcessing\Shared\Domain\Address;
 use App\LetterProcessing\Shared\Infrastructure\ValidationConstraint\IsoCountryCodeConstraint;

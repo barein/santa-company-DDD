@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\LetterProcessing\CreateChild\UserInterface\Http;
 
-use App\LetterProcessing\CreateChild\Application\CreateChild;
+use App\LetterProcessing\CreateChild\Application\Command\CreateChild;
 use App\Shared\Domain\Bus\SyncCommandBusInterface;
 use App\Shared\Domain\HttpStatusCode;
 use App\Shared\UserInterface\Http\JsonResponder;

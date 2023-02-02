@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\CreateLetter\Application;
+namespace App\LetterProcessing\CreateLetter\Application\Command;
 
 use App\LetterProcessing\Shared\Domain\Address;
 use App\LetterProcessing\Shared\Domain\Letter;

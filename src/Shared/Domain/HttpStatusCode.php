@@ -30,6 +30,7 @@ enum HttpStatusCode: string
     case HTTP_GATEWAY_TIMEOUT = '504';
     case HTTP_CREATED = '201';
     case HTTP_ACCEPTED = '202';
+    case OK = '200';
 
     public function toInt(): int
     {

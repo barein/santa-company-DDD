@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\ChildWatching\ReportChildAction\Application;
+namespace App\ChildWatching\ReportChildAction\Application\Command;
 
 use App\ChildWatching\Shared\Domain\ActionRepositoryInterface;
 use App\ChildWatching\Shared\Domain\ChildRepositoryInterface;
