@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\CreateChild\Application;
+namespace App\LetterProcessing\CreateChild\Application\Command;
 
 use App\LetterProcessing\Shared\Domain\Child;
 use App\LetterProcessing\Shared\Domain\ChildRepositoryInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\ChildWatching\ReportChildAction\Application;
+namespace App\ChildWatching\ReportChildAction\Application\Command;
 
 use App\ChildWatching\Shared\Domain\Action;
 use App\ChildWatching\Shared\Domain\ActionDescription;

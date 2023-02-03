@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\CreateLetter\Application;
+namespace App\LetterProcessing\CreateLetter\Application\Command;
 
 use App\LetterProcessing\Shared\Domain\ChildRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

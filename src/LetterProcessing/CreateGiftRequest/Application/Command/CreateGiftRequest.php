@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\CreateGiftRequest\Application;
+namespace App\LetterProcessing\CreateGiftRequest\Application\Command;
 
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints\NotBlank;
