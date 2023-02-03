@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\LetterProcessing\Shared\Domain;
 
 use App\Shared\Domain\Exception\LogicException;
+use App\Shared\Domain\Exception\NotFoundException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -107,5 +108,20 @@ class Letter
         $this->giftRequests->add($newGiftRequest);
 
         return $newGiftRequest;
+    }
+
+    public function getGiftRequestByUlid(Ulid $giftRequestUlid): GiftRequest
+    {
+        /** @var ?GiftRequest $giftRequest */
+        $giftRequest = $this->giftRequests->findFirst(fn (int $index, GiftRequest $giftRequest) => $giftRequest->getUlid()->equals($giftRequestUlid));
+
+        if ($giftRequest === null) {
+            throw new NotFoundException(sprintf(
+                'GiftRequest %s could not be found',
+                $giftRequestUlid,
+            ));
+        }
+
+        return $giftRequest;
     }
 }

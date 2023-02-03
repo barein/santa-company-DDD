@@ -159,4 +159,37 @@ class Child extends AggregateRoot
     {
         $this->raiseEvent(new ChildWasRemoved((string) $this->ulid));
     }
+
+    public function isOnSantaListForGiftRequest(
+        SantaList $santaList,
+        Ulid $giftRequestUlid,
+        Ulid $letterUlid
+    ): void {
+        if ($santaList === SantaList::GOOD) {
+            $this->grantGiftRequest($giftRequestUlid, $letterUlid);
+
+            return;
+        }
+
+        $this->declineGiftRequest($giftRequestUlid, $letterUlid);
+    }
+
+    private function grantGiftRequest(Ulid $giftRequestUlid, Ulid $letterUlid): void
+    {
+        $giftRequest = $this->getLetterByUlid($letterUlid)->getGiftRequestByUlid($giftRequestUlid);
+        $giftRequest->grant();
+
+        $this->raiseEvent(new GiftRequestWasGranted(
+            (string) $this->getUlid(),
+            (string) $giftRequest->getUlid(),
+            $giftRequest->getGiftName(),
+        ));
+    }
+
+    private function declineGiftRequest(Ulid $giftRequestUlid, Ulid $letterUlid): void
+    {
+        $this->getLetterByUlid($letterUlid)
+            ->getGiftRequestByUlid($giftRequestUlid)
+            ->decline();
+    }
 }

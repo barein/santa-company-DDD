@@ -7,6 +7,6 @@ namespace App\LetterProcessing\Shared\Domain;
 enum GiftRequestStatus: string
 {
     case GRANTED = 'GRANTED';
-    case DENIED = 'DENIED';
+    case DECLINED = 'DECLINED';
     case PENDING = 'PENDING';
 }
