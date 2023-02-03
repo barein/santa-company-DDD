@@ -51,7 +51,7 @@ cc:
 	$(EXEC) $(CONSOLE) cache:clear
 
 consume:
-	$(EXEC) $(CONSOLE) messenger:consume global_queue -vv
+	$(EXEC) $(CONSOLE) messenger:consume letter_processing_queue global_queue -vv
 
 ######## DATABASE ########
 

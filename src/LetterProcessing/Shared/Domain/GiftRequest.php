@@ -60,4 +60,14 @@ class GiftRequest
     {
         return $this->status;
     }
+
+    public function grant(): void
+    {
+        $this->status = GiftRequestStatus::GRANTED;
+    }
+
+    public function decline(): void
+    {
+        $this->status = GiftRequestStatus::DECLINED;
+    }
 }
