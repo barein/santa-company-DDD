@@ -128,9 +128,7 @@ class Child extends AggregateRoot
         $letter = $this->getLetterByUlid($letterUlid);
         $giftRequest = $letter->mentionGiftRequest($giftName);
 
-        if ($giftRequest !== null) {
-            $this->raiseEvent(new ChildRequestedAGift((string) $this->ulid, (string) $letterUlid, (string) $giftRequest->getUlid()));
-        }
+        $this->raiseEvent(new ChildRequestedAGift((string) $this->ulid, (string) $letterUlid, (string) $giftRequest->getUlid()));
     }
 
     /**

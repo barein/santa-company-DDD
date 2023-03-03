@@ -39,6 +39,14 @@ class DomainEventJsonSerializer implements SerializerInterface
             throw new MessageDecodingFailedException('Encoded envelope does not have a "name" header.');
         }
 
+        if (empty($encodedEnvelope['headers']['version'])) {
+            throw new MessageDecodingFailedException('Encoded envelope does not have a "version" header.');
+        }
+
+        if (empty($encodedEnvelope['headers']['context'])) {
+            throw new MessageDecodingFailedException('Encoded envelope does not have a "context" header.');
+        }
+
         $stamps = $this->decodeStamps($encodedEnvelope);
         $busNameStampExist = \in_array(
             true,
@@ -60,6 +68,7 @@ class DomainEventJsonSerializer implements SerializerInterface
             /** @var object $message */
             $message = $this->serializer->deserialize($encodedEnvelope['body'], $eventClass, 'json');
         } catch (\Throwable $e) {
+            // Message is discarded from the queue, and when restarting the worker it will consume the next message
             throw new MessageDecodingFailedException('Could not decode message: '.$e->getMessage(), $e->getCode(), $e);
         }
 
@@ -93,6 +102,8 @@ class DomainEventJsonSerializer implements SerializerInterface
     }
 
     /**
+     * @see Symfony\Component\Messenger\Transport\Serialization\Serializer
+     *
      * @param array<string, array<string, string>> $encodedEnvelope
      *
      * @return array<StampInterface>
@@ -120,6 +131,8 @@ class DomainEventJsonSerializer implements SerializerInterface
     }
 
     /**
+     * @see Symfony\Component\Messenger\Transport\Serialization\Serializer
+     *
      * @param Envelope $envelope
      *
      * @return array<string, string>
@@ -141,6 +154,7 @@ class DomainEventJsonSerializer implements SerializerInterface
     private function findEventClassFrom(string $name, int $version, string $context): string
     {
         $domainFiles = (new Finder())->files()->in(sprintf('%s/src/*/Shared/Domain', $this->projectDir));
+
         /** @var array<string> $domainClasses */
         $domainClasses = array_map(
             fn (SplFileInfo $fileInfo) => preg_replace(['#.*/src#', '#/#', '#\.php#'], ['App', '\\', ''], $fileInfo->getRealPath()),

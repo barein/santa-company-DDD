@@ -82,13 +82,14 @@ class Letter
         return $this->giftRequests;
     }
 
-    public function mentionGiftRequest(string $giftName): ?GiftRequest
+    /**
+     * @throws GiftAlreadyRequestedInLetterException
+     * @throws LogicException
+     * @throws MaximumNumberOfGiftRequestPerLetterReachedException
+     */
+    public function mentionGiftRequest(string $giftName): GiftRequest
     {
         $newGiftRequest = new GiftRequest($this, $giftName);
-
-        if ($this->giftRequests->contains($newGiftRequest)) {
-            return null;
-        }
 
         if ($this->giftRequests->count() >= 4) {
             throw new MaximumNumberOfGiftRequestPerLetterReachedException(sprintf(
@@ -102,7 +103,11 @@ class Letter
         );
 
         if (!$giftRequestsWithSameName->isEmpty()) {
-            throw new LogicException('This letter already request a Gift with this exact name');
+            throw new GiftAlreadyRequestedInLetterException(sprintf(
+                'Gift %s was already requested in letter %s',
+                $giftName,
+                $this->ulid,
+            ));
         }
 
         $this->giftRequests->add($newGiftRequest);

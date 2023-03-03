@@ -22,7 +22,7 @@ RUN apt-get update \
     && apt-get -y install gcc make autoconf libc-dev pkg-config \
     && printf "\n" | pecl install redis \
     && sed -i '$ a extension=redis.so' /opt/bitnami/php/lib/php.ini \
-##Install Data Structure extension (not available on Heroku)
+##Install Data Structure extension
     && pecl install ds \
     && sed -i '$ a extension=ds.so' /opt/bitnami/php/lib/php.ini
 ##Install nodejs

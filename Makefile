@@ -18,7 +18,7 @@ build:
 install: build composer db-restore-with-fixture cc npm-install npm-build
 
 start:
-	$(DOCKER)  up -d --remove-orphans
+	$(DOCKER) up -d --remove-orphans
 
 stop:
 	$(DOCKER) down
