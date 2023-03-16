@@ -13,4 +13,6 @@ interface ChildRepositoryInterface
      * @throws NotFoundException
      */
     public function getByUlid(Ulid $childUlid): Child;
+
+    public function add(Child $child): void;
 }

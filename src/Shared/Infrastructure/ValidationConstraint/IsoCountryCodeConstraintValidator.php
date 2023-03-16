@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\Shared\Infrastructure\ValidationConstraint;
+namespace App\Shared\Infrastructure\ValidationConstraint;
 
-use App\LetterProcessing\Shared\Domain\IsoCountryCode;
 use App\Shared\Domain\Exception\InvalidArgumentException;
+use App\Shared\Domain\IsoCountryCode;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

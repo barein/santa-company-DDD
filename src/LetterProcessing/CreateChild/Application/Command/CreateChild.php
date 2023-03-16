@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\LetterProcessing\CreateChild\Application\Command;
 
-use App\LetterProcessing\Shared\Domain\Address;
-use App\LetterProcessing\Shared\Infrastructure\ValidationConstraint\IsoCountryCodeConstraint;
+use App\Shared\Domain\Address;
 use App\Shared\Domain\Exception\InvalidArgumentException;
+use App\Shared\Infrastructure\ValidationConstraint\IsoCountryCodeConstraint;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 readonly class CreateChild

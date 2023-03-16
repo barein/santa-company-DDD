@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\LetterProcessing\Shared\Domain;
 
 use App\LetterProcessing\Shared\Infrastructure\DoctrineChildRepository;
+use App\Shared\Domain\Address;
 use App\Shared\Domain\Event\AggregateRoot;
 use App\Shared\Domain\Exception\LogicException;
 use App\Shared\Domain\Exception\NotFoundException;
@@ -49,7 +50,16 @@ class Child extends AggregateRoot
         $this->lastName = $lastName;
         $this->address = $address;
 
-        $this->raiseEvent(new ChildWasCreated((string) $this->ulid));
+        $this->raiseEvent(new ChildWasCreated(
+            (string) $this->ulid,
+            $this->firstName,
+            $this->lastName,
+            $address->getNumber(),
+            $address->getStreet(),
+            $address->getCity(),
+            $address->getZipCode(),
+            $address->getIsoCountryCode()->getValue(),
+        ));
     }
 
     public function getId(): ?int

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\LetterProcessing\Shared\Domain;
 
+use App\Shared\Domain\Address;
 use App\Shared\Domain\Exception\LogicException;
 use App\Shared\Domain\Exception\NotFoundException;
 use Doctrine\Common\Collections\ArrayCollection;
