@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\LetterProcessing\CreateLetter\Application\Command;
 
-use App\LetterProcessing\Shared\Domain\Address;
 use App\LetterProcessing\Shared\Domain\Letter;
-use App\LetterProcessing\Shared\Infrastructure\ValidationConstraint\IsoCountryCodeConstraint;
+use App\Shared\Domain\Address;
 use App\Shared\Domain\Exception\InvalidArgumentException;
 use App\Shared\Domain\Exception\LogicException;
+use App\Shared\Infrastructure\ValidationConstraint\IsoCountryCodeConstraint;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\NotBlank;

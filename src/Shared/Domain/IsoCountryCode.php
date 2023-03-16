@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\Shared\Domain;
+namespace App\Shared\Domain;
 
 use App\Shared\Domain\Exception\InvalidArgumentException;
 use Doctrine\ORM\Mapping as ORM;
