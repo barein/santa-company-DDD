@@ -104,6 +104,9 @@ cs:
 stan:
 	$(EXEC) composer run stan
 
+deptrac:
+	$(EXEC) composer run deptrac
+
 soft-dependencies:
 	$(EXEC) composer run soft-dependencies
 

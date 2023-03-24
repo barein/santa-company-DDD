@@ -1,4 +1,6 @@
 {
+    "name": "santa_company/backend",
+    "description": "Santa company modular monolith backend",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
@@ -72,10 +74,17 @@
         "cs-dump": "vendor/bin/php-cs-fixer fix --dry-run -v",
         "validate-composer": "composer validate",
         "stan": "vendor/bin/phpstan analyse --memory-limit=2G --configuration=phpstan.neon",
+        "deptrac-clean-archi" : "vendor/bin/deptrac analyse --config-file=deptrac_clean_archi.yaml",
+        "deptrac-bounded-contexts" : "vendor/bin/deptrac analyse --config-file=deptrac_bounded_contexts.yaml",
+        "deptrac" : [
+            "@deptrac-clean-archi",
+            "@deptrac-bounded-contexts"
+        ],
         "ci": [
             "@cs-dump",
             "@validate-composer",
-            "@stan"
+            "@stan",
+            "@deptrac"
         ]
     },
     "conflict": {
