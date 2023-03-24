@@ -1,0 +1,22 @@
+parameters:
+    paths:
+      - ./src
+    layers:
+
+      - name: LetterProcessing
+        collectors:
+          - type: directory
+            value: src/LetterProcessing
+
+      - name: ChildWatching
+        collectors:
+          - type: directory
+            value: src/ChildWatching
+
+    skip_violations:
+      #LetterProcessing dependencies
+      App\LetterProcessing\Shared\Infrastructure\PhpChildWatchingGateway:
+        - App\ChildWatching\Shared\UserInterface\ChildWatchingService
+      #ChildWatching dependencies
+      App\ChildWatching\CreateChild\Application\CreateChildHandler:
+        - App\LetterProcessing\Shared\Domain\NewChildSentLetter

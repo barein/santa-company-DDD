@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\LetterProcessing\CreateLetter\UserInterface\Http;
 
 use App\LetterProcessing\CreateLetter\Application\Command\CreateLetter;
-use App\Shared\Domain\Bus\SyncCommandBusInterface;
-use App\Shared\Domain\HttpStatusCode;
+use App\Shared\Application\Bus\SyncCommandBusInterface;
+use App\Shared\Domain\Exception\HttpStatusCode;
 use App\Shared\UserInterface\Http\JsonResponder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

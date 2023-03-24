@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\Infrastructure\Event;
 
-use App\Shared\Domain\Bus\EventBusInterface;
+use App\Shared\Application\Bus\EventBusInterface;
 use App\Shared\Domain\Event\DispatchedEventsTrackerInterface;
 use App\Shared\Domain\Event\EventsToDispatchTrackerInterface;
 use Symfony\Component\Messenger\Envelope;

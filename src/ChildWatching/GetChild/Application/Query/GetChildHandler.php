@@ -7,12 +7,12 @@ namespace App\ChildWatching\GetChild\Application\Query;
 use App\ChildWatching\GetChild\Application\ReadModel\GetChildReadModelDto;
 use App\ChildWatching\Shared\Domain\ActionRepositoryInterface;
 use App\ChildWatching\Shared\Domain\ChildRepositoryInterface;
-use App\Shared\Application\AbstractReturningReadModelHandler;
+use App\Shared\Application\AbstractQueryHandler;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-class GetChildHandler extends AbstractReturningReadModelHandler
+class GetChildHandler extends AbstractQueryHandler
 {
     public function __construct(
         private readonly ChildRepositoryInterface $childRepository,

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\UserInterface\Http;
 
-use App\Shared\Domain\HttpStatusCode;
+use App\Shared\Domain\Exception\HttpStatusCode;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 
