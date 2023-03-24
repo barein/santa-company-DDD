@@ -8,7 +8,7 @@ use App\ChildWatching\Shared\UserInterface\ChildWatchingService;
 use App\LetterProcessing\Shared\Domain\Child;
 use App\LetterProcessing\Shared\Domain\ChildWatchingGatewayInterface;
 use App\LetterProcessing\Shared\Domain\SantaList;
-use App\Shared\Domain\ApiVersion;
+use App\Shared\Application\ApiVersion;
 
 class PhpChildWatchingGateway implements ChildWatchingGatewayInterface
 {

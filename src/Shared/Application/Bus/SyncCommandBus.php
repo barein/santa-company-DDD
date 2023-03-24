@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Infrastructure\Bus;
+namespace App\Shared\Application\Bus;
 
-use App\Shared\Domain\Bus\SyncCommandBusInterface;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 

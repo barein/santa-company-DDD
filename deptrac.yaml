@@ -1,30 +1,51 @@
 parameters:
     paths:
-        - ./src
-    exclude_files:
-        - '#.*test.*#'
+      - ./src
     layers:
-        -
-            name: Controller
-            collectors:
-                -
-                    type: className
-                    regex: .*Controller.*
-        -
-            name: Repository
-            collectors:
-                -
-                    type: className
-                    regex: .*Repository.*
-        -
-            name: Service
-            collectors:
-                -
-                    type: className
-                    regex: .*Service.*
+      - name: UserInterface
+        collectors:
+          - type: bool
+            must:
+            - type: directory
+              value: src/.*/UserInterface/.*
+            must_not:
+              - type: className
+                value: ^App\\.*\\UserInterface\\.*Dto$
+
+      - name: UserInterface_Dto
+        collectors:
+          - type: className
+            value: ^App\\.*\\UserInterface\\.*Dto$
+
+      - name: Application
+        collectors:
+          - type: directory
+            value: src/.*/Application/.*
+
+      - name: Domain
+        collectors:
+          - type: bool
+            must:
+              - type: directory
+                value: src/.*/Domain/.*
+            must_not:
+              - type: directory
+                value: src/Shared/Domain/Exception
+
+      - name: Base_Exception
+        collectors:
+          - type: directory
+            value: src/Shared/Domain/Exception
+
     ruleset:
-        Controller:
-            - Service
-        Service:
-            - Repository
-        Repository:
+      UserInterface:
+        - UserInterface_Dto
+        - Application
+        - Base_Exception
+      UserInterface_Dto:
+        - Domain
+      Application:
+        - Domain
+        - Base_Exception
+      Domain:
+        - Base_Exception

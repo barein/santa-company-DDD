@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\Exception;
 
-use App\Shared\Domain\HttpStatusCode;
-
 class BadRequestException extends AbstractBaseException
 {
     private const DEFAULT_ERROR_CODE = 'BAD_REQUEST';

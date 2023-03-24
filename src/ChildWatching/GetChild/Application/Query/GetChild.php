@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ChildWatching\GetChild\Application\Query;
 
-use App\Shared\Domain\ApiVersion;
+use App\Shared\Application\ApiVersion;
 use Symfony\Component\Uid\Ulid;
 
 readonly class GetChild

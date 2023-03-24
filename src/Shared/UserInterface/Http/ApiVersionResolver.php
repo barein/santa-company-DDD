@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\UserInterface\Http;
 
-use App\Shared\Domain\ApiVersion;
+use App\Shared\Application\ApiVersion;
 use App\Shared\Domain\Exception\QueryParamValidationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;

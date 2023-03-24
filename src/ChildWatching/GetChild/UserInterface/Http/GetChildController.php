@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\ChildWatching\GetChild\UserInterface\Http;
 
 use App\ChildWatching\GetChild\Application\Query\GetChild;
-use App\Shared\Domain\ApiVersion;
-use App\Shared\Domain\Bus\QueryBusInterface;
-use App\Shared\Domain\HttpStatusCode;
+use App\Shared\Application\ApiVersion;
+use App\Shared\Application\Bus\QueryBusInterface;
+use App\Shared\Domain\Exception\HttpStatusCode;
 use App\Shared\UserInterface\Http\JsonResponder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
