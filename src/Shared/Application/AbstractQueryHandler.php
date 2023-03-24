@@ -8,7 +8,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-abstract class AbstractReturningReadModelHandler
+abstract class AbstractQueryHandler
 {
     public function __construct(
         private ContainerInterface $container,
@@ -30,10 +30,8 @@ abstract class AbstractReturningReadModelHandler
      */
     private function getReadModelHydrator(ApiVersion $apiVersion): ReadModelHydratorInterface
     {
-        $queryOrCommand = str_contains(static::class, 'Query') ? 'Query' : 'Command';
-
         for ($i = $apiVersion->getVersion(); $i >= ApiVersion::VERSION_MIN; --$i) {
-            $className = preg_replace("#($queryOrCommand\D+)#", sprintf('ReadModel\V%s\ReadModelHydrator', $i), static::class);
+            $className = preg_replace("#(Query\D+)#", sprintf('ReadModel\V%s\ReadModelHydrator', $i), static::class);
 
             if ($className !== null && class_exists($className) && $this->container->has($className)) {
                 /** @var ReadModelHydratorInterface $readModelHydrator */
