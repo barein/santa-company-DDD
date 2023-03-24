@@ -38,7 +38,7 @@ framework:
               - validation
 
         routing:
-          App\LetterProcessing\Shared\Domain\ChildWasCreated: global_queue
+          App\LetterProcessing\Shared\Domain\NewChildSentLetter: global_queue
           App\LetterProcessing\Shared\Domain\ChildRequestedAGift: letter_processing_queue
           App\LetterProcessing\Shared\Domain\GiftRequestWasGranted: global_queue
 

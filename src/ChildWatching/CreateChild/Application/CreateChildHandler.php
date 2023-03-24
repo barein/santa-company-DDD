@@ -7,7 +7,7 @@ namespace App\ChildWatching\CreateChild\Application;
 use App\ChildWatching\Shared\Domain\Child;
 use App\ChildWatching\Shared\Domain\ChildAlreadyCreatedException;
 use App\ChildWatching\Shared\Domain\ChildRepositoryInterface;
-use App\LetterProcessing\Shared\Domain\ChildWasCreated;
+use App\LetterProcessing\Shared\Domain\NewChildSentLetter;
 use App\Shared\Domain\Address;
 use App\Shared\Domain\Exception\NotFoundException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -20,7 +20,7 @@ class CreateChildHandler
     ) {
     }
 
-    public function __invoke(ChildWasCreated $event): void
+    public function __invoke(NewChildSentLetter $event): void
     {
         $child = null;
         try {

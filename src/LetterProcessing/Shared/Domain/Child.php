@@ -50,7 +50,7 @@ class Child extends AggregateRoot
         $this->lastName = $lastName;
         $this->address = $address;
 
-        $this->raiseEvent(new ChildWasCreated(
+        $this->raiseEvent(new NewChildSentLetter(
             (string) $this->ulid,
             $this->firstName,
             $this->lastName,

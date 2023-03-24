@@ -9,7 +9,7 @@ use App\Shared\Infrastructure\ValidationConstraint\IsoCountryCodeConstraint;
 use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints\Ulid as UlidConstraint;
 
-class ChildWasCreated extends AbstractLetterProcessingEvent implements DomainEvent
+class NewChildSentLetter extends AbstractLetterProcessingEvent implements DomainEvent
 {
     public function __construct(
         #[UlidConstraint]
@@ -33,7 +33,7 @@ class ChildWasCreated extends AbstractLetterProcessingEvent implements DomainEve
 
     public static function getName(): string
     {
-        return 'child_was_created';
+        return 'new_child_sent_letter';
     }
 
     public static function getVersion(): int
