@@ -6,14 +6,14 @@ namespace App\ChildWatching\Shared\UserInterface;
 
 use App\ChildWatching\GetChild\Application\Query\GetChild;
 use App\Shared\Application\ApiVersion;
-use App\Shared\Application\Bus\QueryBus;
+use App\Shared\Application\Bus\QueryBusInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Uid\Ulid;
 
 final class ChildWatchingService
 {
     public function __construct(
-        private readonly QueryBus $queryBus,
+        private readonly QueryBusInterface $queryBus,
         private readonly SerializerInterface $serializer,
     ) {
     }
