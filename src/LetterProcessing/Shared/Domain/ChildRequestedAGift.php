@@ -12,28 +12,28 @@ class ChildRequestedAGift extends AbstractLetterProcessingEvent implements Domai
 {
     public function __construct(
         #[UlidConstraint]
-        public readonly string $childUlid,
+        public readonly string $childId,
         #[UlidConstraint]
-        public readonly string $letterUlid,
+        public readonly string $letterId,
         #[UlidConstraint]
-        public readonly string $giftRequestUlid,
+        public readonly string $giftRequestId,
     ) {
         parent::__construct();
     }
 
-    public function getChildUlid(): Ulid
+    public function getChildId(): Ulid
     {
-        return new Ulid($this->childUlid);
+        return new Ulid($this->childId);
     }
 
-    public function getLetterUlid(): Ulid
+    public function getLetterId(): Ulid
     {
-        return new Ulid($this->letterUlid);
+        return new Ulid($this->letterId);
     }
 
-    public function getGiftRequestUlid(): Ulid
+    public function getGiftRequestId(): Ulid
     {
-        return new Ulid($this->giftRequestUlid);
+        return new Ulid($this->giftRequestId);
     }
 
     public static function getName(): string

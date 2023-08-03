@@ -8,5 +8,5 @@ use Symfony\Component\Uid\Ulid;
 
 interface ChildGiftRequestExaminerInterface
 {
-    public function examine(Child $child, Ulid $letterUlid, Ulid $giftRequestUlid): void;
+    public function examine(Child $child, Ulid $letterId, Ulid $giftRequestId): void;
 }

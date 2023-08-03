@@ -16,14 +16,14 @@ class TranslatingFromChildWatchingChildGiftRequestExaminer implements ChildGiftR
     ) {
     }
 
-    public function examine(Child $child, Ulid $letterUlid, Ulid $giftRequestUlid): void
+    public function examine(Child $child, Ulid $letterId, Ulid $giftRequestId): void
     {
         $childSantaList = $this->childWatchingGateway->getChildList($child);
 
         $child->isOnSantaListForGiftRequest(
             santaList: $childSantaList,
-            giftRequestUlid: $giftRequestUlid,
-            letterUlid: $letterUlid,
+            giftRequestId: $giftRequestId,
+            letterId: $letterId,
         );
     }
 }

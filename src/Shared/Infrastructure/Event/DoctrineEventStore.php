@@ -37,7 +37,7 @@ class DoctrineEventStore extends ServiceEntityRepository implements EventStoreIn
         }
 
         $storedEvent = new StoredEvent(
-            ulid: new Ulid($domainEvent->getUlid()),
+            id: new Ulid($domainEvent->getId()),
             name: $domainEvent->getName(),
             context: $domainEvent->getContext(),
             occurredOn: $eventOccurredOn,
@@ -50,12 +50,12 @@ class DoctrineEventStore extends ServiceEntityRepository implements EventStoreIn
 
     public function markAsDispatched(DomainEvent $domainEvent): void
     {
-        $storedEvent = $this->findOneBy(['ulid' => $domainEvent->getUlid()]);
+        $storedEvent = $this->find($domainEvent->getId());
 
         if (!$storedEvent instanceof StoredEvent) {
             throw new NotFoundException(sprintf(
                 'StoredEvent %s could not be found',
-                $domainEvent->getUlid(),
+                $domainEvent->getId(),
             ));
         }
 

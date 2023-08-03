@@ -24,8 +24,8 @@ class GetChildHandler extends AbstractQueryHandler
 
     public function __invoke(GetChild $query): object
     {
-        $child = $this->childRepository->getByUlid($query->childUlid);
-        $actions = $this->actionRepository->getActionsOfChildThisYear($child->getUlid());
+        $child = $this->childRepository->get($query->childId);
+        $actions = $this->actionRepository->getActionsOfChildThisYear($child->getId());
 
         $readModelDto = new GetChildReadModelDto($child, $actions);
 

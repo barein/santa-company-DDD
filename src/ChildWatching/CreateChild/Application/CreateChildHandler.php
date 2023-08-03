@@ -24,7 +24,7 @@ class CreateChildHandler
     {
         $child = null;
         try {
-            $child = $this->childRepository->getByUlid($event->getChildUlid());
+            $child = $this->childRepository->get($event->getChildId());
         } catch (NotFoundException) {
         }
 
@@ -33,7 +33,7 @@ class CreateChildHandler
         }
 
         $child = new Child(
-            $event->getChildUlid(),
+            $event->getChildId(),
             $event->firstName,
             $event->lastName,
             Address::from(

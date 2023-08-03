@@ -9,10 +9,10 @@ use Symfony\Component\Uid\Ulid;
 
 interface ChildRepositoryInterface
 {
+    public function add(Child $child): void;
+
     /**
      * @throws NotFoundException
      */
-    public function getByUlid(Ulid $childUlid): Child;
-
-    public function add(Child $child): void;
+    public function get(Ulid $id): Child;
 }

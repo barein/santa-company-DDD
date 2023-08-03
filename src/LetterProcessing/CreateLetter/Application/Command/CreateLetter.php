@@ -18,7 +18,7 @@ readonly class CreateLetter
 {
     public function __construct(
         #[UlidConstraint]
-        public string $childUlid,
+        public string $childId,
 
         #[DateTime(format: Letter::RECEIVING_DATE_FORMAT)]
         public string $receivingDate,
@@ -38,9 +38,9 @@ readonly class CreateLetter
     ) {
     }
 
-    public function getChildUlid(): Ulid
+    public function getChildId(): Ulid
     {
-        return new Ulid($this->childUlid);
+        return new Ulid($this->childId);
     }
 
     /**

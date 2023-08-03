@@ -8,7 +8,7 @@ interface DomainEvent
 {
     public const OCCURRED_ON_FORMAT = 'Y-m-d H:i:s';
 
-    public function getUlid(): string;
+    public function getId(): string;
 
     public static function getName(): string;
 

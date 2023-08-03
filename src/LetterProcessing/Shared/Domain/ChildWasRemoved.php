@@ -12,14 +12,14 @@ class ChildWasRemoved extends AbstractLetterProcessingEvent implements DomainEve
 {
     public function __construct(
         #[UlidConstraint]
-        public readonly string $childUlid,
+        public readonly string $childId,
     ) {
         parent::__construct();
     }
 
-    public function getChildUlid(): Ulid
+    public function getChildId(): Ulid
     {
-        return new Ulid($this->childUlid);
+        return new Ulid($this->childId);
     }
 
     public static function getName(): string

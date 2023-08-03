@@ -31,15 +31,12 @@ class DoctrineChildRepository extends ServiceEntityRepository implements ChildRe
         $this->getEntityManager()->persist($child);
     }
 
-    public function getByUlid(Ulid $childUlid): Child
+    public function get(Ulid $id): Child
     {
-        $child = $this->findOneBy(['ulid' => $childUlid]);
+        $child = $this->find($id);
 
         if ($child === null) {
-            throw new NotFoundException(sprintf(
-                'Child %s could not be found',
-                $childUlid,
-            ));
+            throw new NotFoundException(sprintf('Child %s could not be found', $id));
         }
 
         return $child;

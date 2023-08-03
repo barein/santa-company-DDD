@@ -17,7 +17,7 @@ class CreateLetterHandler
 
     public function __invoke(CreateLetter $command): void
     {
-        $child = $this->childRepository->getByUlid($command->getChildUlid());
+        $child = $this->childRepository->get($command->getChildId());
 
         $child->sentLetter(receivedOn: $command->getReceivingDate(), from: $command->getSenderAddress());
     }

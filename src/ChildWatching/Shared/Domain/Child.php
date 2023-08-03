@@ -6,6 +6,7 @@ namespace App\ChildWatching\Shared\Domain;
 
 use App\ChildWatching\Shared\Infrastructure\DoctrineChildRepository;
 use App\Shared\Domain\Address;
+use App\Shared\Infrastructure\Doctrine\DBAL\Type\UlidType;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;
 
@@ -14,12 +15,8 @@ use Symfony\Component\Uid\Ulid;
 class Child
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
-    #[ORM\Column(type: 'ulid', unique: true)]
-    private Ulid $ulid;
+    #[ORM\Column(type: UlidType::NAME)]
+    private Ulid $id;
 
     #[ORM\Column(length: 255)]
     private string $firstName;
@@ -36,25 +33,20 @@ class Child
         string $lastName,
         Address $address,
     ) {
-        $this->ulid = $ulid;
+        $this->id = $ulid;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->address = $address;
     }
 
-    public function getId(): ?int
+    public function getId(): Ulid
     {
         return $this->id;
     }
 
-    public function getUlid(): Ulid
-    {
-        return $this->ulid;
-    }
-
     public function madeAction(\DateTimeImmutable $dateTime, ActionDescription $description, ActionType $type): Action
     {
-        return new Action($this->getUlid(), $dateTime, $description, $type);
+        return new Action($this->getId(), $dateTime, $description, $type);
     }
 
     public function getFirstName(): string

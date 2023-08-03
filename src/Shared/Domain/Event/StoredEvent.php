@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\Event;
 
+use App\Shared\Infrastructure\Doctrine\DBAL\Type\UlidType;
 use App\Shared\Infrastructure\Event\DoctrineEventStore;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;
@@ -12,12 +13,8 @@ use Symfony\Component\Uid\Ulid;
 class StoredEvent
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id;
-
-    #[ORM\Column(type: 'ulid', unique: true)]
-    private Ulid $ulid;
+    #[ORM\Column(type: UlidType::NAME)]
+    private Ulid $id;
 
     #[ORM\Column(length: 100)]
     private string $context;
@@ -38,14 +35,14 @@ class StoredEvent
     private bool $dispatched = false;
 
     public function __construct(
-        Ulid $ulid,
+        Ulid $id,
         string $name,
         string $context,
         \DateTimeImmutable $occurredOn,
         int $version,
         string $body
     ) {
-        $this->ulid = $ulid;
+        $this->id = $id;
         $this->name = $name;
         $this->context = $context;
         $this->occurredOn = $occurredOn;
@@ -53,9 +50,9 @@ class StoredEvent
         $this->body = $body;
     }
 
-    public function getUlid(): Ulid
+    public function getId(): Ulid
     {
-        return $this->ulid;
+        return $this->id;
     }
 
     public function getName(): string

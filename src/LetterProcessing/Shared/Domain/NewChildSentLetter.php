@@ -13,22 +13,22 @@ class NewChildSentLetter extends AbstractLetterProcessingEvent implements Domain
 {
     public function __construct(
         #[UlidConstraint]
-        public readonly string $childUlid,
+        public readonly string $childId,
         public readonly string $firstName,
         public readonly string $lastName,
-        public readonly int $streetNumber,
+        public readonly int    $streetNumber,
         public readonly string $streetName,
         public readonly string $city,
-        public readonly int $zipCode,
+        public readonly int    $zipCode,
         #[IsoCountryCodeConstraint]
         public readonly string $isoCountryCode,
     ) {
         parent::__construct();
     }
 
-    public function getChildUlid(): Ulid
+    public function getChildId(): Ulid
     {
-        return new Ulid($this->childUlid);
+        return new Ulid($this->childId);
     }
 
     public static function getName(): string

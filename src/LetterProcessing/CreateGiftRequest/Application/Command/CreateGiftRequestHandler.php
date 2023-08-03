@@ -17,8 +17,8 @@ class CreateGiftRequestHandler
 
     public function __invoke(CreateGiftRequest $command): void
     {
-        $child = $this->childRepository->getByUlid($command->getChildUlid());
+        $child = $this->childRepository->get($command->getChildId());
 
-        $child->requestedAGift($command->getLetterUlid(), $command->getGiftName());
+        $child->requestedAGift($command->getLetterId(), $command->getGiftName());
     }
 }

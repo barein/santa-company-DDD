@@ -5,25 +5,21 @@ declare(strict_types=1);
 namespace App\ChildWatching\Shared\Domain;
 
 use App\ChildWatching\Shared\Infrastructure\DoctrineActionRepository;
+use App\Shared\Infrastructure\Doctrine\DBAL\Type\UlidType;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: DoctrineActionRepository::class)]
-#[ORM\Index(columns: ['child_ulid'], name: 'child_ulid_index')]
 class Action
 {
     public const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
 
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: UlidType::NAME)]
+    private Ulid $id;
 
-    #[ORM\Column(type: 'ulid', unique: true)]
-    private Ulid $ulid;
-
-    #[ORM\Column(type: 'ulid')]
-    private Ulid $childUlid;
+    #[ORM\Column(type: UlidType::NAME)]
+    private Ulid $childId;
 
     #[ORM\Column]
     private \DateTimeImmutable $dateTime;
@@ -34,28 +30,23 @@ class Action
     #[ORM\Column(length: 255, enumType: ActionType::class)]
     private ActionType $type;
 
-    public function __construct(Ulid $childUlid, \DateTimeImmutable $dateTime, ActionDescription $description, ActionType $type)
+    public function __construct(Ulid $childId, \DateTimeImmutable $dateTime, ActionDescription $description, ActionType $type)
     {
-        $this->ulid = new Ulid();
-        $this->childUlid = $childUlid;
+        $this->id = new Ulid();
+        $this->childId = $childId;
         $this->dateTime = $dateTime;
         $this->description = $description;
         $this->type = $type;
     }
 
-    public function getId(): ?int
+    public function getId(): Ulid
     {
         return $this->id;
     }
 
-    public function getUlid(): Ulid
+    public function getChildId(): Ulid
     {
-        return $this->ulid;
-    }
-
-    public function getChildUlid(): Ulid
-    {
-        return $this->childUlid;
+        return $this->childId;
     }
 
     public function getDateTime(): \DateTimeImmutable

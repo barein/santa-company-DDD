@@ -7,6 +7,7 @@ namespace App\LetterProcessing\Shared\Domain;
 use App\Shared\Domain\Address;
 use App\Shared\Domain\Exception\LogicException;
 use App\Shared\Domain\Exception\NotFoundException;
+use App\Shared\Infrastructure\Doctrine\DBAL\Type\UlidType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,12 +19,8 @@ class Letter
     public const RECEIVING_DATE_FORMAT = 'Y-m-d';
 
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id;
-
-    #[ORM\Column(type: 'ulid', unique: true)]
-    private Ulid $ulid;
+    #[ORM\Column(type: UlidType::NAME)]
+    private Ulid $id;
 
     #[ORM\ManyToOne(targetEntity: Child::class, inversedBy: 'letters')]
     #[ORM\JoinColumn(nullable: false)]
@@ -43,21 +40,16 @@ class Letter
 
     public function __construct(Child $child, Address $senderAddress, \DateTimeImmutable $receivingDate)
     {
-        $this->ulid = new Ulid();
+        $this->id = new Ulid();
         $this->child = $child;
         $this->senderAddress = $senderAddress;
         $this->giftRequests = new ArrayCollection();
         $this->receivingDate = $receivingDate;
     }
 
-    public function getId(): ?int
+    public function getId(): Ulid
     {
         return $this->id;
-    }
-
-    public function getUlid(): Ulid
-    {
-        return $this->ulid;
     }
 
     public function getChild(): Child
@@ -95,7 +87,7 @@ class Letter
         if ($this->giftRequests->count() >= 4) {
             throw new MaximumNumberOfGiftRequestPerLetterReachedException(sprintf(
                 'Letter %s already contains maximum number of GiftRequest',
-                $this->ulid,
+                $this->id,
             ));
         }
 
@@ -107,7 +99,7 @@ class Letter
             throw new GiftAlreadyRequestedInLetterException(sprintf(
                 'Gift %s was already requested in letter %s',
                 $giftName,
-                $this->ulid,
+                $this->id,
             ));
         }
 
@@ -116,15 +108,15 @@ class Letter
         return $newGiftRequest;
     }
 
-    public function getGiftRequestByUlid(Ulid $giftRequestUlid): GiftRequest
+    public function getGiftRequestById(Ulid $giftRequestId): GiftRequest
     {
         /** @var ?GiftRequest $giftRequest */
-        $giftRequest = $this->giftRequests->findFirst(fn (int $index, GiftRequest $giftRequest) => $giftRequest->getUlid()->equals($giftRequestUlid));
+        $giftRequest = $this->giftRequests->findFirst(fn (int $index, GiftRequest $giftRequest) => $giftRequest->getId()->equals($giftRequestId));
 
         if ($giftRequest === null) {
             throw new NotFoundException(sprintf(
                 'GiftRequest %s could not be found',
-                $giftRequestUlid,
+                $giftRequestId,
             ));
         }
 

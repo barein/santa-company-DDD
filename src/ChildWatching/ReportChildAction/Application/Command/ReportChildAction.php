@@ -19,7 +19,7 @@ readonly class ReportChildAction
 {
     public function __construct(
         #[UlidConstraint]
-        public string $childUlid,
+        public string $childId,
 
         #[DateTime(format: Action::DATE_TIME_FORMAT)]
         public string $dateTime,
@@ -32,9 +32,9 @@ readonly class ReportChildAction
     ) {
     }
 
-    public function getChildUlid(): Ulid
+    public function getChildId(): Ulid
     {
-        return new Ulid($this->childUlid);
+        return new Ulid($this->childId);
     }
 
     public function getDateTime(): \DateTimeImmutable

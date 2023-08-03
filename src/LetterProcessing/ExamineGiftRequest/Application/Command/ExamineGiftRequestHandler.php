@@ -20,7 +20,7 @@ class ExamineGiftRequestHandler
 
     public function __invoke(ChildRequestedAGift $event): void
     {
-        $child = $this->childRepository->getByUlid($event->getChildUlid());
-        $this->childGiftRequestExaminer->examine($child, $event->getLetterUlid(), $event->getGiftRequestUlid());
+        $child = $this->childRepository->get($event->getChildId());
+        $this->childGiftRequestExaminer->examine($child, $event->getLetterId(), $event->getGiftRequestId());
     }
 }

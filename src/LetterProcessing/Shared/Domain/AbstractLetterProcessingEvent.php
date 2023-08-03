@@ -9,19 +9,19 @@ use Symfony\Component\Uid\Ulid;
 
 class AbstractLetterProcessingEvent
 {
-    private Ulid $ulid;
+    private Ulid $id;
 
     private \DateTimeImmutable $occurredOn;
 
     public function __construct()
     {
-        $this->ulid = new Ulid();
+        $this->id = new Ulid();
         $this->occurredOn = new \DateTimeImmutable();
     }
 
-    public function getUlid(): string
+    public function getId(): string
     {
-        return (string) $this->ulid;
+        return (string) $this->id;
     }
 
     public static function getContext(): string

@@ -10,7 +10,7 @@ use Symfony\Component\Uid\Ulid;
 readonly class GetChild
 {
     public function __construct(
-        public Ulid $childUlid,
+        public Ulid $childId,
         public ApiVersion $apiVersion,
     ) {
     }

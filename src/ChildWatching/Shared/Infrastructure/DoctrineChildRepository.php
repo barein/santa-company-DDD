@@ -26,22 +26,19 @@ class DoctrineChildRepository extends ServiceEntityRepository implements ChildRe
         parent::__construct($registry, Child::class);
     }
 
-    public function getByUlid(Ulid $childUlid): Child
-    {
-        $child = $this->findOneBy(['ulid' => $childUlid]);
-
-        if ($child === null) {
-            throw new NotFoundException(sprintf(
-                'Child %s could not be found',
-                $childUlid,
-            ));
-        }
-
-        return $child;
-    }
-
     public function add(Child $child): void
     {
         $this->getEntityManager()->persist($child);
+    }
+
+    public function get(Ulid $id): Child
+    {
+        $child = $this->find($id);
+
+        if ($child === null) {
+            throw new NotFoundException(sprintf('Child %s could not be found', $id));
+        }
+
+        return $child;
     }
 }

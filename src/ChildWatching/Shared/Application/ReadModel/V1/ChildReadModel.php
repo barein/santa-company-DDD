@@ -6,7 +6,7 @@ namespace App\ChildWatching\Shared\Application\ReadModel\V1;
 
 class ChildReadModel
 {
-    public string $ulid;
+    public string $id;
 
     public int $numberOfGoodActions;
 

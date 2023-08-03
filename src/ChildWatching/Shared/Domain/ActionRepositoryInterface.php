@@ -13,5 +13,5 @@ interface ActionRepositoryInterface
     /**
      * @return array<Action>
      */
-    public function getActionsOfChildThisYear(Ulid $childUlid): array;
+    public function getActionsOfChildThisYear(Ulid $childId): array;
 }

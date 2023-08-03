@@ -30,18 +30,18 @@ class DoctrineActionRepository extends ServiceEntityRepository implements Action
         $this->getEntityManager()->persist($action);
     }
 
-    public function getActionsOfChildThisYear(Ulid $childUlid): array
+    public function getActionsOfChildThisYear(Ulid $childId): array
     {
         $currentYear = (new \DateTimeImmutable())->format('Y');
 
         /** @var array<Action> $actions */
         $actions = $this->createQueryBuilder('actions')
-            ->andWhere('actions.childUlid = :childUlid')
+            ->andWhere('actions.childId = :childId')
             ->andWhere('actions.dateTime BETWEEN :firstDayCurrentYear AND :lastDayCurrentYear')
-            ->setParameter('childUlid', $childUlid)
+            ->setParameter('childId', $childId)
             ->setParameter('firstDayCurrentYear', new \DateTimeImmutable(sprintf('first day of january %s', $currentYear)))
             ->setParameter('lastDayCurrentYear', new \DateTimeImmutable(sprintf('last day of december %s', $currentYear)))
-            ->setParameter('childUlid', $childUlid)
+            ->setParameter('childId', $childId)
             ->getQuery()
             ->getResult()
         ;

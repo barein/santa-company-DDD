@@ -18,9 +18,9 @@ final class ChildWatchingService
     ) {
     }
 
-    public function getChild(Ulid $childUlid, ApiVersion $apiVersion): string
+    public function getChild(Ulid $childId, ApiVersion $apiVersion): string
     {
-        $readModel = $this->queryBus->query(new GetChild($childUlid, $apiVersion));
+        $readModel = $this->queryBus->query(new GetChild($childId, $apiVersion));
 
         return $this->serializer->serialize($readModel, 'json');
     }

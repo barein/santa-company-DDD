@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\LetterProcessing\Shared\Domain;
 
+use App\Shared\Infrastructure\Doctrine\DBAL\Type\UlidType;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;
 
@@ -11,12 +12,8 @@ use Symfony\Component\Uid\Ulid;
 class GiftRequest
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id;
-
-    #[ORM\Column(type: 'ulid', unique: true)]
-    private Ulid $ulid;
+    #[ORM\Column(type: UlidType::NAME)]
+    private Ulid $id;
 
     #[ORM\ManyToOne(targetEntity: Letter::class, inversedBy: 'giftRequests')]
     #[ORM\JoinColumn(nullable: false)]
@@ -30,20 +27,15 @@ class GiftRequest
 
     public function __construct(Letter $letter, string $giftName)
     {
-        $this->ulid = new Ulid();
+        $this->id = new Ulid();
         $this->letter = $letter;
         $this->giftName = $giftName;
         $this->status = GiftRequestStatus::PENDING;
     }
 
-    public function getId(): ?int
+    public function getId(): Ulid
     {
         return $this->id;
-    }
-
-    public function getUlid(): Ulid
-    {
-        return $this->ulid;
     }
 
     public function getLetter(): Letter

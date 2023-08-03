@@ -64,7 +64,10 @@ db-create:
 migrations-apply:
 	$(EXEC) $(CONSOLE) do:mi:mi -n
 
-db-restore: db-drop db-create migrations-apply
+db-schema-create:
+	$(EXEC) $(CONSOLE) doctrine:schema:create
+
+db-restore: db-drop db-create db-schema-create
 
 db-restore-test:
 	$(EXEC) $(CONSOLE) doctrine:database:drop --env=test --force --if-exists

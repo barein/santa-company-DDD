@@ -16,15 +16,15 @@ use Symfony\Component\Uid\Ulid;
 
 class ReportChildActionController extends AbstractController
 {
-    #[Route(path: '/children/{ulid}/actions', requirements: ['ulid' => Requirement::ULID], methods: ['POST'])]
+    #[Route(path: '/children/{id}/actions', requirements: ['id' => Requirement::ULID], methods: ['POST'])]
     public function __invoke(
-        Ulid $childUlid,
+        string $id,
         ReportChildActionDto $reportChildActionDto,
         JsonResponder $jsonResponder,
         CommandBusInterface $commandBus,
     ): Response {
         $commandBus->command(new ReportChildAction(
-            (string) $childUlid,
+            $id,
             $reportChildActionDto->dateTime,
             $reportChildActionDto->description,
             $reportChildActionDto->type,

@@ -20,7 +20,7 @@ class ReadModelHydrator implements ReadModelHydratorInterface
     {
         $childReadModel = new ChildReadModel();
 
-        $childReadModel->ulid = (string) $dto->child->getUlid();
+        $childReadModel->id = (string) $dto->child->getId();
         $childReadModel->numberOfBadActions = (new Vector($dto->currentYearActions))
             ->filter(fn (Action $action) => $action->getType() === ActionType::BAD)
             ->count();

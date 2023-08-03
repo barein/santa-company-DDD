@@ -25,7 +25,7 @@ final class UlidResolver implements ValueResolverInterface
             return [];
         }
 
-        $ulid = $request->query->get('ulid') ?? $request->attributes->get('ulid');
+        $ulid = $request->query->get('id') ?? $request->attributes->get('id');
 
         try {
             if (!\is_string($ulid)) {

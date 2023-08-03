@@ -9,6 +9,7 @@ use App\Shared\Domain\Address;
 use App\Shared\Domain\Event\AggregateRoot;
 use App\Shared\Domain\Exception\LogicException;
 use App\Shared\Domain\Exception\NotFoundException;
+use App\Shared\Infrastructure\Doctrine\DBAL\Type\UlidType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,12 +21,8 @@ use Symfony\Component\Uid\Ulid;
 class Child extends AggregateRoot
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id;
-
-    #[ORM\Column(type: 'ulid', unique: true)]
-    private Ulid $ulid;
+    #[ORM\Column(type: UlidType::NAME)]
+    private Ulid $id;
 
     #[ORM\Column(length: 255)]
     private string $firstName;
@@ -44,14 +41,14 @@ class Child extends AggregateRoot
 
     public function __construct(string $firstName, string $lastName, Address $address)
     {
-        $this->ulid = new Ulid();
+        $this->id = new Ulid();
         $this->letters = new ArrayCollection();
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->address = $address;
 
         $this->raiseEvent(new NewChildSentLetter(
-            (string) $this->ulid,
+            (string) $this->id,
             $this->firstName,
             $this->lastName,
             $address->getNumber(),
@@ -62,14 +59,9 @@ class Child extends AggregateRoot
         ));
     }
 
-    public function getId(): ?int
+    public function getId(): Ulid
     {
         return $this->id;
-    }
-
-    public function getUlid(): Ulid
-    {
-        return $this->ulid;
     }
 
     public function getFirstName(): string
@@ -110,7 +102,7 @@ class Child extends AggregateRoot
         if ($lettersReceivedSameYear->isEmpty() === false) {
             throw new LetterAlreadySentThisYearException(sprintf(
                 'Child %s has already sent a letter this same year',
-                $this->ulid,
+                $this->id,
             ));
         }
 
@@ -133,26 +125,26 @@ class Child extends AggregateRoot
      * @throws NotFoundException
      * @throws LogicException
      */
-    public function requestedAGift(Ulid $letterUlid, string $giftName): void
+    public function requestedAGift(Ulid $letterId, string $giftName): void
     {
-        $letter = $this->getLetterByUlid($letterUlid);
+        $letter = $this->getLetterById($letterId);
         $giftRequest = $letter->mentionGiftRequest($giftName);
 
-        $this->raiseEvent(new ChildRequestedAGift((string) $this->ulid, (string) $letterUlid, (string) $giftRequest->getUlid()));
+        $this->raiseEvent(new ChildRequestedAGift((string) $this->id, (string) $letterId, (string) $giftRequest->getId()));
     }
 
     /**
      * @throws NotFoundException
      */
-    private function getLetterByUlid(Ulid $letterUlid): Letter
+    private function getLetterById(Ulid $letterId): Letter
     {
         /** @var ?Letter $letter */
-        $letter = $this->letters->findFirst(fn (int $index, Letter $letter) => $letter->getUlid()->equals($letterUlid));
+        $letter = $this->letters->findFirst(fn (int $index, Letter $letter) => $letter->getId()->equals($letterId));
 
         if ($letter === null) {
             throw new NotFoundException(sprintf(
                 'Letter %s could not be found',
-                $letterUlid,
+                $letterId,
             ));
         }
 
@@ -165,39 +157,39 @@ class Child extends AggregateRoot
     #[ORM\PreRemove]
     public function onRemove(): void
     {
-        $this->raiseEvent(new ChildWasRemoved((string) $this->ulid));
+        $this->raiseEvent(new ChildWasRemoved((string) $this->id));
     }
 
     public function isOnSantaListForGiftRequest(
         SantaList $santaList,
-        Ulid $giftRequestUlid,
-        Ulid $letterUlid
+        Ulid $giftRequestId,
+        Ulid $letterId
     ): void {
         if ($santaList === SantaList::GOOD) {
-            $this->grantGiftRequest($giftRequestUlid, $letterUlid);
+            $this->grantGiftRequest($giftRequestId, $letterId);
 
             return;
         }
 
-        $this->declineGiftRequest($giftRequestUlid, $letterUlid);
+        $this->declineGiftRequest($giftRequestId, $letterId);
     }
 
-    private function grantGiftRequest(Ulid $giftRequestUlid, Ulid $letterUlid): void
+    private function grantGiftRequest(Ulid $giftRequestId, Ulid $letterId): void
     {
-        $giftRequest = $this->getLetterByUlid($letterUlid)->getGiftRequestByUlid($giftRequestUlid);
+        $giftRequest = $this->getLetterById($letterId)->getGiftRequestById($giftRequestId);
         $giftRequest->grant();
 
         $this->raiseEvent(new GiftRequestWasGranted(
-            (string) $this->getUlid(),
-            (string) $giftRequest->getUlid(),
+            (string) $this->getId(),
+            (string) $giftRequest->getId(),
             $giftRequest->getGiftName(),
         ));
     }
 
-    private function declineGiftRequest(Ulid $giftRequestUlid, Ulid $letterUlid): void
+    private function declineGiftRequest(Ulid $giftRequestId, Ulid $letterId): void
     {
-        $this->getLetterByUlid($letterUlid)
-            ->getGiftRequestByUlid($giftRequestUlid)
+        $this->getLetterById($letterId)
+            ->getGiftRequestById($giftRequestId)
             ->decline();
     }
 }

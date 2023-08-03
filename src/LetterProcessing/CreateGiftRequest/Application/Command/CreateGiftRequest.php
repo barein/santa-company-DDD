@@ -12,22 +12,22 @@ readonly class CreateGiftRequest
 {
     public function __construct(
         #[UlidConstraint]
-        public string $childUlid,
+        public string $childId,
         #[UlidConstraint]
-        public string $letterUlid,
+        public string $letterId,
         #[NotBlank]
         public string $giftName,
     ) {
     }
 
-    public function getChildUlid(): Ulid
+    public function getChildId(): Ulid
     {
-        return new Ulid($this->childUlid);
+        return new Ulid($this->childId);
     }
 
-    public function getLetterUlid(): Ulid
+    public function getLetterId(): Ulid
     {
-        return new Ulid($this->letterUlid);
+        return new Ulid($this->letterId);
     }
 
     public function getGiftName(): string
