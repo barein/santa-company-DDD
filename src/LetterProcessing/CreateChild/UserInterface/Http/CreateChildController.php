@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\LetterProcessing\CreateChild\UserInterface\Http;
 
 use App\LetterProcessing\CreateChild\Application\Command\CreateChild;
-use App\Shared\Application\Bus\SyncCommandBusInterface;
+use App\Shared\Application\Bus\CommandBusInterface;
 use App\Shared\Domain\Exception\HttpStatusCode;
 use App\Shared\UserInterface\Http\JsonResponder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +16,7 @@ class CreateChildController extends AbstractController
 {
     #[Route(path: '/children', methods: ['POST'])]
     public function __invoke(
-        SyncCommandBusInterface $commandBus,
+        CommandBusInterface $commandBus,
         JsonResponder $jsonResponder,
         CreateChildDto $dto,
     ): JsonResponse {

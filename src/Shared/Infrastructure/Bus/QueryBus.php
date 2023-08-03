@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Application\Bus;
+namespace App\Shared\Infrastructure\Bus;
 
+use App\Shared\Application\Bus\QueryBusInterface;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 
