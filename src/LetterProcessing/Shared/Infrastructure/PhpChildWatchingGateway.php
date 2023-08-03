@@ -17,7 +17,7 @@ class PhpChildWatchingGateway implements ChildWatchingGatewayInterface
     ) {
     }
 
-    public function getChildList(Child $child): SantaList
+    public function getChildSantaList(Child $child): SantaList
     {
         $childRepresentation = $this->childWatchingService->getChild($child->getUlid(), ApiVersion::fromInt(1));
 

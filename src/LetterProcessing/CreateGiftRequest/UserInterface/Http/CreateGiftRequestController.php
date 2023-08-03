@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\LetterProcessing\CreateGiftRequest\UserInterface\Http;
 
 use App\LetterProcessing\CreateGiftRequest\Application\Command\CreateGiftRequest;
-use App\Shared\Domain\Bus\SyncCommandBusInterface;
+use App\Shared\Domain\Bus\CommandBusInterface;
 use App\Shared\Domain\HttpStatusCode;
 use App\Shared\UserInterface\Http\JsonResponder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,7 +19,7 @@ class CreateGiftRequestController extends AbstractController
     public function __invoke(
         string $childUlid,
         string $letterUlid,
-        SyncCommandBusInterface $commandBus,
+        CommandBusInterface $commandBus,
         JsonResponder $jsonResponder,
         CreateGiftRequestDto $dto,
     ): JsonResponse {

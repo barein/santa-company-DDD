@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\LetterProcessing\CreateLetter\UserInterface\Http;
 
 use App\LetterProcessing\CreateLetter\Application\Command\CreateLetter;
-use App\Shared\Domain\Bus\SyncCommandBusInterface;
+use App\Shared\Domain\Bus\CommandBusInterface;
 use App\Shared\Domain\HttpStatusCode;
 use App\Shared\UserInterface\Http\JsonResponder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +20,7 @@ class CreateLetterController extends AbstractController
     public function __invoke(
         Ulid $childUlid,
         CreateLetterDto $createLetterDto,
-        SyncCommandBusInterface $commandBus,
+        CommandBusInterface $commandBus,
         JsonResponder $jsonResponder,
     ): JsonResponse {
         $commandBus->command(new CreateLetter(

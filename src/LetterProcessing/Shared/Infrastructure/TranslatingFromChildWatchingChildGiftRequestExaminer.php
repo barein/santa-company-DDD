@@ -18,7 +18,7 @@ class TranslatingFromChildWatchingChildGiftRequestExaminer implements ChildGiftR
 
     public function examine(Child $child, Ulid $letterUlid, Ulid $giftRequestUlid): void
     {
-        $childSantaList = $this->childWatchingGateway->getChildList($child);
+        $childSantaList = $this->childWatchingGateway->getChildSantaList($child);
 
         $child->isOnSantaListForGiftRequest(
             santaList: $childSantaList,

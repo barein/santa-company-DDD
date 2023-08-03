@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\ChildWatching\ReportChildAction\UserInterface\Http;
 
 use App\ChildWatching\ReportChildAction\Application\Command\ReportChildAction;
-use App\Shared\Domain\Bus\SyncCommandBusInterface;
+use App\Shared\Domain\Bus\CommandBusInterface;
 use App\Shared\Domain\HttpStatusCode;
 use App\Shared\UserInterface\Http\JsonResponder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,7 +21,7 @@ class ReportChildActionController extends AbstractController
         Ulid $childUlid,
         ReportChildActionDto $reportChildActionDto,
         JsonResponder $jsonResponder,
-        SyncCommandBusInterface $commandBus,
+        CommandBusInterface $commandBus,
     ): Response {
         $commandBus->command(new ReportChildAction(
             (string) $childUlid,

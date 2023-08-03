@@ -6,5 +6,5 @@ namespace App\LetterProcessing\Shared\Domain;
 
 interface ChildWatchingGatewayInterface
 {
-    public function getChildList(Child $child): SantaList;
+    public function getChildSantaList(Child $child): SantaList;
 }

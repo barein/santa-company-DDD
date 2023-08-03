@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\Bus;
 
-interface AsyncCommandBusInterface
+interface CommandBusInterface
 {
     public function command(object $command): void;
 }
