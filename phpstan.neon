@@ -1,5 +1,6 @@
 includes:
     - vendor/phpstan/phpstan-doctrine/extension.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
 parameters:
   level: max
   paths:
@@ -7,6 +8,8 @@ parameters:
     - migrations
   doctrine:
       objectManagerLoader: ./tests/object-manager.php
+  symfony:
+      containerXmlPath: ./var/cache/dev/App_KernelDevDebugContainer.xml
   checkGenericClassInNonGenericObjectType: false
   ignoreErrors:
     - '#Parameter .+ of method Doctrine\\Common\\Collections\\ReadableCollection.+ expects Closure.+, Closur.+.#'
