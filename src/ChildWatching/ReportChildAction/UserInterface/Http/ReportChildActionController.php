@@ -16,20 +16,24 @@ use Symfony\Component\Uid\Ulid;
 
 class ReportChildActionController extends AbstractController
 {
+    public function __construct(
+        private readonly JsonResponder $jsonResponder,
+        private readonly CommandBusInterface $commandBus,
+    ) {
+    }
+
     #[Route(path: '/children/{id}/actions', requirements: ['id' => Requirement::ULID], methods: ['POST'])]
     public function __invoke(
         string $id,
         ReportChildActionDto $reportChildActionDto,
-        JsonResponder $jsonResponder,
-        CommandBusInterface $commandBus,
     ): Response {
-        $commandBus->command(new ReportChildAction(
+        $this->commandBus->command(new ReportChildAction(
             $id,
             $reportChildActionDto->dateTime,
             $reportChildActionDto->description,
             $reportChildActionDto->type,
         ));
 
-        return $jsonResponder->response(HttpStatusCode::HTTP_CREATED);
+        return $this->jsonResponder->response(HttpStatusCode::HTTP_CREATED);
     }
 }

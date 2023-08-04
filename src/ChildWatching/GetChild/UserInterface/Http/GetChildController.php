@@ -17,15 +17,19 @@ use Symfony\Component\Uid\Ulid;
 
 class GetChildController extends AbstractController
 {
+    public function __construct(
+        private readonly JsonResponder $jsonResponder,
+        private readonly QueryBusInterface $queryBus,
+    ) {
+    }
+
     #[Route(path: '/children/{id}', requirements: ['id' => Requirement::ULID], methods: ['GET'])]
     public function __invoke(
         Ulid $id,
         ApiVersion $apiVersion,
-        JsonResponder $jsonResponder,
-        QueryBusInterface $queryBus,
     ): JsonResponse {
-        $readModel = $queryBus->query(new GetChild($id, $apiVersion));
+        $readModel = $this->queryBus->query(new GetChild($id, $apiVersion));
 
-        return $jsonResponder->response(HttpStatusCode::OK, $readModel);
+        return $this->jsonResponder->response(HttpStatusCode::OK, $readModel);
     }
 }

@@ -16,14 +16,18 @@ use Symfony\Component\Uid\Ulid;
 
 class CreateLetterController extends AbstractController
 {
+    public function __construct(
+        private readonly CommandBusInterface $commandBus,
+        private readonly JsonResponder $jsonResponder,
+    ) {
+    }
+
     #[Route(path: '/children/{id}/letters', requirements: ['id' => Requirement::ULID], methods: ['POST'])]
     public function __invoke(
         string $id,
         CreateLetterDto $createLetterDto,
-        CommandBusInterface $commandBus,
-        JsonResponder $jsonResponder,
     ): JsonResponse {
-        $commandBus->command(new CreateLetter(
+        $this->commandBus->command(new CreateLetter(
             childId: (string) $id,
             receivingDate: $createLetterDto->receivingDate,
             senderStreetNumber: $createLetterDto->senderStreetNumber,
@@ -33,6 +37,6 @@ class CreateLetterController extends AbstractController
             senderIsoCountryCode: $createLetterDto->senderIsoCountryCode,
         ));
 
-        return $jsonResponder->response(HttpStatusCode::HTTP_CREATED);
+        return $this->jsonResponder->response(HttpStatusCode::HTTP_CREATED);
     }
 }

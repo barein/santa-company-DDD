@@ -14,13 +14,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CreateChildController extends AbstractController
 {
+    public function __construct(
+        private readonly CommandBusInterface $commandBus,
+        private readonly JsonResponder $jsonResponder,
+    ) {
+    }
+
     #[Route(path: '/children', methods: ['POST'])]
-    public function __invoke(
-        CommandBusInterface $commandBus,
-        JsonResponder $jsonResponder,
-        CreateChildDto $dto,
-    ): JsonResponse {
-        $commandBus->command(new CreateChild(
+    public function __invoke(CreateChildDto $dto): JsonResponse
+    {
+        $this->commandBus->command(new CreateChild(
             firstName: $dto->firstName,
             lastName: $dto->lastName,
             streetNumber: $dto->streetNumber,
@@ -30,6 +33,6 @@ class CreateChildController extends AbstractController
             isoCountryCode: $dto->isoCountryCode,
         ));
 
-        return $jsonResponder->response(HttpStatusCode::HTTP_CREATED);
+        return $this->jsonResponder->response(HttpStatusCode::HTTP_CREATED);
     }
 }

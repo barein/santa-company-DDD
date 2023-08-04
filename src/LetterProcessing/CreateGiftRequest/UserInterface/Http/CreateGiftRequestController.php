@@ -15,16 +15,20 @@ use Symfony\Component\Routing\Requirement\Requirement;
 
 class CreateGiftRequestController extends AbstractController
 {
+    public function __construct(
+        private readonly CommandBusInterface $commandBus,
+        private readonly JsonResponder $jsonResponder,
+    ) {
+    }
+
     #[Route(path: '/children/{childUlid}/letters/{letterUlid}/gift-requests', requirements: ['childUlid' => Requirement::ULID, 'letterUlid' => Requirement::ULID], methods: ['POST'])]
     public function __invoke(
         string $childUlid,
         string $letterUlid,
-        CommandBusInterface $commandBus,
-        JsonResponder $jsonResponder,
         CreateGiftRequestDto $dto,
     ): JsonResponse {
-        $commandBus->command(new CreateGiftRequest($childUlid, $letterUlid, $dto->giftName));
+        $this->commandBus->command(new CreateGiftRequest($childUlid, $letterUlid, $dto->giftName));
 
-        return $jsonResponder->response(HttpStatusCode::HTTP_CREATED);
+        return $this->jsonResponder->response(HttpStatusCode::HTTP_CREATED);
     }
 }

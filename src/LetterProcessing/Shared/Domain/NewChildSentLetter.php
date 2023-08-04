@@ -16,10 +16,10 @@ class NewChildSentLetter extends AbstractLetterProcessingEvent implements Domain
         public readonly string $childId,
         public readonly string $firstName,
         public readonly string $lastName,
-        public readonly int    $streetNumber,
+        public readonly int $streetNumber,
         public readonly string $streetName,
         public readonly string $city,
-        public readonly int    $zipCode,
+        public readonly int $zipCode,
         #[IsoCountryCodeConstraint]
         public readonly string $isoCountryCode,
     ) {
