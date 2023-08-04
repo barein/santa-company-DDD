@@ -72,7 +72,7 @@ db-restore: db-drop db-create db-schema-create
 db-restore-test:
 	$(EXEC) $(CONSOLE) doctrine:database:drop --env=test --force --if-exists
 	$(EXEC) $(CONSOLE) doctrine:database:create --env=test --if-not-exists
-	$(EXEC) $(CONSOLE) do:mi:mi --env=test -n
+	$(EXEC) $(CONSOLE) doctrine:schema:create --env=test
 
 fixture:
 	$(EXEC) $(CONSOLE) doctrine:fixtures:load --no-interaction
