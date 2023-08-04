@@ -38,9 +38,9 @@ class Letter
     #[ORM\OneToMany(mappedBy: 'letter', targetEntity: GiftRequest::class, cascade: ['all'], orphanRemoval: true)]
     private Collection $giftRequests;
 
-    public function __construct(Child $child, Address $senderAddress, \DateTimeImmutable $receivingDate)
+    public function __construct(Ulid $id, Child $child, Address $senderAddress, \DateTimeImmutable $receivingDate)
     {
-        $this->id = new Ulid();
+        $this->id = $id;
         $this->child = $child;
         $this->senderAddress = $senderAddress;
         $this->giftRequests = new ArrayCollection();
@@ -80,9 +80,9 @@ class Letter
      * @throws LogicException
      * @throws MaximumNumberOfGiftRequestPerLetterReachedException
      */
-    public function mentionGiftRequest(string $giftName): GiftRequest
+    public function mentionGiftRequest(Ulid $giftRequestId, string $giftName): GiftRequest
     {
-        $newGiftRequest = new GiftRequest($this, $giftName);
+        $newGiftRequest = new GiftRequest($giftRequestId, $this, $giftName);
 
         if ($this->giftRequests->count() >= 4) {
             throw new MaximumNumberOfGiftRequestPerLetterReachedException(sprintf(

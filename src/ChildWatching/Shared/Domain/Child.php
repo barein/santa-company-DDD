@@ -44,9 +44,13 @@ class Child
         return $this->id;
     }
 
-    public function madeAction(\DateTimeImmutable $dateTime, ActionDescription $description, ActionType $type): Action
-    {
-        return new Action($this->getId(), $dateTime, $description, $type);
+    public function madeAction(
+        Ulid $actionId,
+        \DateTimeImmutable $dateTime,
+        ActionDescription $description,
+        ActionType $type
+    ): Action {
+        return new Action($actionId, $this->getId(), $dateTime, $description, $type);
     }
 
     public function getFirstName(): string

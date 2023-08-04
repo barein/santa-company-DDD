@@ -28,7 +28,8 @@ class CreateLetterController extends AbstractController
         CreateLetterDto $createLetterDto,
     ): JsonResponse {
         $this->commandBus->command(new CreateLetter(
-            childId: (string) $id,
+            (string) new Ulid(),
+            childId: $id,
             receivingDate: $createLetterDto->receivingDate,
             senderStreetNumber: $createLetterDto->senderStreetNumber,
             senderStreet: $createLetterDto->senderStreet,

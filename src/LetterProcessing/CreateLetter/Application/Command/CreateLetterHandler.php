@@ -40,7 +40,11 @@ class CreateLetterHandler
             $command->senderIsoCountryCode,
         );
 
-        $child->sentLetter(receivedOn: $this->getReceivingDate($command), from: $senderAddress);
+        $child->sentLetter(
+            letterId: new Ulid($command->letterId),
+            receivedOn: $this->getReceivingDate($command),
+            from: $senderAddress
+        );
     }
 
     /**

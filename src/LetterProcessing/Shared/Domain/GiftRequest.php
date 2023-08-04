@@ -25,9 +25,9 @@ class GiftRequest
     #[ORM\Column(length: 255, enumType: GiftRequestStatus::class)]
     private GiftRequestStatus $status;
 
-    public function __construct(Letter $letter, string $giftName)
+    public function __construct(Ulid $id, Letter $letter, string $giftName)
     {
-        $this->id = new Ulid();
+        $this->id = $id;
         $this->letter = $letter;
         $this->giftName = $giftName;
         $this->status = GiftRequestStatus::PENDING;

@@ -34,6 +34,7 @@ readonly class ReportChildActionHandler
         $child = $this->childRepository->get(new Ulid($command->childId));
 
         $action = $child->madeAction(
+            new Ulid($command->actionId),
             $this->getActionDateTime($command),
             ActionDescription::fromString($command->description),
             ActionType::from($command->type),

@@ -28,6 +28,6 @@ class CreateGiftRequestHandler
     {
         $child = $this->childRepository->get(new Ulid($command->childId));
 
-        $child->requestsAGift(new Ulid($command->letterId), $command->giftName);
+        $child->requestsAGift(new Ulid($command->giftRequestId), new Ulid($command->letterId), $command->giftName);
     }
 }

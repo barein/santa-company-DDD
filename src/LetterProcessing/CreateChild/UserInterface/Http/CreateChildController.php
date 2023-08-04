@@ -11,6 +11,7 @@ use App\Shared\UserInterface\Http\JsonResponder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Uid\Ulid;
 
 class CreateChildController extends AbstractController
 {
@@ -24,6 +25,7 @@ class CreateChildController extends AbstractController
     public function __invoke(CreateChildDto $dto): JsonResponse
     {
         $this->commandBus->command(new CreateChild(
+            (string) new Ulid(),
             firstName: $dto->firstName,
             lastName: $dto->lastName,
             streetNumber: $dto->streetNumber,

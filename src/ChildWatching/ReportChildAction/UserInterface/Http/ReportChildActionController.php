@@ -28,6 +28,7 @@ class ReportChildActionController extends AbstractController
         ReportChildActionDto $reportChildActionDto,
     ): Response {
         $this->commandBus->command(new ReportChildAction(
+            (string) new Ulid(),
             $id,
             $reportChildActionDto->dateTime,
             $reportChildActionDto->description,

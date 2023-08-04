@@ -39,9 +39,9 @@ class Child extends AggregateRoot
     #[ORM\OneToMany(mappedBy: 'child', targetEntity: Letter::class, cascade: ['all'], orphanRemoval: true)]
     private Collection $letters;
 
-    public function __construct(string $firstName, string $lastName, Address $address)
+    public function __construct(Ulid $id, string $firstName, string $lastName, Address $address)
     {
-        $this->id = new Ulid();
+        $this->id = $id;
         $this->letters = new ArrayCollection();
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -87,9 +87,9 @@ class Child extends AggregateRoot
         return $this->letters;
     }
 
-    public function sentLetter(\DateTimeImmutable $receivedOn, Address $from): void
+    public function sentLetter(Ulid $letterId, \DateTimeImmutable $receivedOn, Address $from): void
     {
-        $newLetter = new Letter($this, $from, $receivedOn);
+        $newLetter = new Letter($letterId, $this, $from, $receivedOn);
 
         if ($this->letters->contains($newLetter)) {
             return;
@@ -125,12 +125,12 @@ class Child extends AggregateRoot
      * @throws NotFoundException
      * @throws LogicException
      */
-    public function requestsAGift(Ulid $letterId, string $giftName): void
+    public function requestsAGift(Ulid $giftRequestId, Ulid $letterId, string $giftName): void
     {
         $letter = $this->getLetterById($letterId);
-        $giftRequest = $letter->mentionGiftRequest($giftName);
+        $giftRequest = $letter->mentionGiftRequest($giftRequestId, $giftName);
 
-        $this->raiseEvent(new ChildRequestedAGift((string) $this->id, (string) $letterId, (string) $giftRequest->getId()));
+        $this->raiseEvent(new ChildRequestedAGift((string) $this->id, (string) $letterId, (string) $giftRequestId));
     }
 
     /**

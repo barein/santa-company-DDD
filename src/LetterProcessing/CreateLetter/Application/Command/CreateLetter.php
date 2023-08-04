@@ -8,11 +8,15 @@ use App\LetterProcessing\Shared\Domain\Letter;
 use App\Shared\Infrastructure\ValidationConstraint\IsoCountryCodeConstraint;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Ulid;
 use Symfony\Component\Validator\Constraints\Ulid as UlidConstraint;
 
 readonly class CreateLetter
 {
     public function __construct(
+        #[Ulid]
+        public string $letterId,
+
         #[UlidConstraint]
         public string $childId,
 

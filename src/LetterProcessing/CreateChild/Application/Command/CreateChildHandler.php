@@ -9,6 +9,7 @@ use App\LetterProcessing\Shared\Domain\ChildRepositoryInterface;
 use App\Shared\Domain\Address;
 use App\Shared\Domain\Exception\InvalidArgumentException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Uid\Ulid;
 
 #[AsMessageHandler]
 class CreateChildHandler
@@ -31,7 +32,7 @@ class CreateChildHandler
             $command->isoCountryCode,
         );
 
-        $child = new Child($command->firstName, $command->lastName, $address);
+        $child = new Child(new Ulid($command->childId), $command->firstName, $command->lastName, $address);
 
         $this->childRepository->add($child);
     }

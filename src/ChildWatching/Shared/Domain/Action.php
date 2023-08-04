@@ -30,9 +30,14 @@ class Action
     #[ORM\Column(length: 255, enumType: ActionType::class)]
     private ActionType $type;
 
-    public function __construct(Ulid $childId, \DateTimeImmutable $dateTime, ActionDescription $description, ActionType $type)
-    {
-        $this->id = new Ulid();
+    public function __construct(
+        Ulid $id,
+        Ulid $childId,
+        \DateTimeImmutable $dateTime,
+        ActionDescription $description,
+        ActionType $type
+    ) {
+        $this->id = $id;
         $this->childId = $childId;
         $this->dateTime = $dateTime;
         $this->description = $description;

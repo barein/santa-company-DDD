@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Component\Uid\Ulid;
 
 class CreateGiftRequestController extends AbstractController
 {
@@ -27,7 +28,12 @@ class CreateGiftRequestController extends AbstractController
         string $letterUlid,
         CreateGiftRequestDto $dto,
     ): JsonResponse {
-        $this->commandBus->command(new CreateGiftRequest($childUlid, $letterUlid, $dto->giftName));
+        $this->commandBus->command(new CreateGiftRequest(
+            (string) new Ulid(),
+            $childUlid,
+            $letterUlid,
+            $dto->giftName
+        ));
 
         return $this->jsonResponder->response(HttpStatusCode::HTTP_CREATED);
     }

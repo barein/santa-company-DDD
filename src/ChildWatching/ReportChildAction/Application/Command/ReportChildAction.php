@@ -9,11 +9,15 @@ use App\ChildWatching\Shared\Domain\ActionType;
 use App\ChildWatching\Shared\Infrastructure\ValidationConstraint\ActionDescriptionConstraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Validator\Constraints\Ulid;
 use Symfony\Component\Validator\Constraints\Ulid as UlidConstraint;
 
 readonly class ReportChildAction
 {
     public function __construct(
+        #[Ulid]
+        public string $actionId,
+
         #[UlidConstraint]
         public string $childId,
 
