@@ -125,7 +125,7 @@ class Child extends AggregateRoot
      * @throws NotFoundException
      * @throws LogicException
      */
-    public function requestedAGift(Ulid $letterId, string $giftName): void
+    public function requestsAGift(Ulid $letterId, string $giftName): void
     {
         $letter = $this->getLetterById($letterId);
         $giftRequest = $letter->mentionGiftRequest($giftName);

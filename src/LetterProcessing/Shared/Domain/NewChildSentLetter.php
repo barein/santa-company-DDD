@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\LetterProcessing\Shared\Domain;
 
-use App\Shared\Domain\Event\DomainEvent;
+use App\Shared\Domain\Event\DomainEventInterface;
 use App\Shared\Infrastructure\ValidationConstraint\IsoCountryCodeConstraint;
-use Symfony\Component\Uid\Ulid;
 use Symfony\Component\Validator\Constraints\Ulid as UlidConstraint;
 
-class NewChildSentLetter extends AbstractLetterProcessingEvent implements DomainEvent
+class NewChildSentLetter extends AbstractLetterProcessingEvent implements DomainEventInterface
 {
     public function __construct(
         #[UlidConstraint]
@@ -24,11 +23,6 @@ class NewChildSentLetter extends AbstractLetterProcessingEvent implements Domain
         public readonly string $isoCountryCode,
     ) {
         parent::__construct();
-    }
-
-    public function getChildId(): Ulid
-    {
-        return new Ulid($this->childId);
     }
 
     public static function getName(): string

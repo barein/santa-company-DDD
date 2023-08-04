@@ -6,6 +6,8 @@ namespace App\LetterProcessing\CreateChild\Application\Command;
 
 use App\LetterProcessing\Shared\Domain\Child;
 use App\LetterProcessing\Shared\Domain\ChildRepositoryInterface;
+use App\Shared\Domain\Address;
+use App\Shared\Domain\Exception\InvalidArgumentException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -16,13 +18,20 @@ class CreateChildHandler
     ) {
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function __invoke(CreateChild $command): void
     {
-        $child = new Child(
-            $command->getFirstName(),
-            $command->getLastName(),
-            $command->getAddress(),
+        $address = Address::from(
+            $command->streetNumber,
+            $command->street,
+            $command->city,
+            $command->zipCode,
+            $command->isoCountryCode,
         );
+
+        $child = new Child($command->firstName, $command->lastName, $address);
 
         $this->childRepository->add($child);
     }

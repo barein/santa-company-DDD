@@ -6,7 +6,7 @@ namespace App\Shared\Domain\Event;
 
 interface DispatchedEventsTrackerInterface
 {
-    public function markAsDispatched(DomainEvent $domainEvent): void;
+    public function markAsDispatched(DomainEventInterface $domainEvent): void;
 
     public function store(): void;
 }

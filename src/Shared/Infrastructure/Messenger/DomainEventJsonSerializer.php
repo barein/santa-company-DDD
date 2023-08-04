@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\Infrastructure\Messenger;
 
-use App\Shared\Domain\Event\DomainEvent;
+use App\Shared\Domain\Event\DomainEventInterface;
 use App\Shared\Domain\Exception\UnexpectedException;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -84,11 +84,11 @@ class DomainEventJsonSerializer implements SerializerInterface
     {
         $message = $envelope->getMessage();
 
-        if (!$message instanceof DomainEvent) {
+        if (!$message instanceof DomainEventInterface) {
             throw new UnexpectedException(sprintf(
                 'Message %s should be an instance of %s to be dispatched in json',
                 \get_class($envelope->getMessage()),
-                DomainEvent::class,
+                DomainEventInterface::class,
             ));
         }
 
@@ -162,7 +162,7 @@ class DomainEventJsonSerializer implements SerializerInterface
         );
         $domainEventClasses = array_filter(
             $domainClasses,
-            fn (string $domainClass) => \in_array(DomainEvent::class, class_implements($domainClass)) // @phpstan-ignore-line
+            fn (string $domainClass) => \in_array(DomainEventInterface::class, class_implements($domainClass)) // @phpstan-ignore-line
         );
 
         foreach ($domainEventClasses as $domainEventClass) {

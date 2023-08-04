@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\LetterProcessing\CreateChild\Application\Command;
 
-use App\Shared\Domain\Address;
-use App\Shared\Domain\Exception\InvalidArgumentException;
 use App\Shared\Infrastructure\ValidationConstraint\IsoCountryCodeConstraint;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -31,32 +29,5 @@ readonly class CreateChild
         #[IsoCountryCodeConstraint]
         public string $isoCountryCode,
     ) {
-    }
-
-    public function getFirstName(): string
-    {
-        return $this->firstName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastName(): string
-    {
-        return $this->lastName;
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function getAddress(): Address
-    {
-        return Address::from(
-            $this->streetNumber,
-            $this->street,
-            $this->city,
-            $this->zipCode,
-            $this->isoCountryCode,
-        );
     }
 }

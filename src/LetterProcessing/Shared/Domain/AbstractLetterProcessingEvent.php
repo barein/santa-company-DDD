@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\LetterProcessing\Shared\Domain;
 
-use App\Shared\Domain\Event\DomainEvent;
+use App\Shared\Domain\Event\DomainEventInterface;
 use Symfony\Component\Uid\Ulid;
 
 class AbstractLetterProcessingEvent
@@ -31,6 +31,6 @@ class AbstractLetterProcessingEvent
 
     public function getOccurredOn(): string
     {
-        return $this->occurredOn->format(DomainEvent::OCCURRED_ON_FORMAT);
+        return $this->occurredOn->format(DomainEventInterface::OCCURRED_ON_FORMAT);
     }
 }

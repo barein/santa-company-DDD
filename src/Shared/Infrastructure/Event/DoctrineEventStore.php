@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Shared\Infrastructure\Event;
 
 use App\Shared\Domain\Event\DispatchedEventsTrackerInterface;
-use App\Shared\Domain\Event\DomainEvent;
+use App\Shared\Domain\Event\DomainEventInterface;
 use App\Shared\Domain\Event\EventStoreInterface;
 use App\Shared\Domain\Event\StoredEvent;
 use App\Shared\Domain\Exception\InvalidArgumentException;
@@ -24,14 +24,14 @@ class DoctrineEventStore extends ServiceEntityRepository implements EventStoreIn
         parent::__construct($registry, StoredEvent::class);
     }
 
-    public function append(DomainEvent $domainEvent): void
+    public function append(DomainEventInterface $domainEvent): void
     {
-        $eventOccurredOn = \DateTimeImmutable::createFromFormat(DomainEvent::OCCURRED_ON_FORMAT, $domainEvent->getOccurredOn());
+        $eventOccurredOn = \DateTimeImmutable::createFromFormat(DomainEventInterface::OCCURRED_ON_FORMAT, $domainEvent->getOccurredOn());
 
         if (!$eventOccurredOn instanceof \DateTimeImmutable) {
             throw new InvalidArgumentException(sprintf(
                 'Domain event occurredOn property should have format %s, %s given.',
-                DomainEvent::OCCURRED_ON_FORMAT,
+                DomainEventInterface::OCCURRED_ON_FORMAT,
                 $domainEvent->getOccurredOn(),
             ));
         }
@@ -48,7 +48,7 @@ class DoctrineEventStore extends ServiceEntityRepository implements EventStoreIn
         $this->getEntityManager()->persist($storedEvent);
     }
 
-    public function markAsDispatched(DomainEvent $domainEvent): void
+    public function markAsDispatched(DomainEventInterface $domainEvent): void
     {
         $storedEvent = $this->find($domainEvent->getId());
 

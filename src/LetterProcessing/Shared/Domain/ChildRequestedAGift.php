@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\LetterProcessing\Shared\Domain;
 
-use App\Shared\Domain\Event\DomainEvent;
-use Symfony\Component\Uid\Ulid;
+use App\Shared\Domain\Event\DomainEventInterface;
 use Symfony\Component\Validator\Constraints\Ulid as UlidConstraint;
 
-class ChildRequestedAGift extends AbstractLetterProcessingEvent implements DomainEvent
+class ChildRequestedAGift extends AbstractLetterProcessingEvent implements DomainEventInterface
 {
     public function __construct(
         #[UlidConstraint]
@@ -19,21 +18,6 @@ class ChildRequestedAGift extends AbstractLetterProcessingEvent implements Domai
         public readonly string $giftRequestId,
     ) {
         parent::__construct();
-    }
-
-    public function getChildId(): Ulid
-    {
-        return new Ulid($this->childId);
-    }
-
-    public function getLetterId(): Ulid
-    {
-        return new Ulid($this->letterId);
-    }
-
-    public function getGiftRequestId(): Ulid
-    {
-        return new Ulid($this->giftRequestId);
     }
 
     public static function getName(): string

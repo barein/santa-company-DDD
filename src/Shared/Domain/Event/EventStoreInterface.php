@@ -9,5 +9,5 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AutoconfigureTag]
 interface EventStoreInterface
 {
-    public function append(DomainEvent $domainEvent): void;
+    public function append(DomainEventInterface $domainEvent): void;
 }

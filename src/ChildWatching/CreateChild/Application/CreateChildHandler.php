@@ -9,8 +9,10 @@ use App\ChildWatching\Shared\Domain\ChildAlreadyCreatedException;
 use App\ChildWatching\Shared\Domain\ChildRepositoryInterface;
 use App\LetterProcessing\Shared\Domain\NewChildSentLetter;
 use App\Shared\Domain\Address;
+use App\Shared\Domain\Exception\InvalidArgumentException;
 use App\Shared\Domain\Exception\NotFoundException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Uid\Ulid;
 
 #[AsMessageHandler]
 class CreateChildHandler
@@ -20,11 +22,15 @@ class CreateChildHandler
     ) {
     }
 
+    /**
+     * @throws ChildAlreadyCreatedException
+     * @throws InvalidArgumentException
+     */
     public function __invoke(NewChildSentLetter $event): void
     {
         $child = null;
         try {
-            $child = $this->childRepository->get($event->getChildId());
+            $child = $this->childRepository->get(new Ulid($event->childId));
         } catch (NotFoundException) {
         }
 
@@ -33,7 +39,7 @@ class CreateChildHandler
         }
 
         $child = new Child(
-            $event->getChildId(),
+            new Ulid($event->childId),
             $event->firstName,
             $event->lastName,
             Address::from(

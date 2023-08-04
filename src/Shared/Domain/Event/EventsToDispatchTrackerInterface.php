@@ -7,7 +7,7 @@ namespace App\Shared\Domain\Event;
 interface EventsToDispatchTrackerInterface
 {
     /**
-     * @return array<DomainEvent>
+     * @return array<DomainEventInterface>
      */
     public function getEventsToDispatch(): array;
 }

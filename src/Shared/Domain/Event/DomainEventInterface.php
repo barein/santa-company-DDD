@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\Event;
 
-interface DomainEvent
+interface DomainEventInterface
 {
     public const OCCURRED_ON_FORMAT = 'Y-m-d H:i:s';
 
