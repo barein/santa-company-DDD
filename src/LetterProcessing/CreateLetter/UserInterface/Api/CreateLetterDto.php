@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\LetterProcessing\CreateLetter\UserInterface\Api;
 
 use App\LetterProcessing\Shared\Domain\Letter;
-use App\Shared\Infrastructure\ValidationConstraint\IsoCountryCodeConstraint;
+use App\Shared\Infrastructure\Symfony\ValidationConstraint\IsoCountryCodeConstraint;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\NotBlank;
 

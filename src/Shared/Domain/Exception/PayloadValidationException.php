@@ -10,6 +10,6 @@ final class PayloadValidationException extends BadRequestException
 
     public function __construct(string $message, string $code = self::DEFAULT_ERROR_CODE)
     {
-        parent::__construct($message, $code);
+        parent::__construct($message, $code, HttpStatusCode::UNPROCESSABLE_ENTITY);
     }
 }

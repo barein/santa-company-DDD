@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\LetterProcessing\Shared\Domain;
 
 use App\Shared\Domain\Event\DomainEventInterface;
-use App\Shared\Infrastructure\ValidationConstraint\IsoCountryCodeConstraint;
+use App\Shared\Infrastructure\Symfony\ValidationConstraint\IsoCountryCodeConstraint;
 use Symfony\Component\Validator\Constraints\Ulid as UlidConstraint;
 
 class NewChildSentLetter extends AbstractLetterProcessingEvent implements DomainEventInterface

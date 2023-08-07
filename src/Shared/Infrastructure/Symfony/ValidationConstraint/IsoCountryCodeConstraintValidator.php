@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Infrastructure\ValidationConstraint;
+namespace App\Shared\Infrastructure\Symfony\ValidationConstraint;
 
 use App\Shared\Domain\Exception\InvalidArgumentException;
 use App\Shared\Domain\IsoCountryCode;

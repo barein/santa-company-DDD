@@ -25,7 +25,7 @@ final class JsonResponder
 
         return new JsonResponse(
             $data,
-            $status->toInt(),
+            $status->value,
             [],
             $json
         );

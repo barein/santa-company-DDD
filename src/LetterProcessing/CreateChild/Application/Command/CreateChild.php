@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\LetterProcessing\CreateChild\Application\Command;
 
-use App\Shared\Infrastructure\ValidationConstraint\IsoCountryCodeConstraint;
+use App\Shared\Infrastructure\Symfony\ValidationConstraint\IsoCountryCodeConstraint;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Ulid;
