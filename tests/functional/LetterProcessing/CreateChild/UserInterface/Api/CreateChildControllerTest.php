@@ -52,7 +52,7 @@ class CreateChildControllerTest extends AbstractFunctionalTestCase
             content: json_encode($payload, JSON_THROW_ON_ERROR),
         );
 
-        self::assertResponseStatusCodeSame(500);
+        self::assertResponseStatusCodeSame(422);
     }
 
     public function unprocessablePayloadProvider(): iterable
