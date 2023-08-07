@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\ChildWatching\GetChild\UserInterface\Http;
+namespace App\ChildWatching\GetChild\UserInterface\Api;
 
 use App\ChildWatching\GetChild\Application\Query\GetChild;
 use App\Shared\Application\ApiVersion;

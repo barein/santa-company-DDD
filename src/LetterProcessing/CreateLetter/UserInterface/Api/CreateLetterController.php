@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\CreateLetter\UserInterface\Http;
+namespace App\LetterProcessing\CreateLetter\UserInterface\Api;
 
 use App\LetterProcessing\CreateLetter\Application\Command\CreateLetter;
 use App\Shared\Application\Bus\CommandBusInterface;

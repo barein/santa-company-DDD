@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\ChildWatching\ReportChildAction\UserInterface\Http;
+namespace App\ChildWatching\ReportChildAction\UserInterface\Api;
 
 use App\ChildWatching\Shared\Domain\Action;
 use App\ChildWatching\Shared\Domain\ActionType;

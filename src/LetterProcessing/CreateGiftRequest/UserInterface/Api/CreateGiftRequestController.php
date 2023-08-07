@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\CreateGiftRequest\UserInterface\Http;
+namespace App\LetterProcessing\CreateGiftRequest\UserInterface\Api;
 
 use App\LetterProcessing\CreateGiftRequest\Application\Command\CreateGiftRequest;
 use App\Shared\Application\Bus\CommandBusInterface;

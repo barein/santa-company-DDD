@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\CreateChild\UserInterface\Http;
+namespace App\LetterProcessing\CreateChild\UserInterface\Api;
 
 use App\Shared\Infrastructure\ValidationConstraint\IsoCountryCodeConstraint;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CreateChildDto
@@ -15,6 +16,7 @@ class CreateChildDto
     #[NotBlank]
     public string $lastName;
 
+    #[GreaterThan(0)]
     public int $streetNumber;
 
     #[NotBlank]

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\CreateLetter\UserInterface\Http;
+namespace App\LetterProcessing\CreateLetter\UserInterface\Api;
 
 use App\LetterProcessing\Shared\Domain\Letter;
 use App\Shared\Infrastructure\ValidationConstraint\IsoCountryCodeConstraint;

@@ -12,7 +12,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Uid\Ulid;
 
 #[AsMessageHandler]
-class CreateChildHandler
+readonly class CreateChildHandler
 {
     public function __construct(
         private ChildRepositoryInterface $childRepository,

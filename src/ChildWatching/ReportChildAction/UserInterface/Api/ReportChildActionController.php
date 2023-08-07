@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\ChildWatching\ReportChildAction\UserInterface\Http;
+namespace App\ChildWatching\ReportChildAction\UserInterface\Api;
 
 use App\ChildWatching\ReportChildAction\Application\Command\ReportChildAction;
 use App\Shared\Application\Bus\CommandBusInterface;

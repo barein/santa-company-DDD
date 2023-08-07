@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\CreateGiftRequest\UserInterface\Http;
+namespace App\LetterProcessing\CreateGiftRequest\UserInterface\Api;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 
