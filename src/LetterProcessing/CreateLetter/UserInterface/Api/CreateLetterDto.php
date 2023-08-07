@@ -7,6 +7,7 @@ namespace App\LetterProcessing\CreateLetter\UserInterface\Api;
 use App\LetterProcessing\Shared\Domain\Letter;
 use App\Shared\Infrastructure\Symfony\ValidationConstraint\IsoCountryCodeConstraint;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CreateLetterDto
@@ -14,6 +15,7 @@ class CreateLetterDto
     #[DateTime(format: Letter::RECEIVING_DATE_FORMAT)]
     public string $receivingDate;
 
+    #[GreaterThan(0)]
     public int $senderStreetNumber;
 
     #[NotBlank]

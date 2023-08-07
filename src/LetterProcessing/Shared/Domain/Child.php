@@ -87,6 +87,9 @@ class Child extends AggregateRoot
         return $this->letters;
     }
 
+    /**
+     * @throws LetterAlreadySentThisYearException
+     */
     public function sentLetter(Ulid $letterId, \DateTimeImmutable $receivedOn, Address $from): void
     {
         $newLetter = new Letter($letterId, $this, $from, $receivedOn);
