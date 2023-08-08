@@ -42,7 +42,7 @@ class AggregateDomainEventPersister implements EventSubscriberInterface
     }
 
     /**
-     * Persisting domain events here only work for Aggregate root creation, not child entities creation. (Doctrine cascade operation magic ?)
+     * Persisting domain events here only work for Aggregate root creation, not child entities creation.
      * Hence, EventStore is injected at aggregate root postLoad.
      */
     public function prePersist(PrePersistEventArgs $args): void

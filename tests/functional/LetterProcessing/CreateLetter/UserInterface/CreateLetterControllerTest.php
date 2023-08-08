@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Tests\functional\LetterProcessing\CreateLetter\UserInterface;
 
 use App\LetterProcessing\Shared\Domain\Letter;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Fixtures\Factory\LetterProcessing\ChildFactory;
 use Fixtures\Factory\LetterProcessing\LetterFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,16 +15,21 @@ class CreateLetterControllerTest extends AbstractFunctionalTestCase
 {
     public function testCreateLetterSuccessfully(): void
     {
-        $client = static::createClient();
-
+        // Given a child exists
         $childId = new Ulid();
         $child = ChildFactory::createOne(['id' => $childId]);
+        $this->emptyEventsToDispatchList();
 
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = static::getContainer()->get(ManagerRegistry::class)->getManagerForClass(Letter::class);
-        $lettersFromChild = $entityManager->getUnitOfWork()->getEntityPersister(Letter::class)->loadAll(['child' => $child->object()]);
+        // And this child never sent a letter
+        $lettersPersister = $this->getEntityPersisterForClass(Letter::class);
+        $lettersFromChild = $lettersPersister->loadAll(['child' => $child->object()]);
         self::assertCount(0, $lettersFromChild);
 
+        // And given an initial number of event stored
+        $doctrineEventStore = $this->getDoctrineEventStore();
+        $initialNumberOfEvent = $doctrineEventStore->count([]);
+
+        // When I create a child with the following infos
         $requestContent = [
             'receivingDate' => '2023-06-12',
             'senderStreetNumber' => 45,
@@ -36,16 +39,22 @@ class CreateLetterControllerTest extends AbstractFunctionalTestCase
             'senderIsoCountryCode' => 'USA',
         ];
 
-        $client->request(
+        $this->client->request(
             method: Request::METHOD_POST,
             uri: sprintf('/children/%s/letters', $childId),
             content: json_encode($requestContent, JSON_THROW_ON_ERROR),
         );
 
+        // I should get a response with status code 201
         self::assertResponseStatusCodeSame(201);
 
-        $lettersFromChild = $entityManager->getUnitOfWork()->getEntityPersister(Letter::class)->loadAll(['child' => $child->object()]);
+        // And a letter should be linked to this child
+        $lettersFromChild = $lettersPersister->loadAll(['child' => $child->object()]);
         self::assertCount(1, $lettersFromChild);
+
+        // And no event should have been stored nor dispatched
+        self::assertEquals($initialNumberOfEvent, $doctrineEventStore->count([]));
+        self::assertCount(0, $this->getGlobalQueue()->get());
     }
 
     /**
@@ -53,17 +62,19 @@ class CreateLetterControllerTest extends AbstractFunctionalTestCase
      */
     public function testCreateLetterFailsBecauseOfUnprocessablePayload(array $payload): void
     {
-        $client = static::createClient();
-
+        // Given a child exists
         $childId = new Ulid();
         ChildFactory::createOne(['id' => $childId]);
+        $this->emptyEventsToDispatchList();
 
-        $client->request(
+        // When I create a child with an unprocessable payload
+        $this->client->request(
             method: Request::METHOD_POST,
             uri: sprintf('/children/%s/letters', $childId),
             content: json_encode($payload, JSON_THROW_ON_ERROR),
         );
 
+        // I should get a response with status code 422
         self::assertResponseStatusCodeSame(422);
     }
 
@@ -117,10 +128,9 @@ class CreateLetterControllerTest extends AbstractFunctionalTestCase
 
     public function testCreateLetterFailsBecauseChildDoesNotExists(): void
     {
-        $client = static::createClient();
-
         $childId = new Ulid();
 
+        // When I try to create a Child with a valid payload but an random child id
         $requestContent = [
             'receivingDate' => '2023-06-12',
             'senderStreetNumber' => 45,
@@ -130,26 +140,28 @@ class CreateLetterControllerTest extends AbstractFunctionalTestCase
             'senderIsoCountryCode' => 'USA',
         ];
 
-        $client->request(
+        $this->client->request(
             method: Request::METHOD_POST,
             uri: sprintf('/children/%s/letters', $childId),
             content: json_encode($requestContent, JSON_THROW_ON_ERROR),
         );
 
+        // I should get a 404 response status code
         self::assertResponseStatusCodeSame(404);
     }
 
     public function testCreateLetterFailsBecauseChildAlreadySentALetterThisYear(): void
     {
-        $client = static::createClient();
-
+        // Given a child exist and he sent a letter that was received on the 2023-05-10
         $childId = new Ulid();
         $child = ChildFactory::createOne(['id' => $childId]);
         LetterFactory::createOne([
             'child' => $child,
             'receivingDate' => \DateTimeImmutable::createFromFormat(Letter::RECEIVING_DATE_FORMAT, '2023-05-10'),
         ]);
+        $this->emptyEventsToDispatchList();
 
+        // When I create a letter with a receiving date of 2023-06-12
         $requestContent = [
             'receivingDate' => '2023-06-12',
             'senderStreetNumber' => 45,
@@ -159,16 +171,19 @@ class CreateLetterControllerTest extends AbstractFunctionalTestCase
             'senderIsoCountryCode' => 'USA',
         ];
 
-        $client->request(
+        $this->client->request(
             method: Request::METHOD_POST,
             uri: sprintf('/children/%s/letters', $childId),
             content: json_encode($requestContent, JSON_THROW_ON_ERROR),
         );
 
+        // I should get a 500 response status code
         self::assertResponseStatusCodeSame(500);
+
+        // And the error message should mention that a letter was already sent the same year
         self::assertStringContainsString(
             'has already sent a letter this same year',
-            $client->getResponse()->getContent(),
+            $this->client->getResponse()->getContent(),
         );
     }
 }
