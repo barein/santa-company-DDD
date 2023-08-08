@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\LetterProcessing\CreateGiftRequest\Application\Command;
 
 use App\LetterProcessing\Shared\Domain\ChildRepositoryInterface;
+use App\LetterProcessing\Shared\Domain\GiftAlreadyRequestedInLetterException;
 use App\LetterProcessing\Shared\Domain\MaximumNumberOfGiftRequestPerLetterReachedException;
-use App\Shared\Domain\Exception\LogicException;
 use App\Shared\Domain\Exception\NotFoundException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Uid\Ulid;
@@ -21,8 +21,8 @@ class CreateGiftRequestHandler
 
     /**
      * @throws MaximumNumberOfGiftRequestPerLetterReachedException
+     * @throws GiftAlreadyRequestedInLetterException
      * @throws NotFoundException
-     * @throws LogicException
      */
     public function __invoke(CreateGiftRequest $command): void
     {

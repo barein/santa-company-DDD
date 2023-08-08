@@ -43,6 +43,14 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
         return $transport;
     }
 
+    protected function getLetterProcessingContextQueue(): InMemoryTransport
+    {
+        /** @var InMemoryTransport $transport */
+        $transport = static::getContainer()->get('messenger.transport.letter_processing_queue');
+
+        return $transport;
+    }
+
     /**
      * @param class-string $class
      *
@@ -59,8 +67,9 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
     }
 
     /**
-     * While arranging data (creating entities) events can be stored and marked as "to dispatch"
-     * Asserting on queue content is then more complicated
+     * While arranging data (creating entities) domain events can be stored and marked as "to dispatch"
+     * Subsequent calls using the client will trigger use cases which will dispatch these events
+     * making assertions on queues content more complicated
      */
     public function emptyEventsToDispatchList(): void
     {

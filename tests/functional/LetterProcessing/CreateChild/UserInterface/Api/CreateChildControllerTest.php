@@ -18,9 +18,13 @@ class CreateChildControllerTest extends AbstractFunctionalTestCase
         $child = ChildFactory::repository()->findOneBy(['firstName' => 'Mark', 'lastName' => 'Hamill', 'address.city' => 'London']);
         self::assertNull($child);
 
-        // And that the event store is empty
+        // And the event store is empty
         $doctrineEventStore = $this->getDoctrineEventStore();
         self::assertEquals(0, $doctrineEventStore->count([]));
+
+        // And the global queue is empty
+        $globalQueue = $this->getGlobalQueue();
+        self::assertCount(0, $globalQueue->get());
 
         // When I create a child with the following infos
         $requestContent = [
@@ -53,7 +57,7 @@ class CreateChildControllerTest extends AbstractFunctionalTestCase
         self::assertTrue($domainEvent->hasBeenDispatched());
 
         // And it should be queued in global queue
-        self::assertCount(1, $this->getGlobalQueue()->get());
+        self::assertCount(1, $globalQueue->get());
     }
 
     /**

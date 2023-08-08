@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\LetterProcessing\Shared\Domain;
 
 use App\Shared\Domain\Address;
-use App\Shared\Domain\Exception\LogicException;
 use App\Shared\Domain\Exception\NotFoundException;
 use App\Shared\Infrastructure\Doctrine\DBAL\Type\UlidType;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,6 +16,7 @@ use Symfony\Component\Uid\Ulid;
 class Letter
 {
     public const RECEIVING_DATE_FORMAT = 'Y-m-d';
+    public const MAX_NUMBER_OF_GIFT_REQUEST_PER_LETTER = 4;
 
     #[ORM\Id]
     #[ORM\Column(type: UlidType::NAME)]
@@ -77,25 +77,25 @@ class Letter
 
     /**
      * @throws GiftAlreadyRequestedInLetterException
-     * @throws LogicException
      * @throws MaximumNumberOfGiftRequestPerLetterReachedException
      */
-    public function mentionGiftRequest(Ulid $giftRequestId, string $giftName): GiftRequest
+    public function mentionGiftRequest(Ulid $giftRequestId, string $giftName): void
     {
-        $newGiftRequest = new GiftRequest($giftRequestId, $this, $giftName);
-
-        if ($this->giftRequests->count() >= 4) {
+        if ($this->giftRequests->count() >= self::MAX_NUMBER_OF_GIFT_REQUEST_PER_LETTER) {
             throw new MaximumNumberOfGiftRequestPerLetterReachedException(sprintf(
-                'Letter %s already contains maximum number of GiftRequest',
+                'Letter %s already contains the maximum number of GiftRequest (%d)',
                 $this->id,
+                self::MAX_NUMBER_OF_GIFT_REQUEST_PER_LETTER,
             ));
         }
+
+        $newGiftRequest = new GiftRequest($giftRequestId, $this, $giftName);
 
         $giftRequestsWithSameName = $this->giftRequests->filter(
             fn (GiftRequest $giftRequest) => $giftRequest->getGiftName() === $newGiftRequest->getGiftName()
         );
 
-        if (!$giftRequestsWithSameName->isEmpty()) {
+        if ($giftRequestsWithSameName->isEmpty() === false) {
             throw new GiftAlreadyRequestedInLetterException(sprintf(
                 'Gift %s was already requested in letter %s',
                 $giftName,
@@ -104,8 +104,6 @@ class Letter
         }
 
         $this->giftRequests->add($newGiftRequest);
-
-        return $newGiftRequest;
     }
 
     public function getGiftRequestById(Ulid $giftRequestId): GiftRequest

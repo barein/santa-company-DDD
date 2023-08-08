@@ -7,7 +7,6 @@ namespace App\LetterProcessing\Shared\Domain;
 use App\LetterProcessing\Shared\Infrastructure\DoctrineChildRepository;
 use App\Shared\Domain\Address;
 use App\Shared\Domain\Event\AggregateRoot;
-use App\Shared\Domain\Exception\LogicException;
 use App\Shared\Domain\Exception\NotFoundException;
 use App\Shared\Infrastructure\Doctrine\DBAL\Type\UlidType;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -125,13 +124,13 @@ class Child extends AggregateRoot
 
     /**
      * @throws MaximumNumberOfGiftRequestPerLetterReachedException
+     * @throws GiftAlreadyRequestedInLetterException
      * @throws NotFoundException
-     * @throws LogicException
      */
     public function requestsAGift(Ulid $giftRequestId, Ulid $letterId, string $giftName): void
     {
         $letter = $this->getLetterById($letterId);
-        $giftRequest = $letter->mentionGiftRequest($giftRequestId, $giftName);
+        $letter->mentionGiftRequest($giftRequestId, $giftName);
 
         $this->raiseEvent(new ChildRequestedAGift((string) $this->id, (string) $letterId, (string) $giftRequestId));
     }
