@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\UserInterface\Http;
 
+use App\Shared\Domain\Exception\BadRequestException;
 use App\Shared\Domain\Exception\PayloadValidationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
@@ -39,7 +40,7 @@ final class DtoValueResolver implements ValueResolverInterface
                 'json'
             );
         } catch (\Throwable $exception) {
-            throw new PayloadValidationException('Payload validation error : ' . $exception->getMessage());
+            throw new BadRequestException('Payload error : ' . $exception->getMessage());
         }
 
         $constraints = $this->validator->validate($dto);

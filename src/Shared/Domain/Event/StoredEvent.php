@@ -84,4 +84,9 @@ class StoredEvent
     {
         $this->dispatched = true;
     }
+
+    public function hasBeenDispatched(): bool
+    {
+        return $this->dispatched;
+    }
 }
