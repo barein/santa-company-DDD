@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\functional\LetterProcessing\CreateGiftRequest\UserInterface\Api;
 
+use App\LetterProcessing\Shared\Domain\ChildRequestedAGift;
 use App\LetterProcessing\Shared\Domain\GiftRequest;
 use App\LetterProcessing\Shared\Domain\GiftRequestStatus;
 use App\LetterProcessing\Shared\Domain\Letter;
-use App\Shared\Domain\Event\StoredEvent;
+use Doctrine\ORM\Persisters\Entity\EntityPersister;
 use Fixtures\Factory\LetterProcessing\ChildFactory;
 use Fixtures\Factory\LetterProcessing\GiftRequestFactory;
 use Fixtures\Factory\LetterProcessing\LetterFactory;
@@ -17,6 +18,14 @@ use Tests\functional\AbstractFunctionalTestCase;
 
 class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
 {
+    private EntityPersister $giftRequestPersister;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->giftRequestPersister = $this->getEntityPersisterForClass(GiftRequest::class);
+    }
+
     public function testCreateGiftRequestSuccessfully(): void
     {
         // Given that a child exist, and he sent a letter
@@ -25,17 +34,10 @@ class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
         $this->emptyEventsToDispatchList();
 
         // And gifts requested in the letter have not been created yet
-        $giftRequestPersister = $this->getEntityPersisterForClass(GiftRequest::class);
-        $giftRequestsOfLetter = $giftRequestPersister->loadAll(['letter' => $letter->object()]);
-        self::assertCount(0, $giftRequestsOfLetter);
+        $this->assertNoGiftRequestIsLinkedToLetter($letter->object());
 
-        // And an initial number of event stored
-        $doctrineEventStore = $this->getDoctrineEventStore();
-        $initialNumberOfEvent = $doctrineEventStore->count([]);
-
-        // And the letter processing context queue is empty
-        $letterProcessingQueue = $this->getLetterProcessingContextQueue();
-        self::assertCount(0, $letterProcessingQueue->get());
+        $this->givenAnInitialNumberOfStoredEvent();
+        $this->letterProcessingContextQueueShouldBeEmpty();
 
         // When I create a gift request for the letter of this child
         $requestContent = [
@@ -52,20 +54,16 @@ class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
         self::assertResponseStatusCodeSame(201);
 
         // And a gift request should be linked to this letter
-        $giftRequestsOfLetter = $giftRequestPersister->loadAll(['letter' => $letter->object()]);
-        self::assertCount(1, $giftRequestsOfLetter);
+        $this->assertNumberOfGiftRequestLinkedToLetterEquals($letter->object(), 1);
 
-        // And the event store should contain 1 more event
-        /** @var array<StoredEvent> $storedEvents */
-        $storedEvents = $doctrineEventStore->findAll();
-        self::assertCount($initialNumberOfEvent + 1, $storedEvents);
+        $this->numberOfEventStoredShouldHaveIncreasedBy(1);
 
-        // And it should be marked as dispatched
-        $lastStoredEvent = $storedEvents[array_key_last($storedEvents)];
+        // And last event stored should be marked as dispatched
+        $lastStoredEvent = $this->getLastStoredEvent();
+        self::assertEquals(ChildRequestedAGift::getName(), $lastStoredEvent->getName());
         self::assertTrue($lastStoredEvent->hasBeenDispatched());
 
-        // And the letter processing context queue should contain 1 event
-        self::assertCount(1, $letterProcessingQueue->get());
+        $this->letterProcessingContextQueueShouldContainThisNumberOfMessage(1);
     }
 
     public function testCreateGiftRequestFailsBecauseChildDoesNotExist(): void
@@ -75,9 +73,7 @@ class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
         $letter = LetterFactory::createOne(['child' => $child]);
         $this->emptyEventsToDispatchList();
 
-        // And an initial number of event stored
-        $doctrineEventStore = $this->getDoctrineEventStore();
-        $initialNumberOfEvent = $doctrineEventStore->count([]);
+        $this->givenAnInitialNumberOfStoredEvent();
 
         // When I create a gift request, using a random child id
         $requestContent = [
@@ -93,15 +89,10 @@ class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
         // I should get a response with status code 404
         self::assertResponseStatusCodeSame(404);
 
-        // And no gift request should be linked to this letter
-        $giftRequestsOfLetter = $this->getEntityPersisterForClass(GiftRequest::class)->loadAll(['letter' => $letter->object()]);
-        self::assertCount(0, $giftRequestsOfLetter);
+        $this->assertNoGiftRequestIsLinkedToLetter($letter->object());
 
-        // And the event store should not contain more event than before
-        self::assertEquals($initialNumberOfEvent, $doctrineEventStore->count([]));
-
-        // And the letter processing context queue should not contain any event
-        self::assertCount(0, $this->getLetterProcessingContextQueue()->get());
+        $this->numberOfEventStoredShouldNotHaveChanged();
+        $this->letterProcessingContextQueueShouldBeEmpty();
     }
 
     public function testCreateGiftRequestFailsBecauseLetterDoesNotExist(): void
@@ -111,9 +102,7 @@ class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
         $letter = LetterFactory::createOne(['child' => $child]);
         $this->emptyEventsToDispatchList();
 
-        // And an initial number of event stored
-        $doctrineEventStore = $this->getDoctrineEventStore();
-        $initialNumberOfEvent = $doctrineEventStore->count([]);
+        $this->givenAnInitialNumberOfStoredEvent();
 
         // When I create a gift request, using a random letter id
         $requestContent = [
@@ -129,15 +118,10 @@ class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
         // I should get a response with status code 404
         self::assertResponseStatusCodeSame(404);
 
-        // And no gift request should be linked to this letter
-        $giftRequestsOfLetter = $this->getEntityPersisterForClass(GiftRequest::class)->loadAll(['letter' => $letter->object()]);
-        self::assertCount(0, $giftRequestsOfLetter);
+        $this->assertNoGiftRequestIsLinkedToLetter($letter->object());
 
-        // And the event store should not contain more event than before
-        self::assertEquals($initialNumberOfEvent, $doctrineEventStore->count([]));
-
-        // And the letter processing context queue should not contain any event
-        self::assertCount(0, $this->getLetterProcessingContextQueue()->get());
+        $this->numberOfEventStoredShouldNotHaveChanged();
+        $this->letterProcessingContextQueueShouldBeEmpty();
     }
 
     public function testCreateGiftRequestFailsBecauseMaximumNumberOfGiftRequestPerLetterIsReached(): void
@@ -151,9 +135,7 @@ class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
         ]);
         $this->emptyEventsToDispatchList();
 
-        // And an initial number of event stored
-        $doctrineEventStore = $this->getDoctrineEventStore();
-        $initialNumberOfEvent = $doctrineEventStore->count([]);
+        $this->givenAnInitialNumberOfStoredEvent();
 
         // When I create a gift request for the letter of this child
         $requestContent = [
@@ -170,22 +152,24 @@ class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
         self::assertResponseStatusCodeSame(500);
 
         // And the error message should mention that the letter already contains the maximum number of gift request
-        self::assertStringContainsString('already contains the maximum number of GiftRequest', $this->client->getResponse()->getContent());
+        self::assertStringContainsString(
+            'already contains the maximum number of GiftRequest',
+            $this->client->getResponse()->getContent()
+        );
 
         // And the number of gift requests linked to this letter should not have changed
-        $giftRequestsOfLetter = $this->getEntityPersisterForClass(GiftRequest::class)->loadAll(['letter' => $letter->object()]);
-        self::assertCount(Letter::MAX_NUMBER_OF_GIFT_REQUEST_PER_LETTER, $giftRequestsOfLetter);
+        $this->assertNumberOfGiftRequestLinkedToLetterEquals(
+            $letter->object(),
+            Letter::MAX_NUMBER_OF_GIFT_REQUEST_PER_LETTER
+        );
 
-        // And the event store should not contain more event than before
-        self::assertEquals($initialNumberOfEvent, $doctrineEventStore->count([]));
-
-        // And the letter processing context queue should not contain any event
-        self::assertCount(0, $this->getLetterProcessingContextQueue()->get());
+        $this->numberOfEventStoredShouldNotHaveChanged();
+        $this->letterProcessingContextQueueShouldBeEmpty();
     }
 
     public function testCreateGiftRequestFailsBecauseGiftIsAlreadyRequestedInLetter(): void
     {
-        // Given that a child exist, and he sent a letter requesting the maximum number of gifts, and they have been created
+        // Given that a child exist, and he sent a letter requesting a gift, which has been created
         $child = ChildFactory::createOne();
         $letter = LetterFactory::createOne(['child' => $child]);
         $giftRequest = GiftRequestFactory::createOne([
@@ -195,11 +179,9 @@ class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
         ]);
         $this->emptyEventsToDispatchList();
 
-        // And an initial number of event stored
-        $doctrineEventStore = $this->getDoctrineEventStore();
-        $initialNumberOfEvent = $doctrineEventStore->count([]);
+        $this->givenAnInitialNumberOfStoredEvent();
 
-        // When I create a gift request for the letter of this child
+        // When I create a gift request for the letter of this child with the same gift name
         $requestContent = [
             'giftName' => $giftRequest->getGiftName(),
         ];
@@ -213,18 +195,14 @@ class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
         // I should get a response with status code 500
         self::assertResponseStatusCodeSame(500);
 
-        // And the error message should mention that the letter already contains the maximum number of gift request
+        // And the error message should mention that the gift was already requested in the letter
         self::assertMatchesRegularExpression('#Gift .+? was already requested in letter .+?#', $this->client->getResponse()->getContent());
 
         // And the number of gift requests linked to this letter should not have changed
-        $giftRequestsOfLetter = $this->getEntityPersisterForClass(GiftRequest::class)->loadAll(['letter' => $letter->object()]);
-        self::assertCount(1, $giftRequestsOfLetter);
+        $this->assertNumberOfGiftRequestLinkedToLetterEquals($letter->object(), 1);
 
-        // And the event store should not contain more event than before
-        self::assertEquals($initialNumberOfEvent, $doctrineEventStore->count([]));
-
-        // And the letter processing context queue should not contain any event
-        self::assertCount(0, $this->getLetterProcessingContextQueue()->get());
+        $this->numberOfEventStoredShouldNotHaveChanged();
+        $this->letterProcessingContextQueueShouldBeEmpty();
     }
 
     public function testCreateGiftRequestFailsBecauseOfUnprocessablePayload(): void
@@ -233,7 +211,7 @@ class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
         $child = ChildFactory::createOne();
         $letter = LetterFactory::createOne(['child' => $child]);
 
-        // When I create a gift request for the letter of this child with an unprocessable payload
+        // When I create a gift request for the letter of this child with an empty gift name
         $payload = [
             'giftName' => '',
         ];
@@ -246,5 +224,15 @@ class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
 
         // I should get a response with status code 422
         self::assertResponseStatusCodeSame(422);
+    }
+
+    private function assertNumberOfGiftRequestLinkedToLetterEquals(Letter $letter, int $numberOfGiftRequest): void
+    {
+        self::assertCount($numberOfGiftRequest, $this->giftRequestPersister->loadAll(['letter' => $letter]));
+    }
+
+    private function assertNoGiftRequestIsLinkedToLetter(Letter $letter): void
+    {
+        $this->assertNumberOfGiftRequestLinkedToLetterEquals($letter, 0);
     }
 }

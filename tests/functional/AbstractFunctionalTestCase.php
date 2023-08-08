@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\functional;
 
 use App\Shared\Domain\Event\EventsToDispatchTrackerInterface;
+use App\Shared\Domain\Event\StoredEvent;
 use App\Shared\Infrastructure\Event\DoctrineEventStore;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Persisters\Entity\EntityPersister;
@@ -22,33 +23,78 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
 
     protected KernelBrowser $client;
 
+    protected DoctrineEventStore $doctrineEventStore;
+
+    private InMemoryTransport $globalQueue;
+
+    private InMemoryTransport $letterProcessingContextQueue;
+
+    private int $initialNumberOfEventStored;
+
     protected function setUp(): void
     {
         $this->client = static::createClient();
+        $this->doctrineEventStore = static::getContainer()->get(DoctrineEventStore::class);
+        $this->globalQueue = static::getContainer()->get('messenger.transport.global_queue');
+        $this->letterProcessingContextQueue = static::getContainer()->get('messenger.transport.letter_processing_queue');
+        unset($this->initialNumberOfEventStored);
     }
 
-    protected function getDoctrineEventStore(): DoctrineEventStore
+    protected function eventStoreShouldContainThisNumberOfEvent(int $numberOfEvent): void
     {
-        /** @var DoctrineEventStore $doctrineEventStore */
-        $doctrineEventStore = static::getContainer()->get(DoctrineEventStore::class);
-
-        return $doctrineEventStore;
+        self::assertEquals($numberOfEvent, $this->doctrineEventStore->count([]));
     }
 
-    protected function getGlobalQueue(): InMemoryTransport
+    protected function eventStoreShouldBeEmpty(): void
     {
-        /** @var InMemoryTransport $transport */
-        $transport = static::getContainer()->get('messenger.transport.global_queue');
-
-        return $transport;
+        $this->eventStoreShouldContainThisNumberOfEvent(0);
     }
 
-    protected function getLetterProcessingContextQueue(): InMemoryTransport
+    protected function getLastStoredEvent(): StoredEvent
     {
-        /** @var InMemoryTransport $transport */
-        $transport = static::getContainer()->get('messenger.transport.letter_processing_queue');
+        /** @var StoredEvent[] $storedEvents */
+        $storedEvents = $this->doctrineEventStore->findAll();
 
-        return $transport;
+        if (\count($storedEvents) === 0) {
+            throw new \RuntimeException('Impossible to get last event stored if event store is empty');
+        }
+
+        return $storedEvents[array_key_last($storedEvents)];
+    }
+
+    protected function givenAnInitialNumberOfStoredEvent(): void
+    {
+        $this->initialNumberOfEventStored = $this->doctrineEventStore->count([]);
+    }
+
+    protected function numberOfEventStoredShouldHaveIncreasedBy(int $numberOfEventIncremented): void
+    {
+        self::assertEquals($this->initialNumberOfEventStored + $numberOfEventIncremented, $this->doctrineEventStore->count([]));
+    }
+
+    protected function numberOfEventStoredShouldNotHaveChanged(): void
+    {
+        $this->numberOfEventStoredShouldHaveIncreasedBy(0);
+    }
+
+    protected function globalQueueShouldContainThisNumberOfMessage(int $numberOfMessage): void
+    {
+        self::assertCount($numberOfMessage, $this->globalQueue->get());
+    }
+
+    protected function globalQueueShouldBeEmpty(): void
+    {
+        $this->globalQueueShouldContainThisNumberOfMessage(0);
+    }
+
+    protected function letterProcessingContextQueueShouldContainThisNumberOfMessage(int $numberOfMessage): void
+    {
+        self::assertCount($numberOfMessage, $this->letterProcessingContextQueue->get());
+    }
+
+    protected function letterProcessingContextQueueShouldBeEmpty(): void
+    {
+        $this->letterProcessingContextQueueShouldContainThisNumberOfMessage(0);
     }
 
     /**

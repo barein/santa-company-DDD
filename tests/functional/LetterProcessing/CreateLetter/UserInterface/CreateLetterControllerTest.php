@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\functional\LetterProcessing\CreateLetter\UserInterface;
 
+use App\LetterProcessing\Shared\Domain\Child;
 use App\LetterProcessing\Shared\Domain\Letter;
+use Doctrine\ORM\Persisters\Entity\EntityPersister;
 use Fixtures\Factory\LetterProcessing\ChildFactory;
 use Fixtures\Factory\LetterProcessing\LetterFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +15,14 @@ use Tests\functional\AbstractFunctionalTestCase;
 
 class CreateLetterControllerTest extends AbstractFunctionalTestCase
 {
+    private EntityPersister $lettersPersister;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->lettersPersister = $this->getEntityPersisterForClass(Letter::class);
+    }
+
     public function testCreateLetterSuccessfully(): void
     {
         // Given a child exists
@@ -20,15 +30,11 @@ class CreateLetterControllerTest extends AbstractFunctionalTestCase
         $this->emptyEventsToDispatchList();
 
         // And this child never sent a letter
-        $lettersPersister = $this->getEntityPersisterForClass(Letter::class);
-        $lettersFromChild = $lettersPersister->loadAll(['child' => $child->object()]);
-        self::assertCount(0, $lettersFromChild);
+        $this->assertNoLetterIsLinkedToChild($child->object());
 
-        // And given an initial number of event stored
-        $doctrineEventStore = $this->getDoctrineEventStore();
-        $initialNumberOfEvent = $doctrineEventStore->count([]);
+        $this->givenAnInitialNumberOfStoredEvent();
 
-        // When I create a child with the following infos
+        // When I create a child with a valid payload
         $requestContent = [
             'receivingDate' => '2023-06-12',
             'senderStreetNumber' => 45,
@@ -48,12 +54,10 @@ class CreateLetterControllerTest extends AbstractFunctionalTestCase
         self::assertResponseStatusCodeSame(201);
 
         // And a letter should be linked to this child
-        $lettersFromChild = $lettersPersister->loadAll(['child' => $child->object()]);
-        self::assertCount(1, $lettersFromChild);
+        $this->assertNumberOfLetterLinkedToChildEquals($child->object(), 1);
 
-        // And no event should have been stored nor dispatched
-        self::assertEquals($initialNumberOfEvent, $doctrineEventStore->count([]));
-        self::assertCount(0, $this->getGlobalQueue()->get());
+        $this->numberOfEventStoredShouldNotHaveChanged();
+        $this->globalQueueShouldBeEmpty();
     }
 
     /**
@@ -65,7 +69,7 @@ class CreateLetterControllerTest extends AbstractFunctionalTestCase
         $child = ChildFactory::createOne();
         $this->emptyEventsToDispatchList();
 
-        // When I create a child with an unprocessable payload
+        // When I create a letter with an unprocessable payload
         $this->client->request(
             method: Request::METHOD_POST,
             uri: sprintf('/children/%s/letters', $child->getId()),
@@ -74,6 +78,8 @@ class CreateLetterControllerTest extends AbstractFunctionalTestCase
 
         // I should get a response with status code 422
         self::assertResponseStatusCodeSame(422);
+
+        $this->assertNoLetterIsLinkedToChild($child->object());
     }
 
     public function unprocessablePayloadProvider(): iterable
@@ -180,5 +186,17 @@ class CreateLetterControllerTest extends AbstractFunctionalTestCase
             'has already sent a letter this same year',
             $this->client->getResponse()->getContent(),
         );
+
+        $this->assertNumberOfLetterLinkedToChildEquals($child->object(), 1);
+    }
+
+    private function assertNumberOfLetterLinkedToChildEquals(Child $child, int $numberOfLetter): void
+    {
+        self::assertCount($numberOfLetter, $this->lettersPersister->loadAll(['child' => $child]));
+    }
+
+    private function assertNoLetterIsLinkedToChild(Child $child): void
+    {
+        $this->assertNumberOfLetterLinkedToChildEquals($child, 0);
     }
 }
