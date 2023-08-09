@@ -22,7 +22,11 @@ class CreateGiftRequestController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/children/{childUlid}/letters/{letterUlid}/gift-requests', requirements: ['childUlid' => Requirement::ULID, 'letterUlid' => Requirement::ULID], methods: ['POST'])]
+    #[Route(
+        path: '/children/{childUlid}/letters/{letterUlid}/gift-requests',
+        requirements: ['childUlid' => Requirement::ULID, 'letterUlid' => Requirement::ULID],
+        methods: ['POST'])
+    ]
     public function __invoke(
         string $childUlid,
         string $letterUlid,

@@ -18,9 +18,8 @@ class CreateChildControllerTest extends AbstractFunctionalTestCase
         $child = ChildFactory::repository()->findOneBy(['firstName' => 'Mark', 'lastName' => 'Hamill', 'address.city' => 'London']);
         self::assertNull($child);
 
-        // And that the event store is empty
-        $doctrineEventStore = $this->getDoctrineEventStore();
-        self::assertEquals(0, $doctrineEventStore->count([]));
+        $this->eventStoreShouldBeEmpty();
+        $this->globalQueueShouldBeEmpty();
 
         // When I create a child with the following infos
         $requestContent = [
@@ -47,13 +46,13 @@ class CreateChildControllerTest extends AbstractFunctionalTestCase
         self::assertInstanceOf(Child::class, $child->object());
 
         // And an event should be stored and marked as dispatched
-        self::assertEquals(1, $doctrineEventStore->count([]));
-        $domainEvent = $doctrineEventStore->findAll()[0];
-        self::assertEquals(NewChildSentLetter::getName(), $domainEvent->getName());
-        self::assertTrue($domainEvent->hasBeenDispatched());
+        $this->eventStoreShouldContainThisNumberOfEvent(1);
+        $lastStoredEvent = $this->getLastStoredEvent();
+        self::assertEquals(NewChildSentLetter::getName(), $lastStoredEvent->getName());
+        self::assertTrue($lastStoredEvent->hasBeenDispatched());
 
         // And it should be queued in global queue
-        self::assertCount(1, $this->getGlobalQueue()->get());
+        $this->globalQueueShouldContainThisNumberOfMessage(1);
     }
 
     /**
@@ -71,9 +70,8 @@ class CreateChildControllerTest extends AbstractFunctionalTestCase
         // Then I should get a 422 response status code
         self::assertResponseStatusCodeSame(422);
 
-        // And no event should be stored nor dispatched
-        self::assertEquals(0, $this->getDoctrineEventStore()->count([]));
-        self::assertCount(0, $this->getGlobalQueue()->get());
+        $this->eventStoreShouldBeEmpty();
+        $this->globalQueueShouldBeEmpty();
     }
 
     public function unprocessablePayloadProvider(): iterable
