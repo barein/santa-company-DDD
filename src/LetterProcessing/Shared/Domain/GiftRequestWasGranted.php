@@ -14,6 +14,8 @@ class GiftRequestWasGranted extends AbstractLetterProcessingEvent implements Dom
         #[UlidConstraint]
         public readonly string $childId,
         #[UlidConstraint]
+        public readonly string $letterId,
+        #[UlidConstraint]
         public readonly string $giftRequestId,
         #[NotBlank]
         public readonly string $giftName,

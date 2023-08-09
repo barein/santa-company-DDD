@@ -106,6 +106,9 @@ class Letter
         $this->giftRequests->add($newGiftRequest);
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function getGiftRequestById(Ulid $giftRequestId): GiftRequest
     {
         /** @var ?GiftRequest $giftRequest */

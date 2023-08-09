@@ -32,3 +32,4 @@ services:
 
     Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
     App\Shared\Domain\Event\EventStoreInterface: '@App\Shared\Infrastructure\Event\EventStore'
+

@@ -16,7 +16,7 @@ parameters:
     skip_violations:
       #LetterProcessing dependencies
       App\LetterProcessing\Shared\Infrastructure\PhpChildWatchingGateway:
-        - App\ChildWatching\Shared\UserInterface\ChildWatchingService
+        - App\ChildWatching\Shared\UserInterface\ChildWatchingExposedService
       #ChildWatching dependencies
       App\ChildWatching\CreateChild\Application\CreateChildHandler:
         - App\LetterProcessing\Shared\Domain\NewChildSentLetter

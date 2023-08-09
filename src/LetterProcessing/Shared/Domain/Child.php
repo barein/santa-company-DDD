@@ -162,33 +162,26 @@ class Child extends AggregateRoot
         $this->raiseEvent(new ChildWasRemoved((string) $this->id));
     }
 
-    public function isOnSantaListForGiftRequest(
-        SantaList $santaList,
-        Ulid $giftRequestId,
-        Ulid $letterId
-    ): void {
-        if ($santaList === SantaList::GOOD) {
-            $this->grantGiftRequest($giftRequestId, $letterId);
-
-            return;
-        }
-
-        $this->declineGiftRequest($giftRequestId, $letterId);
-    }
-
-    private function grantGiftRequest(Ulid $giftRequestId, Ulid $letterId): void
+    /**
+     * @throws NotFoundException
+     */
+    public function giftRequestGranted(Ulid $giftRequestId, Ulid $letterId): void
     {
         $giftRequest = $this->getLetterById($letterId)->getGiftRequestById($giftRequestId);
         $giftRequest->grant();
 
         $this->raiseEvent(new GiftRequestWasGranted(
-            (string) $this->getId(),
-            (string) $giftRequest->getId(),
-            $giftRequest->getGiftName(),
+            childId: (string) $this->getId(),
+            letterId: (string) $letterId,
+            giftRequestId: (string) $giftRequest->getId(),
+            giftName: $giftRequest->getGiftName(),
         ));
     }
 
-    private function declineGiftRequest(Ulid $giftRequestId, Ulid $letterId): void
+    /**
+     * @throws NotFoundException
+     */
+    public function giftRequestDeclined(Ulid $giftRequestId, Ulid $letterId): void
     {
         $this->getLetterById($letterId)
             ->getGiftRequestById($giftRequestId)
