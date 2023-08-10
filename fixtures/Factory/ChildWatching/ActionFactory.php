@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Fixtures\Factory\ChildWatching;
 
 use App\ChildWatching\Shared\Domain\Action;
+use App\ChildWatching\Shared\Domain\ActionDescription;
 use App\ChildWatching\Shared\Domain\ActionType;
 use App\ChildWatching\Shared\Infrastructure\DoctrineActionRepository;
 use Symfony\Component\Uid\Ulid;
@@ -53,7 +54,7 @@ final class ActionFactory extends ModelFactory
         return [
             'id' => new Ulid(),
             'dateTime' => new \DateTimeImmutable(),
-            'description' => self::faker()->sentence(),
+            'description' => ActionDescription::fromString(self::faker()->sentence()),
             'type' => self::faker()->randomElement([ActionType::GOOD, ActionType::BAD]),
         ];
     }

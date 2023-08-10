@@ -6,9 +6,9 @@ namespace App\ChildWatching\Shared\Infrastructure;
 
 use App\ChildWatching\Shared\Domain\Action;
 use App\ChildWatching\Shared\Domain\ActionRepositoryInterface;
+use App\ChildWatching\Shared\Domain\Child;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Uid\Ulid;
 
 /**
  * @extends ServiceEntityRepository<Action>
@@ -30,7 +30,7 @@ class DoctrineActionRepository extends ServiceEntityRepository implements Action
         $this->getEntityManager()->persist($action);
     }
 
-    public function getActionsOfChildThisYear(Ulid $childId): array
+    public function getActionsOfChildThisYear(Child $child): array
     {
         $currentYear = (new \DateTimeImmutable())->format('Y');
 
@@ -38,10 +38,9 @@ class DoctrineActionRepository extends ServiceEntityRepository implements Action
         $actions = $this->createQueryBuilder('actions')
             ->andWhere('actions.childId = :childId')
             ->andWhere('actions.dateTime BETWEEN :firstDayCurrentYear AND :lastDayCurrentYear')
-            ->setParameter('childId', $childId)
+            ->setParameter('childId', $child->getId())
             ->setParameter('firstDayCurrentYear', new \DateTimeImmutable(sprintf('first day of january %s', $currentYear)))
             ->setParameter('lastDayCurrentYear', new \DateTimeImmutable(sprintf('last day of december %s', $currentYear)))
-            ->setParameter('childId', $childId)
             ->getQuery()
             ->getResult()
         ;
