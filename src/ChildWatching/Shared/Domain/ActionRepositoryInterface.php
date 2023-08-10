@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\ChildWatching\Shared\Domain;
 
-use Symfony\Component\Uid\Ulid;
-
 interface ActionRepositoryInterface
 {
     public function add(Action $action): void;
@@ -13,5 +11,5 @@ interface ActionRepositoryInterface
     /**
      * @return array<Action>
      */
-    public function getActionsOfChildThisYear(Ulid $childId): array;
+    public function getActionsOfChildThisYear(Child $child): array;
 }

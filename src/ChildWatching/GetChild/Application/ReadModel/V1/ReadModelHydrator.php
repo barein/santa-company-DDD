@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\ChildWatching\GetChild\Application\ReadModel\V1;
 
 use App\ChildWatching\GetChild\Application\ReadModel\GetChildReadModelDto;
-use App\ChildWatching\Shared\Application\ReadModel\V1\ChildReadModel;
+use App\ChildWatching\Shared\Application\ReadModel\Child\V1\ChildReadModel;
 use App\ChildWatching\Shared\Domain\Action;
 use App\ChildWatching\Shared\Domain\ActionType;
 use App\Shared\Application\ReadModelHydratorInterface;

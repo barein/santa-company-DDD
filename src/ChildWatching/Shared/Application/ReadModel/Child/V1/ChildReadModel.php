@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\ChildWatching\Shared\Application\ReadModel\V1;
+namespace App\ChildWatching\Shared\Application\ReadModel\Child\V1;
 
 class ChildReadModel
 {
