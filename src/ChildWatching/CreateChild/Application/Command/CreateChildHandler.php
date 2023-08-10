@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\ChildWatching\CreateChild\Application;
+namespace App\ChildWatching\CreateChild\Application\Command;
 
 use App\ChildWatching\Shared\Domain\Child;
 use App\ChildWatching\Shared\Domain\ChildAlreadyCreatedException;
@@ -15,7 +15,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Uid\Ulid;
 
 #[AsMessageHandler]
-class CreateChildHandler
+readonly class CreateChildHandler
 {
     public function __construct(
         private ChildRepositoryInterface $childRepository,

@@ -28,12 +28,12 @@ class Child
     private Address $address;
 
     public function __construct(
-        Ulid $ulid,
+        Ulid $id,
         string $firstName,
         string $lastName,
         Address $address,
     ) {
-        $this->id = $ulid;
+        $this->id = $id;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->address = $address;
@@ -51,20 +51,5 @@ class Child
         ActionType $type
     ): Action {
         return new Action($actionId, $this->getId(), $dateTime, $description, $type);
-    }
-
-    public function getFirstName(): string
-    {
-        return $this->firstName;
-    }
-
-    public function getLastName(): string
-    {
-        return $this->lastName;
-    }
-
-    public function getAddress(): Address
-    {
-        return $this->address;
     }
 }
