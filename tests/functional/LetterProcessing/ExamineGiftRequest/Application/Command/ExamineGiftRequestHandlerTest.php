@@ -8,29 +8,14 @@ use App\LetterProcessing\Shared\Domain\ChildRequestedAGift;
 use App\LetterProcessing\Shared\Domain\ChildWatchingGatewayInterface;
 use App\LetterProcessing\Shared\Domain\GiftRequestStatus;
 use App\LetterProcessing\Shared\Domain\SantaList;
-use App\Shared\Application\Bus\EventBusInterface;
 use App\Shared\Domain\Exception\ExternalDependencyFailedException;
 use Fixtures\Factory\LetterProcessing\ChildFactory;
 use Fixtures\Factory\LetterProcessing\GiftRequestFactory;
 use Fixtures\Factory\LetterProcessing\LetterFactory;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Tester\CommandTester;
-use Tests\functional\AbstractFunctionalTestCase;
+use Tests\functional\AbstractEventConsumerFunctionalTestCase;
 
-class ExamineGiftRequestHandlerTest extends AbstractFunctionalTestCase
+class ExamineGiftRequestHandlerTest extends AbstractEventConsumerFunctionalTestCase
 {
-    private EventBusInterface $eventBus;
-    private CommandTester $commandTester;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->eventBus = static::getContainer()->get(EventBusInterface::class);
-        $application = new Application(static::$kernel);
-        $command = $application->find('messenger:consume');
-        $this->commandTester = new CommandTester($command);
-    }
-
     /**
      * @dataProvider successFullCasesProvider
      */
