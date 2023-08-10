@@ -71,18 +71,22 @@
         ],
         "cs-dump": "vendor/bin/php-cs-fixer fix --dry-run -v",
         "validate-composer": "composer validate",
-        "stan": "vendor/bin/phpstan analyse --memory-limit=2G --configuration=phpstan.neon",
+        "static-analysis": "vendor/bin/phpstan analyse --memory-limit=2G --configuration=phpstan.neon",
         "deptrac-clean-archi" : "vendor/bin/deptrac analyse --config-file=deptrac_clean_archi.yaml",
         "deptrac-bounded-contexts" : "vendor/bin/deptrac analyse --config-file=deptrac_bounded_contexts.yaml",
         "deptrac" : [
             "@deptrac-clean-archi",
             "@deptrac-bounded-contexts"
         ],
+        "unit-tests": "bin/phpunit --testsuite=unit",
+        "functional-tests": "bin/phpunit --testsuite=functional",
         "ci": [
             "@cs-dump",
             "@validate-composer",
-            "@stan",
-            "@deptrac"
+            "@static-analysis",
+            "@deptrac",
+            "@unit-tests",
+            "@functional-tests"
         ]
     },
     "conflict": {

@@ -104,8 +104,8 @@ cs-dump:
 cs:
 	$(EXEC) vendor/bin/php-cs-fixer fix -v
 
-stan:
-	$(EXEC) composer run stan
+static-analysis:
+	$(EXEC) composer run static-analysis
 
 deptrac:
 	$(EXEC) composer run deptrac
