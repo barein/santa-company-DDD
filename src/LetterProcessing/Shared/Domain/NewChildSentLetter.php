@@ -6,12 +6,12 @@ namespace App\LetterProcessing\Shared\Domain;
 
 use App\Shared\Domain\Event\DomainEventInterface;
 use App\Shared\Infrastructure\Symfony\ValidationConstraint\IsoCountryCodeConstraint;
-use Symfony\Component\Validator\Constraints\Ulid as UlidConstraint;
+use Symfony\Component\Validator\Constraints\Ulid;
 
 class NewChildSentLetter extends AbstractLetterProcessingEvent implements DomainEventInterface
 {
     public function __construct(
-        #[UlidConstraint]
+        #[Ulid]
         public readonly string $childId,
         public readonly string $firstName,
         public readonly string $lastName,

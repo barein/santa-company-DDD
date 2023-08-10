@@ -6,7 +6,6 @@ namespace App\LetterProcessing\CreateGiftRequest\Application\Command;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Ulid;
-use Symfony\Component\Validator\Constraints\Ulid as UlidConstraint;
 
 readonly class CreateGiftRequest
 {
@@ -14,10 +13,10 @@ readonly class CreateGiftRequest
         #[Ulid]
         public string $giftRequestId,
 
-        #[UlidConstraint]
+        #[Ulid]
         public string $childId,
 
-        #[UlidConstraint]
+        #[Ulid]
         public string $letterId,
 
         #[NotBlank]

@@ -10,6 +10,7 @@ use App\Shared\Domain\Exception\HttpStatusCode;
 use App\Shared\UserInterface\Http\JsonResponder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Uid\Ulid;
@@ -22,7 +23,7 @@ class CreateLetterController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/children/{id}/letters', requirements: ['id' => Requirement::ULID], methods: ['POST'])]
+    #[Route(path: '/children/{id}/letters', requirements: ['id' => Requirement::ULID], methods: [Request::METHOD_POST])]
     public function __invoke(
         string $id,
         CreateLetterDto $createLetterDto,
