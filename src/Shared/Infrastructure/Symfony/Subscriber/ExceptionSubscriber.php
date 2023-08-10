@@ -38,16 +38,16 @@ final class ExceptionSubscriber implements EventSubscriberInterface
         $event->setResponse(
             new JsonResponse(
                 data: [
-                    'code' => $this->exceptionCodeFor($exception),
+                    'code' => $this->getExceptionCodeFor($exception),
                     'message' => $exception->getMessage(),
                     'metadatas' => $this->getMetadatas($exception),
                 ],
-                status: $this->statusCodeFor($exception)
+                status: $this->getStatusCodeFor($exception)
             )
         );
     }
 
-    private function exceptionCodeFor(\Throwable $exception): string
+    private function getExceptionCodeFor(\Throwable $exception): string
     {
         if ($exception instanceof AbstractBaseException) {
             return $exception->getCodeError();
@@ -70,7 +70,7 @@ final class ExceptionSubscriber implements EventSubscriberInterface
         return $metadatas;
     }
 
-    private function statusCodeFor(\Throwable $exception): int
+    public static function getStatusCodeFor(\Throwable $exception): int
     {
         if ($exception instanceof AbstractBaseException) {
             return $exception->getHttpStatusCode()->value;

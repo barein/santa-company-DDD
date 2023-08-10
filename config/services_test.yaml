@@ -1,0 +1,4 @@
+services:
+    App\LetterProcessing\Shared\Domain\ChildWatchingGatewayInterface: # Todo: delete in Symfony 6.3
+        public: true
+

@@ -8,8 +8,8 @@ use App\LetterProcessing\Shared\Domain\SantaList;
 
 final class ChildWatchingToLetterProcessingTranslator
 {
-    public function getChildListBasedOnItsActions(int $numberOfGoodActions, int $numberOfBadActions): SantaList
+    public function getSantaListForChildBasedOnItsActions(int $numberOfGoodActions, int $numberOfBadActions): SantaList
     {
-        return $numberOfGoodActions > $numberOfBadActions ? SantaList::GOOD : SantaList::BAD;
+        return ($numberOfGoodActions >= $numberOfBadActions) ? SantaList::GOOD : SantaList::BAD;
     }
 }

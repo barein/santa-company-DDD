@@ -12,4 +12,5 @@ enum HttpStatusCode: int
     case HTTP_NOT_FOUND = 404;
     case UNPROCESSABLE_ENTITY = 422;
     case HTTP_INTERNAL_SERVER_ERROR = 500;
+    case HTTP_BAD_GATEWAY = 502;
 }
