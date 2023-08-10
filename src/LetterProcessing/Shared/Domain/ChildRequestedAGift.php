@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace App\LetterProcessing\Shared\Domain;
 
 use App\Shared\Domain\Event\DomainEventInterface;
-use Symfony\Component\Validator\Constraints\Ulid as UlidConstraint;
+use Symfony\Component\Validator\Constraints\Ulid;
 
 class ChildRequestedAGift extends AbstractLetterProcessingEvent implements DomainEventInterface
 {
     public function __construct(
-        #[UlidConstraint]
+        #[Ulid]
         public readonly string $childId,
-        #[UlidConstraint]
+        #[Ulid]
         public readonly string $letterId,
-        #[UlidConstraint]
+        #[Ulid]
         public readonly string $giftRequestId,
     ) {
         parent::__construct();

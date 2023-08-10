@@ -9,7 +9,6 @@ use App\Shared\Infrastructure\Symfony\ValidationConstraint\IsoCountryCodeConstra
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Ulid;
-use Symfony\Component\Validator\Constraints\Ulid as UlidConstraint;
 
 readonly class CreateLetter
 {
@@ -17,7 +16,7 @@ readonly class CreateLetter
         #[Ulid]
         public string $letterId,
 
-        #[UlidConstraint]
+        #[Ulid]
         public string $childId,
 
         #[DateTime(format: Letter::RECEIVING_DATE_FORMAT)]

@@ -10,6 +10,7 @@ use App\Shared\Domain\Exception\HttpStatusCode;
 use App\Shared\UserInterface\Http\JsonResponder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Uid\Ulid;
@@ -25,8 +26,8 @@ class CreateGiftRequestController extends AbstractController
     #[Route(
         path: '/children/{childUlid}/letters/{letterUlid}/gift-requests',
         requirements: ['childUlid' => Requirement::ULID, 'letterUlid' => Requirement::ULID],
-        methods: ['POST'])
-    ]
+        methods: [Request::METHOD_POST]
+    )]
     public function __invoke(
         string $childUlid,
         string $letterUlid,

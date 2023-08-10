@@ -6,16 +6,16 @@ namespace App\LetterProcessing\Shared\Domain;
 
 use App\Shared\Domain\Event\DomainEventInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Ulid as UlidConstraint;
+use Symfony\Component\Validator\Constraints\Ulid;
 
 class GiftRequestWasGranted extends AbstractLetterProcessingEvent implements DomainEventInterface
 {
     public function __construct(
-        #[UlidConstraint]
+        #[Ulid]
         public readonly string $childId,
-        #[UlidConstraint]
+        #[Ulid]
         public readonly string $letterId,
-        #[UlidConstraint]
+        #[Ulid]
         public readonly string $giftRequestId,
         #[NotBlank]
         public readonly string $giftName,

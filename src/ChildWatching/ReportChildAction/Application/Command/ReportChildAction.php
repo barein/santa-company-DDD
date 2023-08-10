@@ -10,7 +10,6 @@ use App\ChildWatching\Shared\Infrastructure\ValidationConstraint\ActionDescripti
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\Ulid;
-use Symfony\Component\Validator\Constraints\Ulid as UlidConstraint;
 
 readonly class ReportChildAction
 {
@@ -18,7 +17,7 @@ readonly class ReportChildAction
         #[Ulid]
         public string $actionId,
 
-        #[UlidConstraint]
+        #[Ulid]
         public string $childId,
 
         #[DateTime(format: Action::DATE_TIME_FORMAT)]

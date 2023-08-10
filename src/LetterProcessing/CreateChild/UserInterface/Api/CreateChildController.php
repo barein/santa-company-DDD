@@ -10,6 +10,7 @@ use App\Shared\Domain\Exception\HttpStatusCode;
 use App\Shared\UserInterface\Http\JsonResponder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Ulid;
 
@@ -21,7 +22,7 @@ class CreateChildController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/children', methods: ['POST'])]
+    #[Route(path: '/children', methods: [Request::METHOD_POST])]
     public function __invoke(CreateChildDto $dto): JsonResponse
     {
         $this->commandBus->command(new CreateChild(

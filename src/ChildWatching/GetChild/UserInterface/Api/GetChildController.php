@@ -11,6 +11,7 @@ use App\Shared\Domain\Exception\HttpStatusCode;
 use App\Shared\UserInterface\Http\JsonResponder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Uid\Ulid;
@@ -23,7 +24,7 @@ class GetChildController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/children/{id}', requirements: ['id' => Requirement::ULID], methods: ['GET'])]
+    #[Route(path: '/children/{id}', requirements: ['id' => Requirement::ULID], methods: [Request::METHOD_GET])]
     public function __invoke(
         Ulid $id,
         ApiVersion $apiVersion,
