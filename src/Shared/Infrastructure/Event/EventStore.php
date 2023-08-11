@@ -19,7 +19,7 @@ class EventStore implements EventStoreInterface
      * @param iterable<EventStoreInterface> $eventStores
      */
     public function __construct(
-        #[TaggedIterator(tag: EventStoreInterface::class, exclude: self::class)] iterable $eventStores,
+        #[TaggedIterator(tag: EventStoreInterface::class, exclude: self::class)] iterable $eventStores, // Todo: delete use of exclude option in Sf 6.3
     ) {
         $this->eventStores = $eventStores;
     }

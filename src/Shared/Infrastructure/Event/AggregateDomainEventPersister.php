@@ -9,14 +9,13 @@ use App\Shared\Domain\Event\EventStoreInterface;
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Event\PostLoadEventArgs;
 use Doctrine\ORM\Event\PrePersistEventArgs;
-use Doctrine\ORM\Event\PreRemoveEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class AggregateDomainEventPersister implements EventSubscriberInterface
 {
     public function __construct(
-        private EventStoreInterface $eventStore,
+        private readonly EventStoreInterface $eventStore,
     ) {
     }
 
@@ -25,12 +24,12 @@ class AggregateDomainEventPersister implements EventSubscriberInterface
         return [
             Events::postLoad,
             Events::prePersist,
-            Events::preRemove,
         ];
     }
 
     /**
-     * Already persisted aggregate root will use eventStore directly to dispatch event related to operation made on it or on child entities (except for root deletion)
+     * Already persisted aggregate root will use eventStore directly to dispatch events related to operation made on it
+     * or on child entities
      */
     public function postLoad(PostLoadEventArgs $args): void
     {
@@ -42,18 +41,10 @@ class AggregateDomainEventPersister implements EventSubscriberInterface
     }
 
     /**
-     * Persisting domain events here only work for Aggregate root creation, not child entities creation.
+     * Persisting domain events here only work at Aggregate root creation.
      * Hence, EventStore is injected at aggregate root postLoad.
      */
     public function prePersist(PrePersistEventArgs $args): void
-    {
-        $this->storeAggregateDomainEvents($args);
-    }
-
-    /**
-     * Only for aggregate root deletion
-     */
-    public function preRemove(PreRemoveEventArgs $args): void
     {
         $this->storeAggregateDomainEvents($args);
     }
