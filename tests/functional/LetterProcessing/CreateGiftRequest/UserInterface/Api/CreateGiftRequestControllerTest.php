@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\functional\LetterProcessing\CreateGiftRequest\UserInterface\Api;
 
-use App\LetterProcessing\Shared\Domain\ChildRequestedAGift;
-use App\LetterProcessing\Shared\Domain\GiftRequest;
-use App\LetterProcessing\Shared\Domain\GiftRequestStatus;
-use App\LetterProcessing\Shared\Domain\Letter;
+use App\LetterProcessing\Shared\Domain\GiftRequest\ChildRequestedAGift;
+use App\LetterProcessing\Shared\Domain\GiftRequest\GiftRequest;
+use App\LetterProcessing\Shared\Domain\GiftRequest\GiftRequestStatus;
+use App\LetterProcessing\Shared\Domain\Letter\Letter;
 use Doctrine\ORM\Persisters\Entity\EntityPersister;
 use Fixtures\Factory\LetterProcessing\ChildFactory;
 use Fixtures\Factory\LetterProcessing\GiftRequestFactory;

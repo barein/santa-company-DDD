@@ -19,4 +19,4 @@ parameters:
         - App\ChildWatching\Shared\UserInterface\ChildWatchingExposedService
       #ChildWatching context dependencies
       App\ChildWatching\CreateChild\Application\Command\CreateChildHandler:
-        - App\LetterProcessing\Shared\Domain\NewChildSentLetter
+        - App\LetterProcessing\Shared\Domain\Child\NewChildSentLetter

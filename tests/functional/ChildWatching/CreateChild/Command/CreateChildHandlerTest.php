@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\functional\ChildWatching\CreateChild\Command;
 
-use App\LetterProcessing\Shared\Domain\NewChildSentLetter;
+use App\LetterProcessing\Shared\Domain\Child\NewChildSentLetter;
 use Fixtures\Factory\ChildWatching\ChildFactory;
 use Symfony\Component\Uid\Ulid;
 use Tests\functional\AbstractEventConsumerFunctionalTestCase;

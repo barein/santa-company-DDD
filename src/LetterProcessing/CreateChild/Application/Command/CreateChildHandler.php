@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\LetterProcessing\CreateChild\Application\Command;
 
-use App\LetterProcessing\Shared\Domain\Child;
-use App\LetterProcessing\Shared\Domain\ChildRepositoryInterface;
+use App\LetterProcessing\Shared\Domain\Child\Child;
+use App\LetterProcessing\Shared\Domain\Child\ChildRepositoryInterface;
 use App\Shared\Domain\Address;
 use App\Shared\Domain\Exception\InvalidArgumentException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\Shared\Domain;
+namespace App\LetterProcessing\Shared\Domain\GiftRequest;
 
 use App\Shared\Domain\Exception\LogicException;
 
-class LetterAlreadySentThisYearException extends LogicException
+class GiftAlreadyRequestedInLetterException extends LogicException
 {
     /** @phpstan-ignore-next-line */
-    private const DEFAULT_ERROR_CODE = 'LETTER_ALREADY_SENT_THIS_YEAR';
+    private const DEFAULT_ERROR_CODE = 'GIFT_ALREADY_REQUESTED_IN_LETTER';
 
     public function __construct(string $message)
     {

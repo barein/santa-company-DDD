@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\Shared\Domain;
+namespace App\LetterProcessing\Shared\Domain\GiftRequest;
 
+use App\LetterProcessing\Shared\Domain\Letter\Letter;
 use App\Shared\Infrastructure\Doctrine\DBAL\Type\UlidType;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;

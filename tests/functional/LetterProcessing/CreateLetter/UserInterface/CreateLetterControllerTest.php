@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\functional\LetterProcessing\CreateLetter\UserInterface;
 
-use App\LetterProcessing\Shared\Domain\Child;
-use App\LetterProcessing\Shared\Domain\Letter;
+use App\LetterProcessing\Shared\Domain\Child\Child;
+use App\LetterProcessing\Shared\Domain\Letter\Letter;
 use Doctrine\ORM\Persisters\Entity\EntityPersister;
 use Fixtures\Factory\LetterProcessing\ChildFactory;
 use Fixtures\Factory\LetterProcessing\LetterFactory;

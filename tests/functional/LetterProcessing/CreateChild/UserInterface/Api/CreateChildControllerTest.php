@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\functional\LetterProcessing\CreateChild\UserInterface\Api;
 
-use App\LetterProcessing\Shared\Domain\Child;
-use App\LetterProcessing\Shared\Domain\NewChildSentLetter;
+use App\LetterProcessing\Shared\Domain\Child\Child;
+use App\LetterProcessing\Shared\Domain\Child\NewChildSentLetter;
 use Fixtures\Factory\LetterProcessing\ChildFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Tests\functional\AbstractFunctionalTestCase;

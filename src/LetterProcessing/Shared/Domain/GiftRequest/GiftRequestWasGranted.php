@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\Shared\Domain;
+namespace App\LetterProcessing\Shared\Domain\GiftRequest;
 
+use App\LetterProcessing\Shared\Domain\AbstractLetterProcessingEvent;
 use App\Shared\Domain\Event\DomainEventInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Ulid;

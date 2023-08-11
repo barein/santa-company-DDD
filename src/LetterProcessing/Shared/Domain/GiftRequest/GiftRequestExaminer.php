@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\Shared\Domain;
+namespace App\LetterProcessing\Shared\Domain\GiftRequest;
 
+use App\LetterProcessing\Shared\Domain\Child\Child;
+use App\LetterProcessing\Shared\Domain\ChildWatchingGatewayInterface;
+use App\LetterProcessing\Shared\Domain\SantaList;
 use App\Shared\Domain\Exception\ExternalDependencyFailedException;
 use App\Shared\Domain\Exception\NotFoundException;
 use Symfony\Component\Uid\Ulid;

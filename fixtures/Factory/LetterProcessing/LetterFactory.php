@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Fixtures\Factory\LetterProcessing;
 
-use App\LetterProcessing\Shared\Domain\Letter;
+use App\LetterProcessing\Shared\Domain\Letter\Letter;
 use App\Shared\Domain\Address;
 use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\ModelFactory;

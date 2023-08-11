@@ -2,8 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\Shared\Domain;
+namespace App\LetterProcessing\Shared\Domain\Letter;
 
+use App\LetterProcessing\Shared\Domain\Child\Child;
+use App\LetterProcessing\Shared\Domain\GiftRequest\GiftAlreadyRequestedInLetterException;
+use App\LetterProcessing\Shared\Domain\GiftRequest\GiftRequest;
+use App\LetterProcessing\Shared\Domain\GiftRequest\MaximumNumberOfGiftRequestPerLetterReachedException;
 use App\Shared\Domain\Address;
 use App\Shared\Domain\Exception\NotFoundException;
 use App\Shared\Infrastructure\Doctrine\DBAL\Type\UlidType;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Fixtures\Factory\LetterProcessing;
 
-use App\LetterProcessing\Shared\Domain\GiftRequest;
+use App\LetterProcessing\Shared\Domain\GiftRequest\GiftRequest;
 use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;

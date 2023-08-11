@@ -2,9 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\Shared\Domain;
+namespace App\LetterProcessing\Shared\Domain\Child;
 
-use App\LetterProcessing\Shared\Infrastructure\DoctrineChildRepository;
+use App\LetterProcessing\Shared\Domain\GiftRequest\ChildRequestedAGift;
+use App\LetterProcessing\Shared\Domain\GiftRequest\GiftAlreadyRequestedInLetterException;
+use App\LetterProcessing\Shared\Domain\GiftRequest\GiftRequestWasGranted;
+use App\LetterProcessing\Shared\Domain\GiftRequest\MaximumNumberOfGiftRequestPerLetterReachedException;
+use App\LetterProcessing\Shared\Domain\Letter\Letter;
+use App\LetterProcessing\Shared\Domain\Letter\LetterAlreadySentThisYearException;
+use App\LetterProcessing\Shared\Infrastructure\Child\DoctrineChildRepository;
 use App\Shared\Domain\Address;
 use App\Shared\Domain\Event\AggregateRoot;
 use App\Shared\Domain\Exception\NotFoundException;

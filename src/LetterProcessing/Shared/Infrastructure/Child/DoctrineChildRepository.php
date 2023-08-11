@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\Shared\Infrastructure;
+namespace App\LetterProcessing\Shared\Infrastructure\Child;
 
-use App\LetterProcessing\Shared\Domain\Child;
-use App\LetterProcessing\Shared\Domain\ChildRepositoryInterface;
+use App\LetterProcessing\Shared\Domain\Child\Child;
+use App\LetterProcessing\Shared\Domain\Child\ChildRepositoryInterface;
 use App\Shared\Domain\Exception\NotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

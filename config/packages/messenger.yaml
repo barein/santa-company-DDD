@@ -40,9 +40,9 @@ framework:
               - doctrine_transaction
 
         routing:
-          App\LetterProcessing\Shared\Domain\NewChildSentLetter: global_queue
-          App\LetterProcessing\Shared\Domain\ChildRequestedAGift: letter_processing_queue
-          App\LetterProcessing\Shared\Domain\GiftRequestWasGranted: global_queue
+          App\LetterProcessing\Shared\Domain\Child\NewChildSentLetter: global_queue
+          App\LetterProcessing\Shared\Domain\GiftRequest\ChildRequestedAGift: letter_processing_queue
+          App\LetterProcessing\Shared\Domain\GiftRequest\GiftRequestWasGranted: global_queue
 
 when@test:
     framework:

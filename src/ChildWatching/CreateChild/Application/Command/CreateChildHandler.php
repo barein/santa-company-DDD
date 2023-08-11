@@ -7,7 +7,7 @@ namespace App\ChildWatching\CreateChild\Application\Command;
 use App\ChildWatching\Shared\Domain\Child;
 use App\ChildWatching\Shared\Domain\ChildAlreadyCreatedException;
 use App\ChildWatching\Shared\Domain\ChildRepositoryInterface;
-use App\LetterProcessing\Shared\Domain\NewChildSentLetter;
+use App\LetterProcessing\Shared\Domain\Child\NewChildSentLetter;
 use App\Shared\Domain\Address;
 use App\Shared\Domain\Exception\InvalidArgumentException;
 use App\Shared\Domain\Exception\NotFoundException;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\Shared\Domain;
+namespace App\LetterProcessing\Shared\Domain\Child;
 
 use App\Shared\Domain\Exception\NotFoundException;
 use Symfony\Component\Uid\Ulid;

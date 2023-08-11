@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\LetterProcessing\Shared\Domain;
+namespace App\LetterProcessing\Shared\Domain\GiftRequest;
 
 use App\Shared\Domain\Exception\LogicException;
 
-class GiftAlreadyRequestedInLetterException extends LogicException
+class MaximumNumberOfGiftRequestPerLetterReachedException extends LogicException
 {
     /** @phpstan-ignore-next-line */
-    private const DEFAULT_ERROR_CODE = 'GIFT_ALREADY_REQUESTED_IN_LETTER';
+    private const DEFAULT_ERROR_CODE = 'MAXIMUM_NUMBER_OF_GIFT_REQUEST_PER_LETTER';
 
     public function __construct(string $message)
     {

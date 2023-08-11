@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\functional\LetterProcessing\ExamineGiftRequest\Application\Command;
 
-use App\LetterProcessing\Shared\Domain\ChildRequestedAGift;
 use App\LetterProcessing\Shared\Domain\ChildWatchingGatewayInterface;
-use App\LetterProcessing\Shared\Domain\GiftRequestStatus;
+use App\LetterProcessing\Shared\Domain\GiftRequest\ChildRequestedAGift;
+use App\LetterProcessing\Shared\Domain\GiftRequest\GiftRequestStatus;
 use App\LetterProcessing\Shared\Domain\SantaList;
 use App\Shared\Domain\Exception\ExternalDependencyFailedException;
 use Fixtures\Factory\LetterProcessing\ChildFactory;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Fixtures\Factory\LetterProcessing;
 
-use App\LetterProcessing\Shared\Domain\Child;
-use App\LetterProcessing\Shared\Infrastructure\DoctrineChildRepository;
+use App\LetterProcessing\Shared\Domain\Child\Child;
+use App\LetterProcessing\Shared\Infrastructure\Child\DoctrineChildRepository;
 use App\Shared\Domain\Address;
 use Symfony\Component\Uid\Ulid;
 use Zenstruck\Foundry\ModelFactory;

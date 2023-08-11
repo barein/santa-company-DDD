@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\LetterProcessing\Shared\Infrastructure;
 
 use App\ChildWatching\Shared\UserInterface\ChildWatchingExposedService;
-use App\LetterProcessing\Shared\Domain\Child;
+use App\LetterProcessing\Shared\Domain\Child\Child;
 use App\LetterProcessing\Shared\Domain\ChildWatchingGatewayInterface;
 use App\LetterProcessing\Shared\Domain\ChildWatchingToLetterProcessingTranslator;
 use App\LetterProcessing\Shared\Domain\SantaList;

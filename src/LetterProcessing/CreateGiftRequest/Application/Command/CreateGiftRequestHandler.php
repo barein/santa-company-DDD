@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\LetterProcessing\CreateGiftRequest\Application\Command;
 
-use App\LetterProcessing\Shared\Domain\ChildRepositoryInterface;
-use App\LetterProcessing\Shared\Domain\GiftAlreadyRequestedInLetterException;
-use App\LetterProcessing\Shared\Domain\MaximumNumberOfGiftRequestPerLetterReachedException;
+use App\LetterProcessing\Shared\Domain\Child\ChildRepositoryInterface;
+use App\LetterProcessing\Shared\Domain\GiftRequest\GiftAlreadyRequestedInLetterException;
+use App\LetterProcessing\Shared\Domain\GiftRequest\MaximumNumberOfGiftRequestPerLetterReachedException;
 use App\Shared\Domain\Exception\NotFoundException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Uid\Ulid;

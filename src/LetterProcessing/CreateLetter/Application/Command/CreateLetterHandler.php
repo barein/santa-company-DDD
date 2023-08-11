@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\LetterProcessing\CreateLetter\Application\Command;
 
-use App\LetterProcessing\Shared\Domain\ChildRepositoryInterface;
-use App\LetterProcessing\Shared\Domain\Letter;
-use App\LetterProcessing\Shared\Domain\LetterAlreadySentThisYearException;
+use App\LetterProcessing\Shared\Domain\Child\ChildRepositoryInterface;
+use App\LetterProcessing\Shared\Domain\Letter\Letter;
+use App\LetterProcessing\Shared\Domain\Letter\LetterAlreadySentThisYearException;
 use App\Shared\Domain\Address;
 use App\Shared\Domain\Exception\InvalidArgumentException;
 use App\Shared\Domain\Exception\LogicException;

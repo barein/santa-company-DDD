@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\LetterProcessing\ExamineGiftRequest\Application\Command;
 
-use App\LetterProcessing\Shared\Domain\ChildRepositoryInterface;
-use App\LetterProcessing\Shared\Domain\ChildRequestedAGift;
-use App\LetterProcessing\Shared\Domain\GiftRequestExaminer;
+use App\LetterProcessing\Shared\Domain\Child\ChildRepositoryInterface;
+use App\LetterProcessing\Shared\Domain\GiftRequest\ChildRequestedAGift;
+use App\LetterProcessing\Shared\Domain\GiftRequest\GiftRequestExaminer;
 use App\Shared\Domain\Exception\ExternalDependencyFailedException;
 use App\Shared\Domain\Exception\NotFoundException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
