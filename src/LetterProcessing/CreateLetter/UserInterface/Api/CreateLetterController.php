@@ -7,7 +7,7 @@ namespace App\LetterProcessing\CreateLetter\UserInterface\Api;
 use App\LetterProcessing\CreateLetter\Application\Command\CreateLetter;
 use App\Shared\Application\Bus\CommandBusInterface;
 use App\Shared\Domain\Exception\HttpStatusCode;
-use App\Shared\UserInterface\Http\JsonResponder;
+use App\Shared\UserInterface\Api\JsonResponder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

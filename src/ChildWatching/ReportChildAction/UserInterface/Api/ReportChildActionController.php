@@ -7,7 +7,7 @@ namespace App\ChildWatching\ReportChildAction\UserInterface\Api;
 use App\ChildWatching\ReportChildAction\Application\Command\ReportChildAction;
 use App\Shared\Application\Bus\CommandBusInterface;
 use App\Shared\Domain\Exception\HttpStatusCode;
-use App\Shared\UserInterface\Http\JsonResponder;
+use App\Shared\UserInterface\Api\JsonResponder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

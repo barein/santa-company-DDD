@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\UserInterface\Http;
+namespace App\Shared\UserInterface\Api;
 
 use App\Shared\Domain\Exception\AttributeParamValidationException;
 use App\Shared\Domain\Exception\InvalidArgumentException;

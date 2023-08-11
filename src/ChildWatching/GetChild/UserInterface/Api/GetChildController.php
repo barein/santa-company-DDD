@@ -8,7 +8,7 @@ use App\ChildWatching\GetChild\Application\Query\GetChild;
 use App\Shared\Application\ApiVersion;
 use App\Shared\Application\Bus\QueryBusInterface;
 use App\Shared\Domain\Exception\HttpStatusCode;
-use App\Shared\UserInterface\Http\JsonResponder;
+use App\Shared\UserInterface\Api\JsonResponder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
