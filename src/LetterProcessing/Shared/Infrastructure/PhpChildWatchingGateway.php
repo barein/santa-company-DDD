@@ -7,6 +7,7 @@ namespace App\LetterProcessing\Shared\Infrastructure;
 use App\ChildWatching\Shared\UserInterface\ChildWatchingExposedService;
 use App\LetterProcessing\Shared\Domain\Child;
 use App\LetterProcessing\Shared\Domain\ChildWatchingGatewayInterface;
+use App\LetterProcessing\Shared\Domain\ChildWatchingToLetterProcessingTranslator;
 use App\LetterProcessing\Shared\Domain\SantaList;
 use App\Shared\Application\ApiVersion;
 use App\Shared\Domain\Exception\ExternalDependencyFailedException;
