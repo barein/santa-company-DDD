@@ -6,6 +6,7 @@ namespace App\Shared\Infrastructure\Messenger;
 
 use App\Shared\Domain\Event\DomainEventInterface;
 use App\Shared\Domain\Exception\UnexpectedException;
+use Ds\Vector;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Messenger\Envelope;
@@ -32,7 +33,9 @@ class DomainEventJsonSerializer implements SerializerInterface
     public function decode(array $encodedEnvelope): Envelope
     {
         if (empty($encodedEnvelope['body']) || empty($encodedEnvelope['headers'])) {
-            throw new MessageDecodingFailedException('Encoded envelope should have at least a "body" and some "headers", or maybe you should implement your own serializer.');
+            throw new MessageDecodingFailedException(
+                'Encoded envelope should have at least a "body" and some "headers".'
+            );
         }
 
         if (empty($encodedEnvelope['headers']['name'])) {
@@ -48,19 +51,16 @@ class DomainEventJsonSerializer implements SerializerInterface
         }
 
         $stamps = $this->decodeStamps($encodedEnvelope);
-        $busNameStampExist = \in_array(
-            true,
-            array_map(
-                fn (StampInterface $stamp) => $stamp instanceof BusNameStamp,
-                $stamps,
-            )
-        );
+        $busNameStampExist = (new Vector($stamps))
+            ->map(fn (StampInterface $stamp) => $stamp instanceof BusNameStamp)
+            ->contains(true);
+
         if ($busNameStampExist === false) {
             $stamps[] = new BusNameStamp('event.bus');
         }
 
         try {
-            $eventClass = $this->findEventClassFrom(
+            $eventClass = $this->findDomainEventClassFrom(
                 (string) $encodedEnvelope['headers']['name'],
                 (int) $encodedEnvelope['headers']['version'],
                 (string) $encodedEnvelope['headers']['context'],
@@ -87,13 +87,18 @@ class DomainEventJsonSerializer implements SerializerInterface
         if (!$message instanceof DomainEventInterface) {
             throw new UnexpectedException(sprintf(
                 'Message %s should be an instance of %s to be dispatched in json',
-                \get_class($envelope->getMessage()),
+                \get_class($message),
                 DomainEventInterface::class,
             ));
         }
 
-        $envelope = $envelope->withoutStampsOfType(NonSendableStampInterface::class);
-        $headers = ['name' => $message->getName(), 'version' => $message->getVersion(), 'context' => $message->getContext()] + $this->encodeStamps($envelope);
+        $envelopeWithOnlySendableStamps = $envelope->withoutStampsOfType(NonSendableStampInterface::class);
+        $headers = [
+            'name' => $message->getName(),
+            'version' => $message->getVersion(),
+            'context' => $message->getContext(),
+            'Content-Type' => 'application/json',
+            ] + $this->encodeStamps($envelopeWithOnlySendableStamps);
 
         return [
             'body' => $this->serializer->serialize($message, 'json'),
@@ -133,8 +138,6 @@ class DomainEventJsonSerializer implements SerializerInterface
     /**
      * @see Symfony\Component\Messenger\Transport\Serialization\Serializer
      *
-     * @param Envelope $envelope
-     *
      * @return array<string, string>
      */
     private function encodeStamps(Envelope $envelope): array
@@ -151,7 +154,7 @@ class DomainEventJsonSerializer implements SerializerInterface
         return $headers;
     }
 
-    private function findEventClassFrom(string $name, int $version, string $context): string
+    private function findDomainEventClassFrom(string $name, int $version, string $context): string
     {
         $domainFiles = (new Finder())->files()->in(sprintf('%s/src/*/Shared/Domain', $this->projectDir));
 

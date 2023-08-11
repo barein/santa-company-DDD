@@ -12,12 +12,12 @@ use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 
-class DomainEventDispatcher implements MiddlewareInterface
+readonly class DomainEventDispatcher implements MiddlewareInterface
 {
     public function __construct(
-        private readonly EventsToDispatchTrackerInterface $eventsToDispatchTracker,
-        private readonly DispatchedEventsTrackerInterface $dispatchedEventsTracker,
-        private readonly EventBusInterface $eventBus,
+        private EventsToDispatchTrackerInterface $eventsToDispatchTracker,
+        private DispatchedEventsTrackerInterface $dispatchedEventsTracker,
+        private EventBusInterface $eventBus,
     ) {
     }
 
