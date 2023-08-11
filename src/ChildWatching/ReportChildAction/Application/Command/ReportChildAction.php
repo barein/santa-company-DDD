@@ -6,7 +6,7 @@ namespace App\ChildWatching\ReportChildAction\Application\Command;
 
 use App\ChildWatching\Shared\Domain\Action;
 use App\ChildWatching\Shared\Domain\ActionType;
-use App\ChildWatching\Shared\Infrastructure\ValidationConstraint\ActionDescriptionConstraint;
+use App\ChildWatching\Shared\Infrastructure\Symfony\ValidationConstraint\ActionDescriptionConstraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\Ulid;

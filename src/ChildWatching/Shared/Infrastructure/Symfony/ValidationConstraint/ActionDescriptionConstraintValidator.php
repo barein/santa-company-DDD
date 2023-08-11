@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\ChildWatching\Shared\Infrastructure\ValidationConstraint;
+namespace App\ChildWatching\Shared\Infrastructure\Symfony\ValidationConstraint;
 
 use App\ChildWatching\Shared\Domain\ActionDescription;
 use App\Shared\Domain\Exception\InvalidArgumentException;
