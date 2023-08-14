@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\functional;
 
 use App\Shared\Domain\Event\EventsToDispatchTrackerInterface;
-use App\Shared\Domain\Event\StoredEvent;
 use App\Shared\Infrastructure\Event\DoctrineEventStore;
+use App\Shared\Infrastructure\Event\StoredEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Persisters\Entity\EntityPersister;
 use Doctrine\Persistence\ManagerRegistry;

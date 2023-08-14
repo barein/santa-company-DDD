@@ -7,7 +7,6 @@ namespace App\Shared\Infrastructure\Event;
 use App\Shared\Domain\Event\DispatchedEventsTrackerInterface;
 use App\Shared\Domain\Event\DomainEventInterface;
 use App\Shared\Domain\Event\EventStoreInterface;
-use App\Shared\Domain\Event\StoredEvent;
 use App\Shared\Domain\Exception\InvalidArgumentException;
 use App\Shared\Domain\Exception\NotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
