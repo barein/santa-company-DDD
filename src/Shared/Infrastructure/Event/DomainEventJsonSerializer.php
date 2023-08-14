@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Infrastructure\Messenger;
+namespace App\Shared\Infrastructure\Event;
 
 use App\Shared\Domain\Event\DomainEventInterface;
 use App\Shared\Domain\Exception\UnexpectedException;

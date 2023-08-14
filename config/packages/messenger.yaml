@@ -5,7 +5,7 @@ framework:
         transports:
              global_queue:
                  dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-                 serializer: App\Shared\Infrastructure\Messenger\DomainEventJsonSerializer
+                 serializer: App\Shared\Infrastructure\Event\DomainEventJsonSerializer
                  options:
                     table_name: 'global_queue'
              letter_processing_queue:
