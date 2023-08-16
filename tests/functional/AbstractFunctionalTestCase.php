@@ -6,6 +6,8 @@ namespace Tests\functional;
 
 use App\Shared\Domain\Event\EventsToDispatchTrackerInterface;
 use App\Shared\Infrastructure\Event\DoctrineEventStore;
+use App\Shared\Infrastructure\Event\DoctrineReceivedEventStore;
+use App\Shared\Infrastructure\Event\ReceivedEvent;
 use App\Shared\Infrastructure\Event\StoredEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Persisters\Entity\EntityPersister;
@@ -25,6 +27,8 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
 
     protected DoctrineEventStore $doctrineEventStore;
 
+    private DoctrineReceivedEventStore $doctrineReceivedEventStore;
+
     private InMemoryTransport $globalQueue;
 
     private InMemoryTransport $letterProcessingContextQueue;
@@ -35,6 +39,7 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
     {
         $this->client = static::createClient();
         $this->doctrineEventStore = static::getContainer()->get(DoctrineEventStore::class);
+        $this->doctrineReceivedEventStore = static::getContainer()->get(DoctrineReceivedEventStore::class);
         $this->globalQueue = static::getContainer()->get('messenger.transport.global_queue');
         $this->letterProcessingContextQueue = static::getContainer()->get('messenger.transport.letter_processing_queue');
         unset($this->initialNumberOfEventStored);
@@ -75,6 +80,28 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
     protected function numberOfEventStoredShouldNotHaveChanged(): void
     {
         $this->numberOfEventStoredShouldHaveIncreasedBy(0);
+    }
+
+    protected function receivedEventStoreShouldContainThisNumberOfEvent(int $numberOfEvent): void
+    {
+        self::assertEquals($numberOfEvent, $this->doctrineReceivedEventStore->count([]));
+    }
+
+    protected function receivedEventStoreShouldBeEmpty(): void
+    {
+        $this->receivedEventStoreShouldContainThisNumberOfEvent(0);
+    }
+
+    protected function getLastReceivedEvent(): ReceivedEvent
+    {
+        /** @var ReceivedEvent[] $receivedEvents */
+        $receivedEvents = $this->doctrineReceivedEventStore->findAll();
+
+        if (\count($receivedEvents) === 0) {
+            throw new \RuntimeException('Impossible to get last received event if received event store is empty');
+        }
+
+        return $receivedEvents[array_key_last($receivedEvents)];
     }
 
     protected function globalQueueShouldContainThisNumberOfMessage(int $numberOfMessage): void

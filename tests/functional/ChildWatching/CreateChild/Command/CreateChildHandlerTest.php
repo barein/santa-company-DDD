@@ -16,8 +16,11 @@ class CreateChildHandlerTest extends AbstractEventConsumerFunctionalTestCase
         // Given no child has been created
         self::assertEquals(0, ChildFactory::repository()->count());
 
-        // When the event notifying that a new child was created since he sent a letter is dispatched
-        $this->eventBus->dispatch(new NewChildSentLetter(
+        $this->globalQueueShouldBeEmpty();
+        $this->receivedEventStoreShouldBeEmpty();
+
+        // When the event notifying that a new child was created, since he sent a letter, is dispatched
+        $newChildSentLetter = new NewChildSentLetter(
             childId: (string) new Ulid(),
             firstName: 'toto',
             lastName: 'Tata',
@@ -26,7 +29,8 @@ class CreateChildHandlerTest extends AbstractEventConsumerFunctionalTestCase
             city: 'San Francisco',
             zipCode: 55555,
             isoCountryCode: 'USA',
-        ));
+        );
+        $this->eventBus->dispatch($newChildSentLetter);
 
         $this->globalQueueShouldContainThisNumberOfMessage(1);
 
@@ -40,6 +44,11 @@ class CreateChildHandlerTest extends AbstractEventConsumerFunctionalTestCase
         $this->commandTester->assertCommandIsSuccessful();
 
         $this->globalQueueShouldBeEmpty();
+        $this->receivedEventStoreShouldContainThisNumberOfEvent(1);
+
+        // And the id of the last received event should be the same as the dispatched event
+        $lastReceivedEvent = $this->getLastReceivedEvent();
+        self::assertEquals($newChildSentLetter->getId(), $lastReceivedEvent->getId());
 
         // And a child should have created
         self::assertEquals(1, ChildFactory::repository()->count());
@@ -53,7 +62,7 @@ class CreateChildHandlerTest extends AbstractEventConsumerFunctionalTestCase
 
         // When the event notifying that a new child was created since he sent a letter is dispatched
         // And the event contains the previously created child id
-        $this->eventBus->dispatch(new NewChildSentLetter(
+        $newChildSentLetter = new NewChildSentLetter(
             childId: (string) $child->getId(),
             firstName: 'toto',
             lastName: 'Tata',
@@ -62,7 +71,8 @@ class CreateChildHandlerTest extends AbstractEventConsumerFunctionalTestCase
             city: 'San Francisco',
             zipCode: 55555,
             isoCountryCode: 'USA',
-        ));
+        );
+        $this->eventBus->dispatch($newChildSentLetter);
 
         $this->globalQueueShouldContainThisNumberOfMessage(1);
 
@@ -74,5 +84,10 @@ class CreateChildHandlerTest extends AbstractEventConsumerFunctionalTestCase
 
         // Then no child should be created
         self::assertEquals(1, ChildFactory::repository()->count());
+
+        // And the id of the last received event should be the same as the dispatched event
+        $lastReceivedEvent = $this->getLastReceivedEvent();
+        self::assertEquals($newChildSentLetter->getId(), $lastReceivedEvent->getId());
+        self::assertNotNull($lastReceivedEvent->getExceptionsLog());
     }
 }

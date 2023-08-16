@@ -92,6 +92,6 @@ readonly class ReceivedEventTracker implements MiddlewareInterface
             $contexts[] = (string) (new UnicodeString($matches['context']))->snake();
         }
 
-        return $contexts;
+        return array_unique($contexts);
     }
 }
