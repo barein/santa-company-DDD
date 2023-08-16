@@ -24,6 +24,11 @@ class AbstractLetterProcessingEvent
         return (string) $this->id;
     }
 
+    public function setId(Ulid $id): void
+    {
+        $this->id = $id;
+    }
+
     public static function getContext(): string
     {
         return 'letter_processing';
@@ -32,5 +37,10 @@ class AbstractLetterProcessingEvent
     public function getOccurredOn(): string
     {
         return $this->occurredOn->format(DomainEventInterface::OCCURRED_ON_FORMAT);
+    }
+
+    public function setOccurredOn(\DateTimeImmutable $occurredOn): void
+    {
+        $this->occurredOn = $occurredOn;
     }
 }

@@ -14,6 +14,14 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Uid\Ulid;
 
+/**
+ * @extends ServiceEntityRepository<StoredEvent>
+ *
+ * @method null|StoredEvent find($id, $lockMode = null, $lockVersion = null)
+ * @method null|StoredEvent findOneBy(array $criteria, array $orderBy = null)
+ * @method StoredEvent[]    findAll()
+ * @method StoredEvent[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
 class DoctrineEventStore extends ServiceEntityRepository implements EventStoreInterface, DispatchedEventsTrackerInterface
 {
     public function __construct(
@@ -37,10 +45,10 @@ class DoctrineEventStore extends ServiceEntityRepository implements EventStoreIn
 
         $storedEvent = new StoredEvent(
             id: new Ulid($domainEvent->getId()),
-            name: $domainEvent->getName(),
-            context: $domainEvent->getContext(),
+            name: $domainEvent::getName(),
+            context: $domainEvent::getContext(),
             occurredOn: $eventOccurredOn,
-            version: $domainEvent->getVersion(),
+            version: $domainEvent::getVersion(),
             body : $this->serializer->serialize($domainEvent, 'json'),
         );
 

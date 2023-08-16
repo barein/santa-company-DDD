@@ -35,6 +35,7 @@ framework:
           event.bus:
             default_middleware: allow_no_handlers
             middleware:
+              - App\Shared\Infrastructure\Event\ReceivedEventTracker
               - App\Shared\Infrastructure\Event\DomainEventDispatcher
               - validation
               - doctrine_transaction
