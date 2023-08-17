@@ -30,10 +30,15 @@ doctrine:
                 dir: '%kernel.project_dir%/src/LetterProcessing/Shared/Domain'
                 prefix: 'App\LetterProcessing\Shared\Domain'
                 alias: LetterProcessing
+            SharedDomain:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Shared/Domain'
+                prefix: 'App\Shared\Domain'
+                alias: SharedDomain
             DomainEvent:
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Shared/Domain/Event'
-                prefix: 'App\Shared\Domain'
+                dir: '%kernel.project_dir%/src/Shared/Infrastructure/Event'
+                prefix: 'App\Shared\Infrastructure\Event'
                 alias: DomainEvent
 
 when@test:

@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Domain\Event;
+namespace App\Shared\Infrastructure\Event;
 
 use App\Shared\Infrastructure\Doctrine\DBAL\Type\UlidType;
-use App\Shared\Infrastructure\Event\DoctrineEventStore;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;
 

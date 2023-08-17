@@ -12,6 +12,7 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
+use Symfony\Component\String\UnicodeString;
 
 final class ExceptionSubscriber implements EventSubscriberInterface
 {
@@ -85,7 +86,7 @@ final class ExceptionSubscriber implements EventSubscriberInterface
 
     private function fromPascalCaseToUpperCaseSnakeCase(string $text): string
     {
-        return ctype_upper($text) ? $text : strtoupper((string) preg_replace('#([a-z])([A-Z])#', '$1_$2', $text));
+        return (string) (new UnicodeString($text))->snake();
     }
 
     private function extractClassName(object $object): string

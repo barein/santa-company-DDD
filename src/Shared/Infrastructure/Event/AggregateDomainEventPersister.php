@@ -12,10 +12,10 @@ use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
-class AggregateDomainEventPersister implements EventSubscriberInterface
+readonly class AggregateDomainEventPersister implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly EventStoreInterface $eventStore,
+        private EventStoreInterface $eventStore,
     ) {
     }
 
