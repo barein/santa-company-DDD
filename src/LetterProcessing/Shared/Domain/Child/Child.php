@@ -117,15 +117,22 @@ class Child extends AggregateRoot
         $this->letters->add($newLetter);
 
         if (!$this->address->equal($newLetter->getSenderAddress())) {
-            $this->updateAdress($newLetter->getSenderAddress());
+            $this->updateAddress($newLetter->getSenderAddress());
         }
     }
 
-    private function updateAdress(Address $address): self
+    private function updateAddress(Address $address): void
     {
         $this->address = $address;
 
-        return $this;
+        $this->raiseEvent(new ChildMoved(
+            childId: (string) $this->id,
+            streetNumber: $address->getNumber(),
+            streetName: $address->getStreet(),
+            city: $address->getCity(),
+            zipCode: $address->getZipCode(),
+            isoCountryCode: $address->getIsoCountryCode()->getValue(),
+        ));
     }
 
     /**

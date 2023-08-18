@@ -37,6 +37,43 @@ class CreateLetterControllerTest extends AbstractFunctionalTestCase
         // When I create a child with a valid payload
         $requestContent = [
             'receivingDate' => '2023-06-12',
+            'senderStreetNumber' => $child->getAddress()->getNumber(),
+            'senderStreet' => $child->getAddress()->getStreet(),
+            'senderCity' => $child->getAddress()->getCity(),
+            'senderZipCode' => $child->getAddress()->getZipCode(),
+            'senderIsoCountryCode' => $child->getAddress()->getIsoCountryCode()->getValue(),
+        ];
+
+        $this->client->request(
+            method: Request::METHOD_POST,
+            uri: sprintf('/children/%s/letters', $child->getId()),
+            content: json_encode($requestContent, JSON_THROW_ON_ERROR),
+        );
+
+        // I should get a response with status code 201
+        self::assertResponseStatusCodeSame(201);
+
+        // And a letter should be linked to this child
+        $this->assertNumberOfLetterLinkedToChildEquals($child->object(), 1);
+
+        $this->numberOfEventStoredShouldNotHaveChanged();
+        $this->globalQueueShouldBeEmpty();
+    }
+
+    public function testCreateLetterSuccessfullyWhenChildSendLetterFromNewAddress(): void
+    {
+        // Given a child exists
+        $child = ChildFactory::createOne();
+        $this->emptyEventsToDispatchList();
+
+        // And this child never sent a letter
+        $this->assertNoLetterIsLinkedToChild($child->object());
+
+        $this->givenAnInitialNumberOfStoredEvent();
+
+        // When I create a child with a valid payload
+        $requestContent = [
+            'receivingDate' => '2023-06-12',
             'senderStreetNumber' => 45,
             'senderStreet' => 'Coconut avenue',
             'senderCity' => 'San Fransisco',
@@ -56,8 +93,8 @@ class CreateLetterControllerTest extends AbstractFunctionalTestCase
         // And a letter should be linked to this child
         $this->assertNumberOfLetterLinkedToChildEquals($child->object(), 1);
 
-        $this->numberOfEventStoredShouldNotHaveChanged();
-        $this->globalQueueShouldBeEmpty();
+        $this->numberOfEventStoredShouldHaveIncreasedBy(1);
+        $this->globalQueueShouldContainThisNumberOfMessage(1);
     }
 
     /**

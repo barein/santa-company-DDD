@@ -116,8 +116,8 @@ class ReceivedEvent
     {
         $this->exceptionsLog .=
             $this->exceptionsLog === null ?
-            sprintf('%s: %s', get_class($exception), $exception->getMessage()) :
-            sprintf(' | %s: %s', get_class($exception), $exception->getMessage());
+            sprintf('%s: %s', \get_class($exception), $exception->getMessage()) :
+            sprintf(' | %s: %s', \get_class($exception), $exception->getMessage());
     }
 
     public function getExceptionsLog(): ?string
