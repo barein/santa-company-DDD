@@ -52,4 +52,14 @@ class Child
     ): Action {
         return new Action($actionId, $this->getId(), $dateTime, $description, $type);
     }
+
+    public function movedTo(Address $address): void
+    {
+        $this->address = $address;
+    }
+
+    public function getAddress(): Address
+    {
+        return $this->address;
+    }
 }
