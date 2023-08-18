@@ -44,4 +44,9 @@ class IsoCountryCode
             throw new InvalidArgumentException('ISO country code should contain 3 capital letters');
         }
     }
+
+    public function equal(IsoCountryCode $isoCountryCode): bool
+    {
+        return $this->value === $isoCountryCode->value;
+    }
 }

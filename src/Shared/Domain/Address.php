@@ -76,7 +76,7 @@ class Address
             $this->getStreet() === $address->getStreet() &&
             $this->getCity() === $address->getCity() &&
             $this->getZipCode() === $address->getZipCode() &&
-            $this->getIsoCountryCode()->getValue() === $address->getIsoCountryCode()->getValue()
+            $this->getIsoCountryCode()->equal($address->getIsoCountryCode())
         ;
     }
 }
