@@ -20,3 +20,5 @@ parameters:
       #ChildWatching context dependencies
       App\ChildWatching\CreateChild\Application\Command\CreateChildHandler:
         - App\LetterProcessing\Shared\Domain\Child\NewChildSentLetter
+      App\ChildWatching\UpdateChildAddress\Application\Command\UpdateChildAddressHandler:
+        - App\LetterProcessing\Shared\Domain\Child\ChildMoved
