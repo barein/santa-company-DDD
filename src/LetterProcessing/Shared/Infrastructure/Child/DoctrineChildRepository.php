@@ -41,4 +41,9 @@ class DoctrineChildRepository extends ServiceEntityRepository implements ChildRe
 
         return $child;
     }
+
+    public function getAll(): array
+    {
+        return $this->findAll();
+    }
 }
