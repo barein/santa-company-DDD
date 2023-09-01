@@ -10,6 +10,7 @@ use App\LetterProcessing\Shared\Domain\GiftRequest\GiftRequestWasGranted;
 use App\LetterProcessing\Shared\Domain\GiftRequest\MaximumNumberOfGiftRequestPerLetterReachedException;
 use App\LetterProcessing\Shared\Domain\Letter\Letter;
 use App\LetterProcessing\Shared\Domain\Letter\LetterAlreadySentThisYearException;
+use App\LetterProcessing\Shared\Domain\Letter\LetterReadInterface;
 use App\LetterProcessing\Shared\Infrastructure\Child\DoctrineChildRepository;
 use App\Shared\Domain\Address;
 use App\Shared\Domain\Event\AggregateRoot;
@@ -23,7 +24,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Entity(repositoryClass: DoctrineChildRepository::class)]
 #[ORM\Table(name: 'child_of_letter_processing')]
 #[ORM\HasLifecycleCallbacks]
-class Child extends AggregateRoot
+class Child extends AggregateRoot implements ChildReadInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: UlidType::NAME)]
@@ -85,11 +86,14 @@ class Child extends AggregateRoot
     }
 
     /**
-     * @return Collection<Letter>
+     * @return array<LetterReadInterface>
      */
-    public function getLetters(): Collection
+    public function getLetters(): array
     {
-        return $this->letters;
+        /** @var LetterReadInterface[] $letters */
+        $letters = $this->letters->toArray();
+
+        return $letters;
     }
 
     /**

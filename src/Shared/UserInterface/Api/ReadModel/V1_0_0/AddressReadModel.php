@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Application\ReadModel\Address\V1;
+namespace App\Shared\UserInterface\Api\ReadModel\V1_0_0;
 
-readonly class AddressReadModel
+use App\Shared\UserInterface\Api\ReadModel\AddressReadModelInterface;
+
+readonly class AddressReadModel implements AddressReadModelInterface
 {
     public function __construct(
         public int $number,

@@ -21,7 +21,8 @@ class GetChildControllerTest extends AbstractFunctionalTestCase
         //  When I get a child
         $this->client->request(
             method: Request::METHOD_GET,
-            uri: sprintf('/children/%s?v=1', $child->getId()),
+            uri: sprintf('/children/%s', $child->getId()),
+            parameters: ['v' => 100]
         );
 
         /** @var array<string, mixed> $responseContent */
@@ -53,7 +54,8 @@ class GetChildControllerTest extends AbstractFunctionalTestCase
         //  When I get a child with a random id
         $this->client->request(
             method: Request::METHOD_GET,
-            uri: sprintf('/children/%s?v=1', new Ulid()),
+            uri: sprintf('/children/%s', new Ulid()),
+            parameters: ['v' => 100]
         );
 
         self::assertResponseStatusCodeSame(404);

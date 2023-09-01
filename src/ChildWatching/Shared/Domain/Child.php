@@ -12,7 +12,7 @@ use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: DoctrineChildRepository::class)]
 #[ORM\Table(name: 'child_of_child_watching')]
-class Child
+class Child implements ChildReadInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: UlidType::NAME)]

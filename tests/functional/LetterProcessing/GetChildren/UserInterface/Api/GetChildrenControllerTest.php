@@ -24,7 +24,7 @@ class GetChildrenControllerTest extends AbstractFunctionalTestCase
         $this->client->request(
             method: Request::METHOD_GET,
             uri: '/children',
-            parameters: ['v' => 1]
+            parameters: ['v' => 100]
         );
 
         /** @var array<string, mixed> $responseContent */

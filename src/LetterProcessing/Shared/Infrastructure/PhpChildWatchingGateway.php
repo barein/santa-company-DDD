@@ -9,9 +9,9 @@ use App\LetterProcessing\Shared\Domain\Child\Child;
 use App\LetterProcessing\Shared\Domain\ChildWatchingGatewayInterface;
 use App\LetterProcessing\Shared\Domain\ChildWatchingToLetterProcessingTranslator;
 use App\LetterProcessing\Shared\Domain\SantaList;
-use App\Shared\Application\ApiVersion;
 use App\Shared\Domain\Exception\ExternalDependencyFailedException;
 use App\Shared\Infrastructure\Symfony\Subscriber\ExceptionSubscriber;
+use App\Shared\UserInterface\Api\ReadModel\ApiVersion;
 
 readonly class PhpChildWatchingGateway implements ChildWatchingGatewayInterface
 {

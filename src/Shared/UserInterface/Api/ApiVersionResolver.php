@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Shared\UserInterface\Api;
 
-use App\Shared\Application\ApiVersion;
 use App\Shared\Domain\Exception\QueryParamValidationException;
+use App\Shared\UserInterface\Api\ReadModel\ApiVersion;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
