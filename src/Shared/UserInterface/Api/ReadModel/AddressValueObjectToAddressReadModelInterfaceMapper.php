@@ -10,19 +10,13 @@ use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 class AddressValueObjectToAddressReadModelInterfaceMapper
 {
     /**
-     * @var iterable<AddressValueObjectToAddressReadModelMapperInterface>
-     */
-    private iterable $mappers;
-
-    /**
      * @param iterable<AddressValueObjectToAddressReadModelMapperInterface> $mappers
      */
     public function __construct(
         #[TaggedIterator(AddressValueObjectToAddressReadModelMapperInterface::class)]
-        iterable $mappers,
+        private iterable $mappers,
         private readonly ReadModelMapperFinder $readModelMapperFinder,
     ) {
-        $this->mappers = $mappers;
     }
 
     public function map(Address $address, ApiVersion $version): AddressReadModelInterface

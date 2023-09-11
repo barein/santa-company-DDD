@@ -11,11 +11,6 @@ use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
 class ChildEntityToChildReadModelInterfaceMapper
 {
-    /**
-     * @var iterable<ChildEntityToChildReadModelMapperInterface>
-     */
-    private iterable $mappers;
-
     private ?ChildEntityToChildReadModelMapperInterface $matchedMapper = null;
 
     /**
@@ -23,10 +18,9 @@ class ChildEntityToChildReadModelInterfaceMapper
      */
     public function __construct(
         #[TaggedIterator(ChildEntityToChildReadModelMapperInterface::class)]
-        iterable $mappers,
+        private iterable $mappers,
         private readonly ReadModelMapperFinder $readModelMapperFinder,
     ) {
-        $this->mappers = $mappers;
     }
 
     public function map(ChildReadInterface $childEntity, ApiVersion $version): ChildReadModelInterface

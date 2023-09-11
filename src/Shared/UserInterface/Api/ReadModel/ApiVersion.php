@@ -26,6 +26,25 @@ final class ApiVersion
         return new self($version);
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
+    public static function fromString(string $version): self
+    {
+        $result = (bool) preg_match('#v(?<major>\d)\.(?<minor>\d)\.(?<patch>\d)#', $version, $matches);
+
+        if ($result === false) {
+            throw new InvalidArgumentException(sprintf(
+                'API version could not be resolved from string %s, check that it matches the following regex: v\d\.\d\.\d',
+                $version,
+            ));
+        }
+
+        $versionAsInteger = \intval($matches['major'] . $matches['minor'] . $matches['patch']);
+
+        return self::fromInt($versionAsInteger);
+    }
+
     public function getValue(): int
     {
         return $this->value;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\Exception;
 
-final class AttributeParamValidationException extends BadRequestException
+final class RouteParamValidationException extends BadRequestException
 {
-    private const DEFAULT_ERROR_CODE = 'ATTRIBUTE_PARAM_ERROR';
+    private const DEFAULT_ERROR_CODE = 'ROUTE_PARAM_ERROR';
 
     public function __construct(string $message, string $code = self::DEFAULT_ERROR_CODE)
     {

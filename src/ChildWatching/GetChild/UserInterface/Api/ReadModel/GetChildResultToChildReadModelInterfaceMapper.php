@@ -13,19 +13,13 @@ use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 class GetChildResultToChildReadModelInterfaceMapper
 {
     /**
-     * @var iterable<GetChildResultToChildReadModelMapperInterface>
-     */
-    private iterable $mappers;
-
-    /**
      * @param iterable<GetChildResultToChildReadModelMapperInterface> $mappers
      */
     public function __construct(
         #[TaggedIterator(GetChildResultToChildReadModelMapperInterface::class)]
-        iterable $mappers,
+        private iterable $mappers,
         private readonly ReadModelMapperFinder $readModelMapperFinder,
     ) {
-        $this->mappers = $mappers;
     }
 
     public function map(GetChildResult $getChildResult, ApiVersion $apiVersion): ChildReadModelInterface
