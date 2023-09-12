@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Shared\UserInterface\Api;
 
-use App\Shared\Domain\Exception\AttributeParamValidationException;
 use App\Shared\Domain\Exception\InvalidArgumentException;
 use App\Shared\Domain\Exception\QueryParamValidationException;
+use App\Shared\Domain\Exception\RouteParamValidationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -15,7 +15,7 @@ use Symfony\Component\Uid\Ulid;
 final class UlidResolver implements ValueResolverInterface
 {
     /**
-     * @throws AttributeParamValidationException|QueryParamValidationException
+     * @throws QueryParamValidationException|RouteParamValidationException
      *
      * @return iterable<Ulid>
      */
@@ -38,7 +38,7 @@ final class UlidResolver implements ValueResolverInterface
                 throw new QueryParamValidationException($exception->getMessage());
             }
 
-            throw new AttributeParamValidationException($exception->getMessage());
+            throw new RouteParamValidationException($exception->getMessage());
         }
     }
 }

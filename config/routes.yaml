@@ -2,4 +2,6 @@ controllers:
     resource:
         path: ../src/
         namespace: App
+    prefix: /{version<v\d\.\d\.\d>}
+    utf8: true
     type: attribute

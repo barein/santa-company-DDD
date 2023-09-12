@@ -29,7 +29,7 @@ class ReportChildActionControllerTest extends AbstractFunctionalTestCase
 
         $this->client->request(
             method: Request::METHOD_POST,
-            uri: sprintf('/children/%s/actions', $child->getId()),
+            uri: sprintf('/v1.0.0/children/%s/actions', $child->getId()),
             content: json_encode($payload, JSON_THROW_ON_ERROR),
         );
 
@@ -49,7 +49,7 @@ class ReportChildActionControllerTest extends AbstractFunctionalTestCase
 
         $this->client->request(
             method: Request::METHOD_POST,
-            uri: sprintf('/children/%s/actions', (string) new Ulid()),
+            uri: sprintf('/v1.0.0/children/%s/actions', (string) new Ulid()),
             content: json_encode($payload, JSON_THROW_ON_ERROR),
         );
 
@@ -69,7 +69,7 @@ class ReportChildActionControllerTest extends AbstractFunctionalTestCase
         // When I report an action of this child with an unprocessable payload
         $this->client->request(
             method: Request::METHOD_POST,
-            uri: sprintf('/children/%s/actions', $child->getId()),
+            uri: sprintf('/v1.0.0/children/%s/actions', $child->getId()),
             content: json_encode($payload, JSON_THROW_ON_ERROR),
         );
 

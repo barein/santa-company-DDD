@@ -2,7 +2,7 @@ parameters:
     paths:
       - ./src
     layers:
-      - name: UserInterface
+      - name: user_interface
         collectors:
           - type: bool
             must:
@@ -11,18 +11,25 @@ parameters:
             must_not:
               - type: className
                 value: ^App\\.*\\UserInterface\\.*Dto$
+              - type: directory
+                value: src/.*/ReadModel/.*
 
-      - name: UserInterface_Dto
+      - name: user_interface_dto
         collectors:
           - type: className
             value: ^App\\.*\\UserInterface\\.*Dto$
 
-      - name: Application
+      - name: user_interface_read_model
+        collectors:
+          - type: directory
+            value: src/.*/ReadModel/.*
+
+      - name: application
         collectors:
           - type: directory
             value: src/.*/Application/.*
 
-      - name: Domain
+      - name: domain
         collectors:
           - type: bool
             must:
@@ -32,20 +39,25 @@ parameters:
               - type: directory
                 value: src/Shared/Domain/Exception
 
-      - name: Base_Exception
+      - name: base_exception
         collectors:
           - type: directory
             value: src/Shared/Domain/Exception
 
     ruleset:
-      UserInterface:
-        - UserInterface_Dto
-        - Application
-        - Base_Exception
-      UserInterface_Dto:
-        - Domain
-      Application:
-        - Domain
-        - Base_Exception
-      Domain:
-        - Base_Exception
+      user_interface:
+        - user_interface_dto
+        - user_interface_read_model
+        - application
+        - base_exception
+      user_interface_dto:
+        - domain
+      user_interface_read_model:
+        - domain
+        - application
+        - base_exception
+      application:
+        - domain
+        - base_exception
+      domain:
+        - base_exception

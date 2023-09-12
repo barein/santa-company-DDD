@@ -11,17 +11,12 @@ use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 class EventStore implements EventStoreInterface
 {
     /**
-     * @var iterable<EventStoreInterface>
-     */
-    private iterable $eventStores;
-
-    /**
      * @param iterable<EventStoreInterface> $eventStores
      */
     public function __construct(
-        #[TaggedIterator(tag: EventStoreInterface::class, exclude: self::class)] iterable $eventStores, // Todo: delete use of exclude option in Sf 6.3
+        #[TaggedIterator(tag: EventStoreInterface::class, exclude: self::class)]
+        private readonly iterable $eventStores // Todo: delete use of exclude option in Sf 6.3
     ) {
-        $this->eventStores = $eventStores;
     }
 
     public function append(DomainEventInterface $domainEvent): void

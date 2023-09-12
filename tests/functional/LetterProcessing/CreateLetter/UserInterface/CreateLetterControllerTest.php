@@ -46,7 +46,7 @@ class CreateLetterControllerTest extends AbstractFunctionalTestCase
 
         $this->client->request(
             method: Request::METHOD_POST,
-            uri: sprintf('/children/%s/letters', $child->getId()),
+            uri: sprintf('/v1.0.0/children/%s/letters', $child->getId()),
             content: json_encode($requestContent, JSON_THROW_ON_ERROR),
         );
 
@@ -83,7 +83,7 @@ class CreateLetterControllerTest extends AbstractFunctionalTestCase
 
         $this->client->request(
             method: Request::METHOD_POST,
-            uri: sprintf('/children/%s/letters', $child->getId()),
+            uri: sprintf('/v1.0.0/children/%s/letters', $child->getId()),
             content: json_encode($requestContent, JSON_THROW_ON_ERROR),
         );
 
@@ -109,7 +109,7 @@ class CreateLetterControllerTest extends AbstractFunctionalTestCase
         // When I create a letter with an unprocessable payload
         $this->client->request(
             method: Request::METHOD_POST,
-            uri: sprintf('/children/%s/letters', $child->getId()),
+            uri: sprintf('/v1.0.0/children/%s/letters', $child->getId()),
             content: json_encode($payload, JSON_THROW_ON_ERROR),
         );
 
@@ -181,7 +181,7 @@ class CreateLetterControllerTest extends AbstractFunctionalTestCase
 
         $this->client->request(
             method: Request::METHOD_POST,
-            uri: sprintf('/children/%s/letters', new Ulid()),
+            uri: sprintf('/v1.0.0/children/%s/letters', new Ulid()),
             content: json_encode($requestContent, JSON_THROW_ON_ERROR),
         );
 
@@ -211,7 +211,7 @@ class CreateLetterControllerTest extends AbstractFunctionalTestCase
 
         $this->client->request(
             method: Request::METHOD_POST,
-            uri: sprintf('/children/%s/letters', $child->getId()),
+            uri: sprintf('/v1.0.0/children/%s/letters', $child->getId()),
             content: json_encode($requestContent, JSON_THROW_ON_ERROR),
         );
 

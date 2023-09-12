@@ -34,7 +34,7 @@ class CreateChildControllerTest extends AbstractFunctionalTestCase
 
         $this->client->request(
             method: Request::METHOD_POST,
-            uri: '/children',
+            uri: '/v1.0.0/children',
             content: json_encode($requestContent, JSON_THROW_ON_ERROR),
         );
 
@@ -63,7 +63,7 @@ class CreateChildControllerTest extends AbstractFunctionalTestCase
         // When I create a child with an unprocessable payload
         $this->client->request(
             method: Request::METHOD_POST,
-            uri: '/children',
+            uri: '/v1.0.0/children',
             content: json_encode($payload, JSON_THROW_ON_ERROR),
         );
 

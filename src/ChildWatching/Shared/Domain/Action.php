@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity(repositoryClass: DoctrineActionRepository::class)]
-class Action
+class Action implements ActionReadInterface
 {
     public const DATE_TIME_FORMAT = 'Y-m-d H:i:s';
 
@@ -42,26 +42,6 @@ class Action
         $this->dateTime = $dateTime;
         $this->description = $description;
         $this->type = $type;
-    }
-
-    public function getId(): Ulid
-    {
-        return $this->id;
-    }
-
-    public function getChildId(): Ulid
-    {
-        return $this->childId;
-    }
-
-    public function getDateTime(): \DateTimeImmutable
-    {
-        return $this->dateTime;
-    }
-
-    public function getDescription(): ActionDescription
-    {
-        return $this->description;
     }
 
     public function getType(): ActionType

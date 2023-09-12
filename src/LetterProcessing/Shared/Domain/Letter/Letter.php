@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;
 
 #[ORM\Entity]
-class Letter
+class Letter implements LetterReadInterface
 {
     public const RECEIVING_DATE_FORMAT = 'Y-m-d';
     public const MAX_NUMBER_OF_GIFT_REQUEST_PER_LETTER = 4;
@@ -56,11 +56,6 @@ class Letter
         return $this->id;
     }
 
-    public function getChild(): Child
-    {
-        return $this->child;
-    }
-
     public function getSenderAddress(): Address
     {
         return $this->senderAddress;
@@ -69,14 +64,6 @@ class Letter
     public function getReceivingDate(): \DateTimeImmutable
     {
         return $this->receivingDate;
-    }
-
-    /**
-     * @return Collection<GiftRequest>
-     */
-    public function getGiftRequests(): Collection
-    {
-        return $this->giftRequests;
     }
 
     /**

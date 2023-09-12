@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Shared\UserInterface\Api;
 
-use App\Shared\Application\ApiVersion;
+use App\Shared\Domain\Exception\InvalidArgumentException;
 use App\Shared\Domain\Exception\QueryParamValidationException;
+use App\Shared\Domain\Exception\RouteParamValidationException;
+use App\Shared\UserInterface\Api\ReadModel\ApiVersion;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -23,16 +25,10 @@ final class ApiVersionResolver implements ValueResolverInterface
             return [];
         }
 
-        $version = $request->query->getInt('v');
-
-        if ($version === 0) {
-            throw new QueryParamValidationException('API version query parameter is not provided');
-        }
-
         try {
-            yield ApiVersion::fromInt($version);
-        } catch (\Throwable $exception) {
-            throw new QueryParamValidationException($exception->getMessage());
+            yield ApiVersion::fromString(\strval($request->attributes->get('version')));
+        } catch (InvalidArgumentException $exception) {
+            throw new RouteParamValidationException($exception->getMessage());
         }
     }
 }

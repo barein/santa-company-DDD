@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\ChildWatching\Shared\UserInterface;
 
 use App\ChildWatching\GetChild\UserInterface\Api\GetChildController;
-use App\Shared\Application\ApiVersion;
 use App\Shared\Domain\Exception\NotFoundException;
+use App\Shared\UserInterface\Api\ReadModel\ApiVersion;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Uid\Ulid;
 

@@ -46,7 +46,7 @@ class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
 
         $this->client->request(
             method: Request::METHOD_POST,
-            uri: sprintf('/children/%s/letters/%s/gift-requests', $child->getId(), $letter->getId()),
+            uri: sprintf('/v1.0.0/children/%s/letters/%s/gift-requests', $child->getId(), $letter->getId()),
             content: json_encode($requestContent, JSON_THROW_ON_ERROR),
         );
 
@@ -82,7 +82,7 @@ class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
 
         $this->client->request(
             method: Request::METHOD_POST,
-            uri: sprintf('/children/%s/letters/%s/gift-requests', new Ulid(), $letter->getId()),
+            uri: sprintf('/v1.0.0/children/%s/letters/%s/gift-requests', new Ulid(), $letter->getId()),
             content: json_encode($requestContent, JSON_THROW_ON_ERROR),
         );
 
@@ -111,7 +111,7 @@ class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
 
         $this->client->request(
             method: Request::METHOD_POST,
-            uri: sprintf('/children/%s/letters/%s/gift-requests', $child->getId(), new Ulid()),
+            uri: sprintf('/v1.0.0/children/%s/letters/%s/gift-requests', $child->getId(), new Ulid()),
             content: json_encode($requestContent, JSON_THROW_ON_ERROR),
         );
 
@@ -144,7 +144,7 @@ class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
 
         $this->client->request(
             method: Request::METHOD_POST,
-            uri: sprintf('/children/%s/letters/%s/gift-requests', $child->getId(), $letter->getId()),
+            uri: sprintf('/v1.0.0/children/%s/letters/%s/gift-requests', $child->getId(), $letter->getId()),
             content: json_encode($requestContent, JSON_THROW_ON_ERROR),
         );
 
@@ -188,7 +188,7 @@ class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
 
         $this->client->request(
             method: Request::METHOD_POST,
-            uri: sprintf('/children/%s/letters/%s/gift-requests', $child->getId(), $letter->getId()),
+            uri: sprintf('/v1.0.0/children/%s/letters/%s/gift-requests', $child->getId(), $letter->getId()),
             content: json_encode($requestContent, JSON_THROW_ON_ERROR),
         );
 
@@ -218,7 +218,7 @@ class CreateGiftRequestControllerTest extends AbstractFunctionalTestCase
 
         $this->client->request(
             method: Request::METHOD_POST,
-            uri: sprintf('/children/%s/letters/%s/gift-requests', $child->getId(), $letter->getId()),
+            uri: sprintf('/v1.0.0/children/%s/letters/%s/gift-requests', $child->getId(), $letter->getId()),
             content: json_encode($payload, JSON_THROW_ON_ERROR),
         );
 
