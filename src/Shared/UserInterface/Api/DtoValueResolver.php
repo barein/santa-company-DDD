@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Shared\UserInterface\Api;
 
-use App\Shared\Domain\Exception\BadRequestException;
-use App\Shared\Domain\Exception\PayloadValidationException;
+use App\Shared\UserInterface\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;

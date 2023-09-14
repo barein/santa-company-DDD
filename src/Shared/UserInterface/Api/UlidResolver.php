@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Shared\UserInterface\Api;
 
 use App\Shared\Domain\Exception\InvalidArgumentException;
-use App\Shared\Domain\Exception\QueryParamValidationException;
-use App\Shared\Domain\Exception\RouteParamValidationException;
+use App\Shared\UserInterface\Exception\QueryParamValidationException;
+use App\Shared\UserInterface\Exception\RouteParamValidationException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;

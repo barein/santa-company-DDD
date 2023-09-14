@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Domain\Exception;
+namespace App\Shared\UserInterface\Exception;
 
 final class QueryParamValidationException extends BadRequestException
 {

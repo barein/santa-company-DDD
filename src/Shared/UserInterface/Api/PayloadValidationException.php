@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Domain\Exception;
+namespace App\Shared\UserInterface\Api;
+
+use App\Shared\Domain\Exception\AbstractBaseException;
+use App\Shared\Domain\Exception\HttpStatusCode;
 
 final class PayloadValidationException extends AbstractBaseException
 {
