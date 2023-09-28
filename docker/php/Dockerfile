@@ -10,9 +10,16 @@ RUN apt-get update \
     && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php8.list \
     && apt update \
 ##Install php8.2 extensions
-    && apt install -y php8.2-ctype php8.2-iconv php8.2-simplexml php8.2-tokenizer php8.2-mysql php8.2-curl php8.2-gd php8.2-mbstring php8.2-intl php8.2-bcmath php8.2-bz2 php8.2-readline php8.2-zip \
+    && apt install -y php8.2-xdebug php8.2-ctype php8.2-iconv php8.2-simplexml php8.2-tokenizer php8.2-mysql php8.2-curl php8.2-gd php8.2-mbstring php8.2-intl php8.2-bcmath php8.2-bz2 php8.2-readline php8.2-zip \
 ## activate pdo_pgsql extension
 #    && sed -rie 's/^;extension=pdo_pgsql$/extension=pdo_pgsql/' /opt/bitnami/php/lib/php.ini \
+# activate xdebug extension
+    && sed -rie 's/^;zend_extension = xdebug$/zend_extension = xdebug/' /opt/bitnami/php/lib/php.ini \
+    && sed -rie 's/^;xdebug.mode = debug$/xdebug.mode = develop,debug/' /opt/bitnami/php/lib/php.ini \
+    && sed -rie 's/^;xdebug.client_host = 127.0.0.1$/xdebug.client_host = host.docker.internal/' /opt/bitnami/php/lib/php.ini \
+    && sed -rie '/^;\[XDebug\]$/ a\xdebug.discover_client_host=0' /opt/bitnami/php/lib/php.ini \
+    && sed -rie 's/^;xdebug.client_port = 9000$/xdebug.client_port = 9000/' /opt/bitnami/php/lib/php.ini \
+    && sed -rie '/^;\[XDebug\]$/ a\xdebug.start_with_request=yes' /opt/bitnami/php/lib/php.ini \
 ##Disable opcache
     && sed -rie 's/^opcache.enable = 1$/opcache.enable = 0/' /opt/bitnami/php/lib/php.ini \
 ##Give more memory to php

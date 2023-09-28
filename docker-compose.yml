@@ -57,8 +57,11 @@ services:
         USER_ID: ${USER_ID}
         GROUP_ID: ${GROUP_ID}
         USERNAME: ${USERNAME}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       PHP_CS_FIXER_IGNORE_ENV: 'true'
+      PHP_IDE_CONFIG: "serverName=~.*"
     networks:
       - santa-back
     volumes:
